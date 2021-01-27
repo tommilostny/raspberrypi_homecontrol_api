@@ -12,7 +12,7 @@ class LED_Control(Resource):
             led2.off()
         elif status == "on":
             led1.on()
-            led2.off()
+            led2.on()
         else:
             led1.toggle()
             led2.toggle()
