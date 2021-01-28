@@ -10,18 +10,20 @@ led2 = LED(LED2_GPIO_PIN)
 
 class LED_Status(Resource):
     def get(self):
-        return {
-            "led1": {
+        return [
+            {
                 "pin": LED1_GPIO_PIN,
-                "is_active": led1.is_active,
-                "value": led1.value
+                "isActive": led1.is_active,
+                "number": 1,
+                "name": "LED 1"
             },
-            "led2": {
+            {
                 "pin": LED2_GPIO_PIN,
-                "is_active": led2.is_active,
-                "value": led2.value
+                "isActive": led2.is_active,
+                "number": 2,
+                "name": "LED 2"
             }
-        }
+        ]
 
 def led_control(led, status):
     if status == "off":

@@ -1,6 +1,7 @@
 #Library imports
 from flask import Flask, request
 from flask_restful import Api
+from flask_cors import CORS
 
 #Local modules imports
 from testfiles import helloworld as hw
@@ -10,6 +11,7 @@ import yeelight_control as yc
 
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 api.add_resource(hw.HelloWorld, "/helloworld/<string:name>")
 api.add_resource(v.Video, "/video/<int:video_id>")
