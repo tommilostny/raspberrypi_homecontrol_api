@@ -14,14 +14,12 @@ class LED_Status(Resource):
             {
                 "pin": LED1_GPIO_PIN,
                 "isActive": led1.is_active,
-                "number": 1,
-                "name": "LED 1"
+                "number": 1
             },
             {
                 "pin": LED2_GPIO_PIN,
                 "isActive": led2.is_active,
-                "number": 2,
-                "name": "LED 2"
+                "number": 2
             }
         ]
 
