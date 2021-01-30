@@ -34,10 +34,9 @@ def is_ok_color(color):
 class YeelightColor(Resource):
     def get(self, r, g, b):
         if is_ok_color(r) and is_ok_color(g) and is_ok_color(b):
+            bulb.set_rgb(r, g, b)
             if r == 255 and g == 255 and b == 255:
                 bulb.set_color_temp(4000)
-            else:
-                bulb.set_rgb(r, g, b)
             return "Yeelight color set to rgb(" + str(r) + ", " + str(g) + ", " + str(b) + ")."
         else:
             return "Bad color...", 400
