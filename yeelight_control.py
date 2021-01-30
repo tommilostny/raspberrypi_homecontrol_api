@@ -48,4 +48,9 @@ class YeelightTemperature(Resource):
             return "Yeelight color temperature set to " + str(temperature) + "K."
         else:
             return "Bad temperature: " + str(temperature), 400
+
+class YeelightHueSaturation(Resource):
+    def get(self, hue, saturation):
+        bulb.set_hsv(hue, saturation)
+        return "Yeelight hue and saturation updated"
 #### End of Yeelight control endpoint ####
