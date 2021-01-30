@@ -1,7 +1,7 @@
 #### Yeelight control endpoint ####
 from flask_restful import Resource
 from yeelight import Bulb
-from time import sleep
+import json
 
 bulb = Bulb("192.168.1.189", auto_on=True)
 
@@ -53,4 +53,9 @@ class YeelightHueSaturation(Resource):
     def get(self, hue, saturation):
         bulb.set_hsv(hue, saturation)
         return "Yeelight hue and saturation updated"
+
+class ColorDatabase(Resource):
+    def get(self):
+        with open("data/colors.json") as f:
+            return json.load(f)
 #### End of Yeelight control endpoint ####

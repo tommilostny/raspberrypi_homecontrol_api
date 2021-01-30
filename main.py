@@ -26,6 +26,7 @@ api.add_resource(yc.YeelightColor, "/yeelight/color/<int:r>/<int:g>/<int:b>")
 api.add_resource(yc.YeelightStatus, "/yeelight")
 api.add_resource(yc.YeelightTemperature, "/yeelight/temperature/<int:temperature>")
 api.add_resource(yc.YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
+api.add_resource(yc.ColorDatabase, "/colors")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
