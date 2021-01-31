@@ -22,11 +22,12 @@ api.add_resource(lc.LED_Blink, "/led/<int:led_num>/blink/<float:interval>")
 
 api.add_resource(yc.YeelightPower, "/yeelight/power/<string:status>")
 api.add_resource(yc.YeelightBrightness, "/yeelight/brightness/<int:brightness>")
-api.add_resource(yc.YeelightColor, "/yeelight/color/<int:r>/<int:g>/<int:b>")
+api.add_resource(yc.YeelightColorRGB, "/yeelight/color/<int:r>/<int:g>/<int:b>")
 api.add_resource(yc.YeelightStatus, "/yeelight")
 api.add_resource(yc.YeelightTemperature, "/yeelight/temperature/<int:temperature>")
 api.add_resource(yc.YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
 api.add_resource(yc.ColorDatabase, "/colors")
+api.add_resource(yc.YeelightColorName, "/yeelight/color/<string:color_name>")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
