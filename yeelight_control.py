@@ -1,7 +1,8 @@
 #### Yeelight control endpoint ####
+import json
+
 from flask_restful import Resource
 from yeelight import Bulb
-import json
 
 bulb = Bulb("192.168.1.189", auto_on=True)
 

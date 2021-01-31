@@ -1,7 +1,7 @@
 #Library imports
-from flask import Flask, request
-from flask_restful import Api
+from flask import Flask
 from flask_cors import CORS
+from flask_restful import Api
 
 #Local modules imports
 import led_control as lc
