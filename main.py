@@ -1,13 +1,17 @@
-#Library imports
+import threading
+
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 
-#Local modules imports
-import led_control as lc
-import yeelight_control as yc
-import temperature as t
+import heater_control as hc
 import lcd_control as lcdc
+import led_control as lc
+import temperature as t
+import yeelight_control as yc
+
+e = threading.Event()
+heater_thread = hc.HC_Thread(e)
 
 app = Flask(__name__)
 api = Api(app)
@@ -28,8 +32,10 @@ api.add_resource(yc.YeelightColorName, "/yeelight/color/<string:color_name>")
 
 api.add_resource(t.Temperature, "/temperature")
 
-api.add_resource(lcdc.LcdPrint, "/lcd/<string:message>/<int:line>")
-api.add_resource(lcdc.LcdBacklight, "/lcd/backlight/<int:state>")
+#api.add_resource(lcdc.LcdPrint, "/lcd/<string:message>/<int:line>")
+#api.add_resource(lcdc.LcdBacklight, "/lcd/backlight/<int:state>")
 
 if __name__ == "__main__":
+    heater_thread.start()
     app.run(debug=True, host="0.0.0.0")
+    e.set()
