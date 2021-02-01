@@ -6,6 +6,8 @@ from flask_restful import Api
 #Local modules imports
 import led_control as lc
 import yeelight_control as yc
+import temperature as t
+import lcd_control as lcdc
 
 app = Flask(__name__)
 api = Api(app)
@@ -23,6 +25,10 @@ api.add_resource(yc.YeelightTemperature, "/yeelight/temperature/<int:temperature
 api.add_resource(yc.YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
 api.add_resource(yc.ColorDatabase, "/colors")
 api.add_resource(yc.YeelightColorName, "/yeelight/color/<string:color_name>")
+
+api.add_resource(t.Temperature, "/temperature")
+
+api.add_resource(lcdc.LcdPrint, "/lcd/<string:message>/<int:line>")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

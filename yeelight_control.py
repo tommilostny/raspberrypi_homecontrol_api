@@ -19,21 +19,18 @@ class YeelightPower(Resource):
         else:
             bulb.toggle()
             status = "toggled"
-        return "Yeelight bulb is " + status
+        return { "message": "Yeelight bulb is " + status }
 
 class YeelightBrightness(Resource):
     def get(self, brightness):
         if brightness >= 0 and brightness <= 100:
             bulb.set_brightness(brightness)
-            return "Yeelight brightness se to " + str(brightness) + "%."
+            return { "message": "Yeelight brightness se to " + str(brightness) + "%." }
         else:
-            return "Bad brightness: " + str(brightness), 400
+            return { "message": "Bad brightness: " + str(brightness) }, 400
 
 def is_ok_color(color):
-    if color >= 0 and color <= 255:
-        return True
-    else:
-        return False
+    return (color >= 0 and color <= 255)
 
 def set_color(r, g, b):
     bulb.set_rgb(r, g, b)
@@ -44,35 +41,35 @@ class YeelightColorRGB(Resource):
     def get(self, r, g, b):
         if is_ok_color(r) and is_ok_color(g) and is_ok_color(b):
             set_color(r, g, b)
-            return "Yeelight color set to rgb(" + str(r) + ", " + str(g) + ", " + str(b) + ")."
+            return { "message": "Yeelight color set to rgb(" + str(r) + ", " + str(g) + ", " + str(b) + ")." }
         else:
-            return "Bad color...", 400
+            return { "message": "Bad color..." }, 400
 
 class YeelightColorName(Resource):
     def get(self, color_name):
         for x in fetch_color_database():
             if x["name"] == color_name:
                 set_color(x["color"]["red"], x["color"]["green"], x["color"]["blue"])
-                return "Found and set color: " + color_name
-        return "Color " + str(color_name) + " not found.", 404
+                return { "message": "Found and set color: " + color_name }
+        return { "message": "Color " + str(color_name) + " not found." }, 404
 
 class YeelightTemperature(Resource):
     def get(self, temperature):
         if temperature >= 1700 and temperature <= 6500: #is a safe temperature
             bulb.set_color_temp(temperature)
-            return "Yeelight color temperature set to " + str(temperature) + "K."
+            return { "message": "Yeelight color temperature set to " + str(temperature) + "K." }
         else:
-            return "Bad temperature: " + str(temperature), 400
+            return { "message": "Bad temperature: " + str(temperature) }, 400
 
 class YeelightHueSaturation(Resource):
     def get(self, hue, saturation):
         if hue < 0 or hue > 359:
-            return "Bad hue: " + str(hue), 400
+            return { "message": "Bad hue: " + str(hue) }, 400
         elif saturation < 0 or saturation > 100:
-            return "Bad saturation: " + str(saturation), 400
+            return { "message": "Bad saturation: " + str(saturation) }, 400
         else:
             bulb.set_hsv(hue, saturation)
-            return "Yeelight hue and saturation updated"
+            return { "message": "Yeelight hue and saturation updated" }
 
 def fetch_color_database():
     with open("data/colors.json") as f:
