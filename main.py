@@ -29,6 +29,7 @@ api.add_resource(yc.YeelightColorName, "/yeelight/color/<string:color_name>")
 api.add_resource(t.Temperature, "/temperature")
 
 api.add_resource(lcdc.LcdPrint, "/lcd/<string:message>/<int:line>")
+api.add_resource(lcdc.LcdBacklight, "/lcd/backlight/<int:state>")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
