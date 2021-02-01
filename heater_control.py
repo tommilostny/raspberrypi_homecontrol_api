@@ -1,5 +1,4 @@
 from threading import Thread
-from time import sleep
 
 import temperature as t
 from drivers import Lcd
@@ -28,7 +27,7 @@ class HC_Thread(Thread):
             display.lcd_display_string(str(temp_c) + CELSIUS, 1)
             print_heating_status(temp_c)
 
-            event_is_set = self.stop_event.wait(1)
+            event_is_set = self.stop_event.wait(2)
             if event_is_set:
                 print("Stopping heater control...")
                 display.lcd_clear()
