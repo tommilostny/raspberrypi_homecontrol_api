@@ -1,30 +1,21 @@
 import glob
 import os
 from time import sleep
-
 from flask_restful import Resource
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
- 
+
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
- 
+
 def read_temp_raw():
-    ok = False
-    while not ok:
-        try:
-            ok = True
-            f = open(device_file, 'r')
-            lines = f.readlines()
-            f.close()
-            return lines
-        except IndexError:
-            ok = False
-            print("Correcting error in raw...")
-            sleep(0.1)
- 
+    f = open(device_file, 'r')
+    lines = f.readlines()
+    f.close()
+    return lines
+
 #Returns temperature value from the Dallas DS18B20 sensor in Celsius, Fahrenheit and Kelvin
 def read_temp():
     ok = False
@@ -46,9 +37,9 @@ def read_temp():
                 ok = False
         except IndexError:
             ok = False
-            print("Correcting error in real...")
             sleep(0.1)
 
+#Flask API temperature endpoint
 class Temperature(Resource):
     def get(self):
         c, f, k = read_temp()

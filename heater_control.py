@@ -1,4 +1,5 @@
 from threading import Thread
+from colorama import Fore, Style
 
 import temperature as t
 from drivers import Lcd
@@ -21,7 +22,7 @@ class HC_Thread(Thread):
         self.stop_event = stop_event
 
     def run(self):
-        print("Starting heater control...")
+        print(f"{Fore.YELLOW}Starting heater control...{Style.RESET_ALL}")
         while True:
             temp_c,_,_ = t.read_temp()
             display.lcd_display_string(str(temp_c) + CELSIUS, 1)
@@ -29,7 +30,7 @@ class HC_Thread(Thread):
 
             event_is_set = self.stop_event.wait(2)
             if event_is_set:
-                print("Stopping heater control...")
+                print(f"{Fore.YELLOW}Stopping heater control...{Style.RESET_ALL}")
                 display.lcd_clear()
                 display.lcd_backlight(0)
                 break
