@@ -32,6 +32,8 @@ api.add_resource(yc.YeelightColorName, "/yeelight/color/<string:color_name>")
 
 api.add_resource(t.Temperature, "/temperature")
 
+api.add_resource(hc.LcdControl, "/heater_lcd/<int:state>")
+
 #api.add_resource(lcdc.LcdPrint, "/lcd/<string:message>/<int:line>")
 #api.add_resource(lcdc.LcdBacklight, "/lcd/backlight/<int:state>")
 
