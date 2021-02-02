@@ -1,9 +1,15 @@
 import requests
 
+#File webhooks_key.txt contains only the Webhooks API key on the first line
+def load_webhooks_key():
+    f = open("webhooks_key.txt", 'r')
+    lines = f.readlines()
+    f.close()
+    return lines[0]
+
 #IFTTT applet 1: IF Webhook (id="temperature_hight") -> Then Smart Life (turn off Tom's heating)
 #IFTTT applet 2: IF Webhook (id="temperature_low")   -> Then Smart Life (turn on Tom's heating)
-WEBHOOKS_KEY = ""
-
+WEBHOOKS_KEY = load_webhooks_key()
 POWER_STATUS = None
 
 def send_webhooks_event(event):
