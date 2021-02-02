@@ -2,19 +2,13 @@ from threading import Thread
 from colorama import Fore, Style
 
 import temperature as t
+import wh_ifttt_control as wi
 from drivers import Lcd
 
 CELSIUS = chr(223) + "C  "
 TEMPERATURE_THRESHOLD = 23.5
 
 display = Lcd()
-is_heating_on = None
-
-def print_heating_status(temp):
-    if temp < TEMPERATURE_THRESHOLD:
-        display.lcd_display_string("Heating is on.", 2)
-    else:
-        display.lcd_display_string("Heating is off.", 2)
 
 class HC_Thread(Thread):
     def __init__(self, stop_event):
@@ -26,7 +20,8 @@ class HC_Thread(Thread):
         while True:
             temp_c,_,_ = t.read_temp()
             display.lcd_display_string(str(temp_c) + CELSIUS, 1)
-            print_heating_status(temp_c)
+            wi.control_heater(temp_c, TEMPERATURE_THRESHOLD)
+            wi.print_heater_status(display)
 
             event_is_set = self.stop_event.wait(2)
             if event_is_set:
