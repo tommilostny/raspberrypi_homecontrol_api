@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime
 
 #File webhooks_key.txt contains only the Webhooks API key on the first line
 def load_webhooks_key():
@@ -15,7 +16,9 @@ power = None
 
 def send_webhooks_event(event):
     requests.post('https://maker.ifttt.com/trigger/{event_name}/with/key/{key}'.format(event_name=event, key=WEBHOOKS_KEY))
-    print(event + " event sent")
+    dateTimeObj = datetime.now()
+    timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S.%f): ")
+    print(timestampStr + event + " event sent")
 
 def print_heater_status(display):
     if power is not None:
@@ -23,11 +26,9 @@ def print_heater_status(display):
 
 def control_heater(temperature, threshold):
     global power
-
-    if temperature < threshold and power != "on":
+    if temperature < threshold - 0.1 and power != "on":
         send_webhooks_event("temperature_low")
         power = "on"
-
-    elif temperature >= threshold and power != "off":
+    elif temperature > threshold + 0.1 and power != "off":
         send_webhooks_event("temperature_high")
         power = "off"
