@@ -13,22 +13,34 @@ def load_webhooks_key():
 WEBHOOKS_KEY = load_webhooks_key()
 
 power = None
+events_send = 0
 
-def send_webhooks_event(event):
+def send_webhooks_event(event, temp):
+    global events_send
     requests.post('https://maker.ifttt.com/trigger/{event_name}/with/key/{key}'.format(event_name=event, key=WEBHOOKS_KEY))
+
     dateTimeObj = datetime.now()
     timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S.%f): ")
-    print(timestampStr + event + " event sent")
+
+    f = open("data/temp_events.log", "a+")
+    f.write(timestampStr + event + " event sent (" + str(temp) + "\N{DEGREE SIGN}C)\n")
+    f.close()
+    events_send = events_send + 1
 
 def print_heater_status(display):
     if power is not None:
         display.lcd_display_string("Heating is " + power + ". ", 2)
 
 def control_heater(temperature, threshold):
-    global power
-    if temperature < threshold - 0.1 and power != "on":
-        send_webhooks_event("temperature_low")
+    global power, events_send
+
+    if (temperature < threshold - 0.1 and power != "on") or (temperature < threshold - 0.4 and events_send < 5):
+        send_webhooks_event("temperature_low", temperature)
         power = "on"
-    elif temperature > threshold + 0.1 and power != "off":
-        send_webhooks_event("temperature_high")
+    elif (temperature > threshold + 0.1 and power != "off") or (temperature > threshold + 0.4 and events_send < 5):
+        send_webhooks_event("temperature_high", temperature)
         power = "off"
+
+    #reset events counter if temperature is in norm
+    if temperature > threshold - 0.1 and temperature < threshold + 0.1:
+        events_send = 0

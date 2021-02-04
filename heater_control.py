@@ -1,13 +1,14 @@
 from threading import Thread
 from colorama import Fore, Style
 from flask_restful import Resource
+import os
 
 import temperature as t
 import wh_ifttt_control as wi
 from drivers import Lcd
 
 CELSIUS = chr(223) + "C  "
-TEMPERATURE_THRESHOLD = 23.5
+TEMPERATURE_THRESHOLD = 23.0
 
 display = Lcd()
 backlight_state = 1
@@ -44,3 +45,19 @@ class LcdControl(Resource):
             display.lcd_backlight(state)
             backlight_state = state
         return { "message" : "LCD backlight set to " + str(state) }
+
+LOGFILE = "data/temp_events.log"
+
+class TemperatureLogGet(Resource):
+    def get(self):
+        if os.path.exists(LOGFILE):
+            f = open(LOGFILE, "r")
+            content = f.readlines()
+            f.close()
+            return content
+        else:
+            return []
+
+class TemperatureLogClear(Resource):
+    def get(self):
+        os.system("rm -f " + LOGFILE)
