@@ -36,14 +36,25 @@ class HC_Thread(Thread):
                 display.lcd_backlight(0)
                 break
 
+def set_lcd_backlight(state):
+    global backlight_state
+    if state == 0:
+        display.lcd_clear()
+    if state == 1 or state == 0:
+        display.lcd_backlight(state)
+        backlight_state = state
+
 class LcdControl(Resource):
     def get(self, state):
-        global backlight_state
-        if state == 0:
-            display.lcd_clear()
         if state == 1 or state == 0:
-            display.lcd_backlight(state)
-            backlight_state = state
+            set_lcd_backlight(state)
+
+        else: #toggle
+            if backlight_state == 0:
+                set_lcd_backlight(1)
+            else:
+                set_lcd_backlight(0)
+
         return { "message" : "LCD backlight set to " + str(state) }
 
 LOGFILE = "data/temp_events.log"

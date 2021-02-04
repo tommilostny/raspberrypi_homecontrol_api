@@ -20,6 +20,8 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 api.add_resource(lc.LED_Control, "/led/<int:led_num>/<string:status>")
 api.add_resource(lc.LED_Status, "/led")
 api.add_resource(lc.LED_Blink, "/led/<int:led_num>/blink/<float:interval>")
+api.add_resource(lc.RGB_LED_Color_ByName, "/led/rgb/<string:name>")
+api.add_resource(lc.RGB_LED_Color_ByRGB, "/led/rgb/<int:r>/<int:g>/<int:b>")
 
 api.add_resource(yc.YeelightPower, "/yeelight/power/<string:status>")
 api.add_resource(yc.YeelightBrightness, "/yeelight/brightness/<int:brightness>")
