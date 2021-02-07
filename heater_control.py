@@ -1,14 +1,17 @@
 from threading import Thread
 from colorama import Fore, Style
 from flask_restful import Resource
+from datetime import datetime
 import os
 
 import temperature as t
 import wh_ifttt_control as wi
 from drivers import Lcd
 
+LOGFILE = "data/temp_events.log"
 CELSIUS = chr(223) + "C  "
-TEMPERATURE_THRESHOLD = 23.0
+TEMPERATURE_THRESHOLD_DAY = 23.0
+TEMPERATURE_THRESHOLD_NIGHT = 20.5
 
 display = Lcd()
 backlight_state = 1
@@ -23,7 +26,13 @@ class HC_Thread(Thread):
         print(f"{Fore.YELLOW}Starting heater control...{Style.RESET_ALL}")
         while True:
             temp_c,_,_ = t.read_temp()
-            wi.control_heater(temp_c, TEMPERATURE_THRESHOLD)
+            now = datetime.now()
+
+            if now.hour >= 6 and now.hour <= 22: #day
+                wi.control_heater(temp_c, TEMPERATURE_THRESHOLD_DAY)
+            
+            else: #night
+                wi.control_heater(temp_c, TEMPERATURE_THRESHOLD_NIGHT)
 
             if backlight_state == 1:
                 display.lcd_display_string(str(temp_c) + CELSIUS, 1)
@@ -57,9 +66,18 @@ class LcdControl(Resource):
 
         return { "message" : "LCD backlight set to " + str(state) }
 
-LOGFILE = "data/temp_events.log"
+class Temperature(Resource):
+    def get(self):
+        c, f, k = t.read_temp()
+        return {
+            "tempC" : c,
+            "tempF" : f,
+            "tempK" : k,
+            "thresholdDay": TEMPERATURE_THRESHOLD_DAY,
+            "thresholdNight": TEMPERATURE_THRESHOLD_NIGHT
+        }
 
-class TemperatureLogGet(Resource):
+class TemperatureLog(Resource):
     def get(self):
         if os.path.exists(LOGFILE):
             f = open(LOGFILE, "r")
@@ -69,6 +87,15 @@ class TemperatureLogGet(Resource):
         else:
             return []
 
-class TemperatureLogClear(Resource):
-    def get(self):
+    def delete(self):
         os.system("rm -f " + LOGFILE)
+        return { "message": "Temperature log file deleted." }, 200
+
+class TemperatureThreshold(Resource):
+    def get(self, period, threshold):
+        global TEMPERATURE_THRESHOLD_DAY, TEMPERATURE_THRESHOLD_NIGHT
+
+        if period == "day":
+            TEMPERATURE_THRESHOLD_DAY = threshold
+        elif period == "night":
+            TEMPERATURE_THRESHOLD_NIGHT = threshold

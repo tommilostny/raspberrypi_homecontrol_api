@@ -1,7 +1,6 @@
 import glob
 import os
 from time import sleep
-from flask_restful import Resource
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -38,9 +37,3 @@ def read_temp():
         except IndexError:
             ok = False
             sleep(0.1)
-
-#Flask API temperature endpoint
-class Temperature(Resource):
-    def get(self):
-        c, f, k = read_temp()
-        return { "tempC" : c, "tempF" : f, "tempK" : k }

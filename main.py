@@ -32,11 +32,10 @@ api.add_resource(yc.YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturati
 api.add_resource(yc.ColorDatabase, "/colors")
 api.add_resource(yc.YeelightColorName, "/yeelight/color/<string:color_name>")
 
-api.add_resource(t.Temperature, "/temperature")
-
+api.add_resource(hc.Temperature, "/temperature")
 api.add_resource(hc.LcdControl, "/heater_lcd/<int:state>")
-api.add_resource(hc.TemperatureLogGet, "/temp_log")
-api.add_resource(hc.TemperatureLogClear, "/temp_log/clear")
+api.add_resource(hc.TemperatureLog, "/temp_log")
+api.add_resource(hc.TemperatureThreshold, "/temp_threshold/<string:period>/<float:threshold>")
 
 #api.add_resource(lcdc.LcdPrint, "/lcd/<string:message>/<int:line>")
 #api.add_resource(lcdc.LcdBacklight, "/lcd/backlight/<int:state>")
