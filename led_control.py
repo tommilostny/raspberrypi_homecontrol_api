@@ -10,9 +10,14 @@ RGBLED1_RED_PIN = 19
 RGBLED1_GREEN_PIN = 20
 RGBLED1_BLUE_PIN = 21
 
+LED_UV_GPIO_PIN = 26
+
 led1 = LED(LED1_GPIO_PIN)
 led2 = LED(LED2_GPIO_PIN)
+led_uv = LED(LED_UV_GPIO_PIN)
 led_rgb1 = RGBLED(RGBLED1_RED_PIN, RGBLED1_GREEN_PIN, RGBLED1_BLUE_PIN)
+
+ALL_LEDS = [ led1, led2, led_rgb1, led_uv ]
 
 class LED_Status(Resource):
     def get(self):
@@ -22,26 +27,36 @@ class LED_Status(Resource):
                 "isActive": led1.is_active,
                 "number": 1,
                 "isRGB": False,
-                "color": None
+                "color": None,
+                "name": "Red"
             },
             {
                 "pins": [ LED2_GPIO_PIN ],
                 "isActive": led2.is_active,
                 "number": 2,
                 "isRGB": False,
-                "color": None
+                "color": None,
+                "name": "Green"
             },
             {
-                "pins":
-                    [
-                        RGBLED1_RED_PIN,
-                        RGBLED1_GREEN_PIN,
-                        RGBLED1_BLUE_PIN
-                    ],
+                "pins": [
+                    RGBLED1_RED_PIN,
+                    RGBLED1_GREEN_PIN,
+                    RGBLED1_BLUE_PIN
+                ],
                 "isActive": led_rgb1.is_active,
                 "number": 3,
                 "isRGB": True,
-                "color": led_rgb1.value
+                "color": led_rgb1.value,
+                "name": "RGB"
+            },
+            {
+                "pins": [ LED_UV_GPIO_PIN ],
+                "isActive": led_uv.is_active,
+                "number": 4,
+                "isRGB": False,
+                "color": None,
+                "name": "UV"
             }
         ]
 
@@ -55,20 +70,12 @@ def led_control(led, status):
 
 class LED_Control(Resource):
     def get(self, led_num, status):
-        if led_num == 1:
-            led_control(led1, status)
-        elif led_num == 2:
-            led_control(led2, status)
-        elif led_num == 3:
-            led_control(led_rgb1, status)
+        led_control(ALL_LEDS[led_num - 1], status)
         return "LED " + str(led_num) + " is set to: " + status
 
 class LED_Blink(Resource):
     def get(self, led_num, interval):
-        if led_num == 1:
-            led1.blink(interval, interval)
-        elif led_num == 2:
-            led2.blink(interval, interval)
+        ALL_LEDS[led_num - 1].blink(interval, interval)
         return "LED " + str(led_num) + " is blinking."
 
 class RGB_LED_Color_ByName(Resource):

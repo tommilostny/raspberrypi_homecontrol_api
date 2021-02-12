@@ -17,15 +17,19 @@ events_send = 0
 
 def send_webhooks_event(event, temp, threshold):
     global events_send
-    requests.post('https://maker.ifttt.com/trigger/{event_name}/with/key/{key}'.format(event_name=event, key=WEBHOOKS_KEY))
+    try:
+        requests.post('https://maker.ifttt.com/trigger/{event_name}/with/key/{key}'.format(event_name=event, key=WEBHOOKS_KEY))
 
-    dateTimeObj = datetime.now()
-    timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S): ")
+        dateTimeObj = datetime.now()
+        timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S): ")
 
-    f = open("data/temp_events.log", "a+")
-    f.write(timestampStr + event + " (" + str(temp) + "\N{DEGREE SIGN}C) threshold: " + str(threshold) + "\N{DEGREE SIGN}C\n")
-    f.close()
-    events_send = events_send + 1
+        f = open("data/temp_events.log", "a+")
+        f.write(timestampStr + event + " (" + str(temp) + "\N{DEGREE SIGN}C) threshold: " + str(threshold) + "\N{DEGREE SIGN}C\n")
+        f.close()
+        events_send = events_send + 1
+    except Exception as e:
+        print(e.message)
+        events_send = 0
 
 def print_heater_status(display):
     if power is not None:
@@ -34,10 +38,10 @@ def print_heater_status(display):
 def control_heater(temperature, threshold):
     global power, events_send
 
-    if (temperature < threshold - 0.1 and power != "on") or (temperature < threshold - 0.4 and events_send < 5):
+    if (temperature < threshold - 0.1 and power != "on") or (temperature < threshold - 0.4 and events_send < 3):
         send_webhooks_event("temperature_low", temperature, threshold)
         power = "on"
-    elif (temperature > threshold + 0.1 and power != "off") or (temperature > threshold + 0.4 and events_send < 5):
+    elif (temperature > threshold + 0.1 and power != "off") or (temperature > threshold + 0.5 and events_send < 3):
         send_webhooks_event("temperature_high", temperature, threshold)
         power = "off"
 
