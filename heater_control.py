@@ -59,12 +59,26 @@ class LcdControl(Resource):
             set_lcd_backlight(state)
 
         else: #toggle
-            if backlight_state == 0:
+            if backlight_state == 0 or backlight_state == 2:
                 set_lcd_backlight(1)
             else:
                 set_lcd_backlight(0)
 
         return { "message" : "LCD backlight set to " + str(state) }
+
+class LcdMessage(Resource):
+    def get(self, message, line):
+        global backlight_state
+
+        if backlight_state != 2:
+            display.lcd_clear()
+        backlight_state = 2
+
+        if len(message) <= 16 and line >= 1 and line <= 2:
+            display.lcd_display_string(message, line)
+            return { "message" : "LCD message ok" }
+        else:
+            return { "message" : "Wrong input for LCD (message length <= 16 and available lines are 1, 2)" }, 400
 
 class Temperature(Resource):
     def get(self):

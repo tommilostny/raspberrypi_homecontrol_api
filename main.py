@@ -5,7 +5,6 @@ from flask_cors import CORS
 from flask_restful import Api
 
 import heater_control as hc
-import lcd_control as lcdc
 import led_control as lc
 import temperature as t
 import yeelight_control as yc
@@ -34,11 +33,9 @@ api.add_resource(yc.YeelightColorName, "/yeelight/color/<string:color_name>")
 
 api.add_resource(hc.Temperature, "/temperature")
 api.add_resource(hc.LcdControl, "/heater_lcd/<int:state>")
+api.add_resource(hc.LcdMessage, "/heater_lcd/<string:message>/<int:line>")
 api.add_resource(hc.TemperatureLog, "/temp_log")
 api.add_resource(hc.TemperatureThreshold, "/temp_threshold/<string:period>/<float:threshold>")
-
-#api.add_resource(lcdc.LcdPrint, "/lcd/<string:message>/<int:line>")
-#api.add_resource(lcdc.LcdBacklight, "/lcd/backlight/<int:state>")
 
 if __name__ == "__main__":
     heater_thread.start()
