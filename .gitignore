@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 
 webhooks_key.txt
+ssl_howto.txt
+cert.pem
+key.pem

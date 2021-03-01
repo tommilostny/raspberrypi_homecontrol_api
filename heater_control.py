@@ -60,6 +60,7 @@ class LcdControl(Resource):
 
         else: #toggle
             if backlight_state == 0 or backlight_state == 2:
+                display.lcd_clear()
                 set_lcd_backlight(1)
             else:
                 set_lcd_backlight(0)

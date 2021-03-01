@@ -39,5 +39,5 @@ api.add_resource(hc.TemperatureThreshold, "/temp_threshold/<string:period>/<floa
 
 if __name__ == "__main__":
     heater_thread.start()
-    app.run(debug=True, host="0.0.0.0", use_reloader=False)
+    app.run(debug=True, host="0.0.0.0", use_reloader=False, ssl_context=('cert.pem', 'key.pem'))
     e.set()
