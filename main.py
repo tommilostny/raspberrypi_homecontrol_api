@@ -33,7 +33,7 @@ api.add_resource(yc.YeelightColorName, "/yeelight/color/<string:color_name>")
 
 api.add_resource(hc.Temperature, "/temperature")
 api.add_resource(hc.LcdControl, "/heater_lcd/<int:state>")
-api.add_resource(hc.LcdMessage, "/heater_lcd/<string:message>/<int:line>")
+api.add_resource(hc.LcdMessage, "/lcd_message/<string:message>/<int:line>")
 api.add_resource(hc.TemperatureLog, "/temp_log")
 api.add_resource(hc.TemperatureThreshold, "/temp_threshold/<string:period>/<float:threshold>")
 
