@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime
+from time import sleep
 
 #File webhooks_key.txt contains only the Webhooks API key on the first line
 def load_webhooks_key():
@@ -27,9 +28,10 @@ def send_webhooks_event(event, temp, threshold):
         f.write(timestampStr + event + " (" + str(temp) + "\N{DEGREE SIGN}C) threshold: " + str(threshold) + "\N{DEGREE SIGN}C\n")
         f.close()
         events_send = events_send + 1
-    except Exception as e:
-        print(e.message)
+    except Exception:
         events_send = 0
+        sleep(0.2)
+        send_webhooks_event(event, temp, threshold)
 
 def print_heater_status(display):
     if power is not None:
