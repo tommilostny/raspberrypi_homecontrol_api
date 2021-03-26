@@ -4,8 +4,8 @@ from flask_restful import Resource
 from datetime import datetime
 import os
 
-import temperature as t
-import wh_ifttt_control as wi
+from temperature import read_temperature
+import outlet_control
 from drivers import Lcd
 
 LOGFILE = "data/temp_events.log"
@@ -25,18 +25,18 @@ class HC_Thread(Thread):
         global backlight_state
         print(f"{Fore.YELLOW}Starting heater control...{Style.RESET_ALL}")
         while True:
-            temp_c,_,_ = t.read_temp()
+            temp_c,_,_ = read_temperature()
             now = datetime.now()
 
             if now.hour >= 6 and now.hour <= 22: #day
-                wi.control_heater(temp_c, TEMPERATURE_THRESHOLD_DAY)
+                outlet_control.control_heater(temp_c, TEMPERATURE_THRESHOLD_DAY)
             
             else: #night
-                wi.control_heater(temp_c, TEMPERATURE_THRESHOLD_NIGHT)
+                outlet_control.control_heater(temp_c, TEMPERATURE_THRESHOLD_NIGHT)
 
             if backlight_state == 1:
                 display.lcd_display_string(str(temp_c) + CELSIUS, 1)
-                wi.print_heater_status(display)
+                outlet_control.print_heater_status(display)
 
             event_is_set = self.stop_event.wait(2)
             if event_is_set:
@@ -83,7 +83,7 @@ class LcdMessage(Resource):
 
 class Temperature(Resource):
     def get(self):
-        c, f, k = t.read_temp()
+        c, f, k = read_temperature()
         return {
             "tempC" : c,
             "tempF" : f,

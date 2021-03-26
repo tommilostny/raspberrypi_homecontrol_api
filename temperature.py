@@ -16,7 +16,7 @@ def read_temp_raw():
     return lines
 
 #Returns temperature value from the Dallas DS18B20 sensor in Celsius, Fahrenheit and Kelvin
-def read_temp():
+def read_temperature():
     ok = False
     while not ok:
         try:
