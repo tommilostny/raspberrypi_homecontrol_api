@@ -4,13 +4,14 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 
-from heater_control import *
+from heater_control import HeaterControlThread
+from lcd_control import *
 from led_control import *
 from temperature import *
 from yeelight_control import *
 
-e = threading.Event()
-heater_thread = HC_Thread(e)
+heater_thread_stop_event = threading.Event()
+heater_thread = HeaterControlThread(heater_thread_stop_event)
 
 app = Flask(__name__)
 api = Api(app)
@@ -40,4 +41,4 @@ api.add_resource(TemperatureThreshold, "/temp_threshold/<string:period>/<float:t
 if __name__ == "__main__":
     heater_thread.start()
     app.run(debug=True, host="0.0.0.0", use_reloader=False, ssl_context=('cert.pem', 'key.pem'))
-    e.set()
+    heater_thread_stop_event.set()

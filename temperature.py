@@ -1,6 +1,14 @@
 import glob
 import os
+from datetime import datetime
 from time import sleep
+
+from flask_restful import Resource
+
+LOGFILE = "data/temp_events.log"
+LOG_CELSIUS = "\N{DEGREE SIGN}C"
+TEMPERATURE_THRESHOLD_DAY = 23.0
+TEMPERATURE_THRESHOLD_NIGHT = 20.5
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -37,3 +45,42 @@ def read_temperature():
         except IndexError:
             ok = False
             sleep(0.1)
+
+def log_temperature_event(event_name:str, temperature:float, threshold:float):
+    dateTimeObj = datetime.now()
+    timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S):")
+    with open(LOGFILE, "a+") as f:
+        f.write(f"{timestampStr} {event_name} ({temperature}{LOG_CELSIUS}) threshold: {threshold}{LOG_CELSIUS}\n")
+
+class Temperature(Resource):
+    def get(self):
+        c, f, k = read_temperature()
+        return {
+            "tempC" : c,
+            "tempF" : f,
+            "tempK" : k,
+            "thresholdDay": TEMPERATURE_THRESHOLD_DAY,
+            "thresholdNight": TEMPERATURE_THRESHOLD_NIGHT
+        }
+
+class TemperatureLog(Resource):
+    def get(self):
+        if os.path.exists(LOGFILE):
+            with open(LOGFILE, "r") as f:
+                content = f.readlines()
+            return content
+        else:
+            return []
+
+    def delete(self):
+        os.system("rm -f " + LOGFILE)
+        return { "message": "Temperature log file deleted." }, 200
+
+class TemperatureThreshold(Resource):
+    def get(self, period, threshold):
+        global TEMPERATURE_THRESHOLD_DAY, TEMPERATURE_THRESHOLD_NIGHT
+
+        if period == "day":
+            TEMPERATURE_THRESHOLD_DAY = threshold
+        elif period == "night":
+            TEMPERATURE_THRESHOLD_NIGHT = threshold

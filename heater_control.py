@@ -1,116 +1,70 @@
-from threading import Thread
-from colorama import Fore, Style
-from flask_restful import Resource
+import json
 from datetime import datetime
-import os
+from threading import Thread
 
-from temperature import read_temperature
-import outlet_control
-from drivers import Lcd
+from colorama import Fore, Style
+from tinytuya import OutletDevice
 
-LOGFILE = "data/temp_events.log"
-CELSIUS = chr(223) + "C  "
-TEMPERATURE_THRESHOLD_DAY = 23.0
-TEMPERATURE_THRESHOLD_NIGHT = 20.5
+from lcd_control import display_controller, LCD_CELSIUS
+from temperature import (TEMPERATURE_THRESHOLD_DAY,
+                         TEMPERATURE_THRESHOLD_NIGHT,
+                         log_temperature_event,
+                         read_temperature)
 
-display = Lcd()
-backlight_state = 1
+def tuya_init():
+    #file with information about tuya multi plug
+    #json format: { "device_id":"", "ip":"", "local_key":"" }
+    with open("data/tuya_outlet.json") as f:
+        tuya_data = json.load(f)
+    device = OutletDevice(tuya_data["device_id"], tuya_data["ip"], tuya_data["local_key"])
+    device.set_version(3.1)
+    return device
 
-class HC_Thread(Thread):
+HEATER_PLUG = 2
+multi_plug = tuya_init()
+
+def get_power_status(outlet:OutletDevice):
+    data = outlet.status()
+    return "on" if data["dps"]["2"] else "off"
+
+def control_heater(temperature:float, threshold:float):
+    power = get_power_status(multi_plug)
+    event_name = None
+
+    if temperature < threshold - 0.1 and power != "on":
+        event_name = "temperature_low"
+        multi_plug.turn_on(switch=HEATER_PLUG)
+        
+    elif temperature > threshold + 0.1 and power != "off":
+        event_name = "temperature_high"
+        multi_plug.turn_off(switch=HEATER_PLUG)
+
+    if event_name is not None:
+        log_temperature_event(event_name, temperature, threshold)
+
+class HeaterControlThread(Thread):
     def __init__(self, stop_event):
         Thread.__init__(self)
         self.stop_event = stop_event
 
     def run(self):
-        global backlight_state
         print(f"{Fore.YELLOW}Starting heater control...{Style.RESET_ALL}")
         while True:
             temp_c,_,_ = read_temperature()
             now = datetime.now()
 
             if now.hour >= 6 and now.hour <= 22: #day
-                outlet_control.control_heater(temp_c, TEMPERATURE_THRESHOLD_DAY)
+                control_heater(temp_c, TEMPERATURE_THRESHOLD_DAY)
             
             else: #night
-                outlet_control.control_heater(temp_c, TEMPERATURE_THRESHOLD_NIGHT)
+                control_heater(temp_c, TEMPERATURE_THRESHOLD_NIGHT)
 
-            if backlight_state == 1:
-                display.lcd_display_string(str(temp_c) + CELSIUS, 1)
-                outlet_control.print_heater_status(display)
+            if display_controller.is_on():
+                display_controller.print(f"{temp_c}{LCD_CELSIUS}", 1)
+                display_controller.print(f"Heating is {get_power_status(multi_plug)}. ", 2)
 
             event_is_set = self.stop_event.wait(2)
             if event_is_set:
                 print(f"{Fore.YELLOW}Stopping heater control...{Style.RESET_ALL}")
-                display.lcd_clear()
-                display.lcd_backlight(0)
+                display_controller.turn_off()
                 break
-
-def set_lcd_backlight(state):
-    global backlight_state
-    if state == 0:
-        display.lcd_clear()
-    if state == 1 or state == 0:
-        display.lcd_backlight(state)
-        backlight_state = state
-
-class LcdControl(Resource):
-    def get(self, state):
-        if state == 1 or state == 0:
-            set_lcd_backlight(state)
-
-        else: #toggle
-            if backlight_state == 0 or backlight_state == 2:
-                display.lcd_clear()
-                set_lcd_backlight(1)
-            else:
-                set_lcd_backlight(0)
-
-        return { "message" : "LCD backlight set to " + str(state) }
-
-class LcdMessage(Resource):
-    def get(self, message, line):
-        global backlight_state
-
-        if backlight_state != 2:
-            display.lcd_clear()
-        backlight_state = 2
-
-        if len(message) <= 16 and line >= 1 and line <= 2:
-            display.lcd_display_string(message, line)
-            return { "message" : "LCD message ok" }
-        else:
-            return { "message" : "Wrong input for LCD (message length <= 16 and available lines are 1, 2)" }, 400
-
-class Temperature(Resource):
-    def get(self):
-        c, f, k = read_temperature()
-        return {
-            "tempC" : c,
-            "tempF" : f,
-            "tempK" : k,
-            "thresholdDay": TEMPERATURE_THRESHOLD_DAY,
-            "thresholdNight": TEMPERATURE_THRESHOLD_NIGHT
-        }
-
-class TemperatureLog(Resource):
-    def get(self):
-        if os.path.exists(LOGFILE):
-            f = open(LOGFILE, "r")
-            content = f.readlines()
-            f.close()
-            return content
-        else:
-            return []
-
-    def delete(self):
-        os.system("rm -f " + LOGFILE)
-        return { "message": "Temperature log file deleted." }, 200
-
-class TemperatureThreshold(Resource):
-    def get(self, period, threshold):
-        global TEMPERATURE_THRESHOLD_DAY, TEMPERATURE_THRESHOLD_NIGHT
-
-        if period == "day":
-            TEMPERATURE_THRESHOLD_DAY = threshold
-        elif period == "night":
-            TEMPERATURE_THRESHOLD_NIGHT = threshold
