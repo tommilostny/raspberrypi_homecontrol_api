@@ -24,6 +24,9 @@ class LcdDisplayController:
         self.display.lcd_clear()
         self._set_backlight(1)
 
+    def toggle(self):
+        self.turn_off() if self.is_on() else self.turn_on()
+
     def is_off(self):
         return self.backlight_state == 0 or self.backlight_state == 2
 
@@ -40,14 +43,12 @@ display_controller = LcdDisplayController(1)
 
 class LcdControl(Resource):
     def get(self, state):
-        if state == 1 or state == 0:
-            display_controller.set_backlight(state)
-
-        else: #toggle
-            if display_controller.is_off():
-                display_controller.turn_on()
-            else:
-                display_controller.turn_off()
+        if state == 1:
+            display_controller.turn_on()
+        elif state == 0:
+            display_controller.turn_off()
+        else:
+            display_controller.toggle()
 
         return { "message" : "LCD backlight set to " + str(state) }
 

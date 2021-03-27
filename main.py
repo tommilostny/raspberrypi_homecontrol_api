@@ -4,7 +4,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 
-from heater_control import HeaterControlThread
+from heater_control import *
 from lcd_control import *
 from led_control import *
 from temperature import *
@@ -37,6 +37,10 @@ api.add_resource(LcdControl, "/heater_lcd/<int:state>")
 api.add_resource(LcdMessage, "/lcd_message/<string:message>/<int:line>")
 api.add_resource(TemperatureLog, "/temp_log")
 api.add_resource(TemperatureThreshold, "/temp_threshold/<string:period>/<float:threshold>")
+
+api.add_resource(MultiPlugControl, "/multiplug/<string:device_name>/<string:power_status>")
+api.add_resource(MultiPlugListDevices, "/multiplug/list")
+api.add_resource(MultiPlugStatus, "/multiplug/status")
 
 if __name__ == "__main__":
     heater_thread.start()
