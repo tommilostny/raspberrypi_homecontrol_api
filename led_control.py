@@ -1,4 +1,3 @@
-#### LED test endpoint ####
 from flask_restful import Resource
 from gpiozero import LED, RGBLED
 from colorzero import Color
@@ -60,6 +59,7 @@ class LED_Status(Resource):
             }
         ]
 
+
 def led_control(led, status):
     if status == "off":
         led.off()
@@ -68,22 +68,24 @@ def led_control(led, status):
     else:
         led.toggle()
 
+
 class LED_Control(Resource):
     def get(self, led_num, status):
         led_control(ALL_LEDS[led_num - 1], status)
         return "LED " + str(led_num) + " is set to: " + status
+
 
 class LED_Blink(Resource):
     def get(self, led_num, interval):
         ALL_LEDS[led_num - 1].blink(interval, interval)
         return "LED " + str(led_num) + " is blinking."
 
+
 class RGB_LED_Color_ByName(Resource):
     def get(self, name):
         led_rgb1.color = Color(name)
 
+
 class RGB_LED_Color_ByRGB(Resource):
     def get(self, r, g, b):
         led_rgb1.color = (r / 255.0, g / 255.0, b / 255.0)
-
-#### End of LED test endpoint ####

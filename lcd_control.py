@@ -38,8 +38,10 @@ class LcdDisplayController:
             self.display.lcd_clear()
         self.backlight_state = 2
 
+
 LCD_CELSIUS = chr(223) + "C  "
 display_controller = LcdDisplayController(1)
+
 
 class LcdControl(Resource):
     def get(self, state):
@@ -51,6 +53,7 @@ class LcdControl(Resource):
             display_controller.toggle()
 
         return { "message" : "LCD backlight set to " + str(state) }
+
 
 class LcdMessage(Resource):
     def get(self, message, line):

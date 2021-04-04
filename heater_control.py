@@ -22,6 +22,7 @@ def tuya_init():
     device.set_version(3.1)
     return device
 
+
 HEATER_PLUG = 2
 FAN_PLUG = 3
 
@@ -31,16 +32,17 @@ plug_devices = {
     "fan" : FAN_PLUG,
     "usb" : 7
 }
-
 multi_plug = tuya_init()
+
 
 def get_power_status(outlet:OutletDevice):
     try:
         data = outlet.status()
         return "on" if data["dps"]["2"] else "off"
-    except ConnectionResetError:
+    except:
         sleep(0.1)
         return get_power_status(outlet)
+
 
 def control_heater(temperature:float, threshold:float):
     power = get_power_status(multi_plug)
@@ -59,6 +61,7 @@ def control_heater(temperature:float, threshold:float):
     if event_name is not None:
         log_temperature_event(event_name, temperature, threshold)
     return power
+
 
 class HeaterControlThread(Thread):
     def __init__(self, stop_event):
@@ -86,6 +89,7 @@ class HeaterControlThread(Thread):
                 display_controller.turn_off()
                 break
 
+
 class MultiPlugControl(Resource):
     def get(self, device_name:str, power_status:str):
         if device_name in plug_devices.keys():
@@ -97,10 +101,16 @@ class MultiPlugControl(Resource):
         else:
             return { "message" : f"Invalid request {device_name}/{power_status}" }, 400
 
+
 class MultiPlugListDevices(Resource):
     def get(self):
         return plug_devices
 
+
 class MultiPlugStatus(Resource):
     def get(self):
-        return multi_plug.status()
+        try:
+            return multi_plug.status()
+        except:
+            sleep(0.1)
+            return self.get()

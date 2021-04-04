@@ -17,11 +17,13 @@ base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
+
 def read_temp_raw():
     f = open(device_file, 'r')
     lines = f.readlines()
     f.close()
     return lines
+
 
 #Returns temperature value from the Dallas DS18B20 sensor in Celsius, Fahrenheit and Kelvin
 def read_temperature():
@@ -46,11 +48,13 @@ def read_temperature():
             ok = False
             sleep(0.1)
 
+
 def log_temperature_event(event_name:str, temperature:float, threshold:float):
     dateTimeObj = datetime.now()
     timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S):")
     with open(LOGFILE, "a+") as f:
         f.write(f"{timestampStr} {event_name} ({temperature}{LOG_CELSIUS}) threshold: {threshold}{LOG_CELSIUS}\n")
+
 
 class Temperature(Resource):
     def get(self):
@@ -62,6 +66,7 @@ class Temperature(Resource):
             "thresholdDay": TEMPERATURE_THRESHOLD_DAY,
             "thresholdNight": TEMPERATURE_THRESHOLD_NIGHT
         }
+
 
 class TemperatureLog(Resource):
     def get(self):
@@ -75,6 +80,7 @@ class TemperatureLog(Resource):
     def delete(self):
         os.system("rm -f " + LOGFILE)
         return { "message": "Temperature log file deleted." }, 200
+
 
 class TemperatureThreshold(Resource):
     def get(self, period, threshold):
