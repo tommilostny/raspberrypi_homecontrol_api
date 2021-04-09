@@ -27,7 +27,7 @@ HEATER_PLUG = 2
 FAN_PLUG = 3
 
 plug_devices = {
-    "switch_1" : 1,
+    "monitor" : 1,
     "heater" : HEATER_PLUG,
     "fan" : FAN_PLUG,
     "usb" : 7

@@ -7,7 +7,7 @@ from flask_restful import Resource
 
 LOGFILE = "data/temp_events.log"
 LOG_CELSIUS = "\N{DEGREE SIGN}C"
-TEMPERATURE_THRESHOLD_DAY = 23.0
+TEMPERATURE_THRESHOLD_DAY = 22.3
 TEMPERATURE_THRESHOLD_NIGHT = 20.5
 
 os.system('modprobe w1-gpio')
