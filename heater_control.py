@@ -35,13 +35,13 @@ plug_devices = {
 multi_plug = tuya_init()
 
 
-def get_power_status(outlet:OutletDevice):
+def get_power_status(outlet:OutletDevice, device_id:int=HEATER_PLUG):
     try:
         data = outlet.status()
-        return "on" if data["dps"]["2"] else "off"
+        return "on" if data["dps"][str(device_id)] else "off"
     except:
         sleep(0.5)
-    return get_power_status(outlet)
+    return get_power_status(outlet, device_id)
 
 
 def control_heater(temperature:float, threshold:float):
@@ -93,6 +93,10 @@ class HeaterControlThread(Thread):
 class MultiPlugControl(Resource):
     def get(self, device_name:str, power_status:str):
         if device_name in plug_devices.keys():
+            if power_status == "toggle":
+                power = get_power_status(multi_plug, plug_devices[device_name])
+                power_status = "on" if power == "off" else "off"
+
             if power_status == "on":
                 multi_plug.turn_on(switch=plug_devices[device_name])
             elif power_status == "off":
