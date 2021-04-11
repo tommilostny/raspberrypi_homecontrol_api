@@ -31,6 +31,7 @@ api.add_resource(YeelightTemperature, "/yeelight/temperature/<int:temperature>")
 api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
 api.add_resource(ColorDatabase, "/colors")
 api.add_resource(YeelightColorName, "/yeelight/color/<string:color_name>")
+api.add_resource(YeelightColorCycle, "/yeelight/cycle")
 
 api.add_resource(Temperature, "/temperature")
 api.add_resource(LcdControl, "/heater_lcd/<int:state>")

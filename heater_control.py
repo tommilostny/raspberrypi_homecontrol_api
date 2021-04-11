@@ -40,8 +40,8 @@ def get_power_status(outlet:OutletDevice):
         data = outlet.status()
         return "on" if data["dps"]["2"] else "off"
     except:
-        sleep(0.1)
-        return get_power_status(outlet)
+        sleep(0.5)
+    return get_power_status(outlet)
 
 
 def control_heater(temperature:float, threshold:float):

@@ -123,7 +123,7 @@ class YeelightHueSaturation(Resource):
             return setHueAndSaturation(hue, saturation)            
 #### End of bulb hue and saturation endpoint ####
 
-#### Color database (now from file TODO?) ####
+#### Color database ####
 def fetch_color_database():
     with open("data/colors.json") as f:
         return json.load(f)
@@ -131,4 +131,17 @@ def fetch_color_database():
 class ColorDatabase(Resource):
     def get(self):
         return fetch_color_database()
+
+color_db_index = 0
+
+class YeelightColorCycle(Resource):
+    def get(self):
+        global color_db_index
+
+        color_db = fetch_color_database()
+        color = color_db[color_db_index]
+        set_color(color["color"]["red"], color["color"]["green"], color["color"]["blue"])
+
+        color_db_index = color_db_index + 1 if color_db_index < len(color_db) - 1 else 0 
+        return { "message": f"Yeelight set to color {color}" }
 #### End of color database ####
