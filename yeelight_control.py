@@ -55,6 +55,15 @@ class YeelightBrightness(Resource):
             return setBulbBrightness(brightness)
         else:
             return { "message": "Bad brightness: " + str(brightness) }, 400
+
+class YeelightBrightnessCycle(Resource):
+    def get(self, lower:int, upper:int):
+        current = int(bulb.get_properties()["bright"])
+
+        if abs(current - lower) > abs(current - upper):
+            return setBulbBrightness(lower)
+        else:
+            return setBulbBrightness(upper)
 #### End of bulb brightness endpoint ####
 
 #### Bulb color by RGB or name endpoint ####
