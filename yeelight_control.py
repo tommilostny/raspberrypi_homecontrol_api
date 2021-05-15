@@ -1,12 +1,12 @@
 #### Yeelight controls ####
 import json
+from time import sleep
 
 from flask_restful import Resource
 from yeelight import Bulb
 from yeelight.main import BulbException
-from time import sleep
 
-from heater_control import lamp, get_power_status, get_lamp_mode
+from tuya_devices import get_lamp_mode, get_power_status, lamp
 
 bulb = Bulb("192.168.1.189", auto_on=True)
 
@@ -120,7 +120,6 @@ class YeelightColorName(Resource):
 def setBulbTemperature(temperature):
     try:
         bulb.set_color_temp(temperature)
-        lamp.set_colourtemp(temperature)
         return { "message": "Yeelight color temperature set to " + str(temperature) + "K." }
     except BulbException:
         sleep(0.1)

@@ -8,6 +8,7 @@ from heater_control import *
 from lcd_control import *
 from led_control import *
 from temperature import *
+from tuya_devices import *
 from yeelight_control import *
 
 heater_thread_stop_event = threading.Event()
