@@ -5,7 +5,7 @@ from time import sleep
 
 from colorama import Fore, Style
 from flask_restful import Resource
-from tinytuya import OutletDevice
+from tinytuya import OutletDevice, BulbDevice
 
 from lcd_control import display_controller, LCD_CELSIUS
 from temperature import (TEMPERATURE_THRESHOLD_DAY,
@@ -18,9 +18,11 @@ def tuya_init():
     #json format: { "device_id":"", "ip":"", "local_key":"" }
     with open("data/tuya_outlet.json") as f:
         tuya_data = json.load(f)
-    device = OutletDevice(tuya_data["device_id"], tuya_data["ip"], tuya_data["local_key"])
-    device.set_version(3.1)
-    return device
+    device1 = OutletDevice(tuya_data[0]["device_id"], tuya_data[0]["ip"], tuya_data[0]["local_key"])
+    device1.set_version(3.1)
+    bulb1 = BulbDevice(tuya_data[1]["device_id"], tuya_data[1]["ip"], tuya_data[1]["local_key"])
+    bulb1.set_version(3.3)
+    return device1, bulb1
 
 
 HEATER_PLUG = 2
@@ -32,16 +34,25 @@ plug_devices = {
     "fan" : FAN_PLUG,
     "usb" : 7
 }
-multi_plug = tuya_init()
+multi_plug, lamp = tuya_init()
 
 
-def get_power_status(outlet:OutletDevice, device_id:int=HEATER_PLUG):
+def get_power_status(device, device_id:int=HEATER_PLUG):
     try:
-        data = outlet.status()
+        data = device.status()
         return "on" if data["dps"][str(device_id)] else "off"
     except:
         sleep(0.5)
-    return get_power_status(outlet, device_id)
+    return get_power_status(device, device_id)
+
+
+def get_lamp_mode() -> str:
+    try:
+        data = lamp.status()
+        return data["dps"]["2"]
+    except:
+        sleep(0.5)
+        return get_lamp_mode()
 
 
 def control_heater(temperature:float, threshold:float):
@@ -118,3 +129,13 @@ class MultiPlugStatus(Resource):
         except:
             sleep(0.1)
             return self.get()
+
+
+class LampStatus(Resource):
+    def get(self):
+        try:
+            return lamp.status()
+        except:
+            sleep(0.1)
+            return self.get()
+

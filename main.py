@@ -44,6 +44,8 @@ api.add_resource(MultiPlugControl, "/multiplug/<string:device_name>/<string:powe
 api.add_resource(MultiPlugListDevices, "/multiplug/list")
 api.add_resource(MultiPlugStatus, "/multiplug/status")
 
+api.add_resource(LampStatus, "/lamp/status")
+
 if __name__ == "__main__":
     heater_thread.start()
     app.run(debug=True, host="0.0.0.0", use_reloader=False, ssl_context=('cert.pem', 'key.pem'))

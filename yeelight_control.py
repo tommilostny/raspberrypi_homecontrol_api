@@ -6,6 +6,8 @@ from yeelight import Bulb
 from yeelight.main import BulbException
 from time import sleep
 
+from heater_control import lamp, get_power_status, get_lamp_mode
+
 bulb = Bulb("192.168.1.189", auto_on=True)
 
 #### Bulb status endpoint ####
@@ -26,12 +28,19 @@ def setBulbPower(status):
     try:
         if status == "on":
             bulb.turn_on()
+            lamp.turn_on()
         elif status == "off":
             bulb.turn_off()
+            lamp.turn_off()
         else:
+            power = get_power_status(lamp, 1)
+            if power == "on":
+                lamp.turn_off()
+            else:
+                lamp.turn_on()
             bulb.toggle()
             status = "toggled"
-        return { "message": "Yeelight bulb is " + status }
+        return { "message": "Lights are " + status }
     except BulbException:
         sleep(0.1)
         return setBulbPower(status)
@@ -45,10 +54,14 @@ class YeelightPower(Resource):
 def setBulbBrightness(brightness):
     try:
         bulb.set_brightness(brightness)
-        return { "message": "Yeelight brightness se to " + str(brightness) + "%." }
+        if get_lamp_mode() == "white":
+            lamp.set_brightness_percentage(brightness)
+            #lamp.set_brightness(int(2.8 * brightness - 25))
+        return { "message": "Lights brightness set to " + str(brightness) + "%." }
     except BulbException:
         sleep(0.1)
         return setBulbBrightness(brightness)
+
 class YeelightBrightness(Resource):
     def get(self, brightness):
         if brightness >= 0 and brightness <= 100:
@@ -72,9 +85,16 @@ def is_ok_color(color):
 
 def set_color(r, g, b):
     try:
+        power = get_power_status(lamp, 1)
+        if power == "off":
+            lamp.turn_on()
+
+        lamp.set_colour(r, g, b)
         bulb.set_rgb(r, g, b)
+        
         if r == 255 and g == 255 and b == 255:
-            bulb.set_color_temp(4000)
+            bulb.set_color_temp(3500)
+            lamp.set_colourtemp(128)
     except BulbException:
         sleep(0.1)
         set_color(r, g, b)
@@ -100,6 +120,7 @@ class YeelightColorName(Resource):
 def setBulbTemperature(temperature):
     try:
         bulb.set_color_temp(temperature)
+        lamp.set_colourtemp(temperature)
         return { "message": "Yeelight color temperature set to " + str(temperature) + "K." }
     except BulbException:
         sleep(0.1)
