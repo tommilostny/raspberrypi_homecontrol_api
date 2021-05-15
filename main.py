@@ -7,9 +7,9 @@ from flask_restful import Api
 from heater_control import *
 from lcd_control import *
 from led_control import *
+from lights_control import *
 from temperature import *
 from tuya_devices import *
-from yeelight_control import *
 
 heater_thread_stop_event = threading.Event()
 heater_thread = HeaterControlThread(heater_thread_stop_event)
@@ -24,16 +24,18 @@ api.add_resource(LED_Blink, "/led/<int:led_num>/blink/<float:interval>")
 api.add_resource(RGB_LED_Color_ByName, "/led/rgb/<string:name>")
 api.add_resource(RGB_LED_Color_ByRGB, "/led/rgb/<int:r>/<int:g>/<int:b>")
 
-api.add_resource(YeelightPower, "/yeelight/power/<string:status>")
-api.add_resource(YeelightBrightness, "/yeelight/brightness/<int:brightness>")
-api.add_resource(YeelightColorRGB, "/yeelight/color/<int:r>/<int:g>/<int:b>")
+api.add_resource(LightsPower, "/lights/power/<string:status>")
+api.add_resource(LightsBrightness, "/lights/brightness/<int:brightness>")
+api.add_resource(LightsColorByRGB, "/lights/color/<int:r>/<int:g>/<int:b>")
+api.add_resource(LightsColorByName, "/lights/color/<string:color_name>")
+api.add_resource(LightsColorCycle, "/lights/cycle")
+api.add_resource(LightsBrightnessCycle, "/lights/cycle/<int:lower>/<int:upper>")
+
 api.add_resource(YeelightStatus, "/yeelight")
 api.add_resource(YeelightTemperature, "/yeelight/temperature/<int:temperature>")
 api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
+
 api.add_resource(ColorDatabase, "/colors")
-api.add_resource(YeelightColorName, "/yeelight/color/<string:color_name>")
-api.add_resource(YeelightColorCycle, "/yeelight/cycle")
-api.add_resource(YeelightBrightnessCycle, "/yeelight/cycle/<int:lower>/<int:upper>")
 
 api.add_resource(Temperature, "/temperature")
 api.add_resource(LcdControl, "/heater_lcd/<int:state>")

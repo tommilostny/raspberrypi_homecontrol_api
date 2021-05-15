@@ -8,12 +8,12 @@ from yeelight.main import BulbException
 
 from tuya_devices import get_lamp_mode, get_power_status, lamp
 
-bulb = Bulb("192.168.1.189", auto_on=True)
+yeelight_bulb = Bulb("192.168.1.189", auto_on=True)
 
 #### Bulb status endpoint ####
 def getBulbStatus():
     try:
-        return bulb.get_properties()
+        return yeelight_bulb.get_properties()
     except BulbException:
         sleep(0.1)
         return getBulbStatus()
@@ -27,10 +27,10 @@ class YeelightStatus(Resource):
 def setBulbPower(status):
     try:
         if status == "on":
-            bulb.turn_on()
+            yeelight_bulb.turn_on()
             lamp.turn_on()
         elif status == "off":
-            bulb.turn_off()
+            yeelight_bulb.turn_off()
             lamp.turn_off()
         else:
             power = get_power_status(lamp, 1)
@@ -38,14 +38,14 @@ def setBulbPower(status):
                 lamp.turn_off()
             else:
                 lamp.turn_on()
-            bulb.toggle()
+            yeelight_bulb.toggle()
             status = "toggled"
         return { "message": "Lights are " + status }
     except BulbException:
         sleep(0.1)
         return setBulbPower(status)
 
-class YeelightPower(Resource):
+class LightsPower(Resource):
     def get(self, status):
         return setBulbPower(status)
 #### End of bulb power endpoint ####
@@ -53,7 +53,7 @@ class YeelightPower(Resource):
 #### Bulb brightness endpoint ####
 def setBulbBrightness(brightness):
     try:
-        bulb.set_brightness(brightness)
+        yeelight_bulb.set_brightness(brightness)
         if get_lamp_mode() == "white":
             lamp.set_brightness_percentage(brightness)
             #lamp.set_brightness(int(2.8 * brightness - 25))
@@ -62,16 +62,16 @@ def setBulbBrightness(brightness):
         sleep(0.1)
         return setBulbBrightness(brightness)
 
-class YeelightBrightness(Resource):
+class LightsBrightness(Resource):
     def get(self, brightness):
         if brightness >= 0 and brightness <= 100:
             return setBulbBrightness(brightness)
         else:
             return { "message": "Bad brightness: " + str(brightness) }, 400
 
-class YeelightBrightnessCycle(Resource):
+class LightsBrightnessCycle(Resource):
     def get(self, lower:int, upper:int):
-        current = int(bulb.get_properties()["bright"])
+        current = int(yeelight_bulb.get_properties()["bright"])
 
         if abs(current - lower) > abs(current - upper):
             return setBulbBrightness(lower)
@@ -90,16 +90,17 @@ def set_color(r, g, b):
             lamp.turn_on()
 
         lamp.set_colour(r, g, b)
-        bulb.set_rgb(r, g, b)
+        yeelight_bulb.set_rgb(r, g, b)
         
         if r == 255 and g == 255 and b == 255:
-            bulb.set_color_temp(3500)
+            yeelight_bulb.set_color_temp(3500)
             lamp.set_colourtemp(128)
+
     except BulbException:
         sleep(0.1)
         set_color(r, g, b)
 
-class YeelightColorRGB(Resource):
+class LightsColorByRGB(Resource):
     def get(self, r, g, b):
         if is_ok_color(r) and is_ok_color(g) and is_ok_color(b):
             set_color(r, g, b)
@@ -107,7 +108,7 @@ class YeelightColorRGB(Resource):
         else:
             return { "message": "Bad color..." }, 400
 
-class YeelightColorName(Resource):
+class LightsColorByName(Resource):
     def get(self, color_name):
         for x in fetch_color_database():
             if x["name"] == color_name:
@@ -119,7 +120,7 @@ class YeelightColorName(Resource):
 #### Bulb white temperure endpoint ####
 def setBulbTemperature(temperature):
     try:
-        bulb.set_color_temp(temperature)
+        yeelight_bulb.set_color_temp(temperature)
         return { "message": "Yeelight color temperature set to " + str(temperature) + "K." }
     except BulbException:
         sleep(0.1)
@@ -136,7 +137,7 @@ class YeelightTemperature(Resource):
 #### Bulb hue and saturation endpoint ####
 def setHueAndSaturation(hue, saturation):
     try:
-        bulb.set_hsv(hue, saturation)
+        yeelight_bulb.set_hsv(hue, saturation)
         return { "message": "Yeelight hue and saturation updated" }
     except BulbException:
         sleep(0.1)
@@ -163,7 +164,7 @@ class ColorDatabase(Resource):
 
 color_db_index = 0
 
-class YeelightColorCycle(Resource):
+class LightsColorCycle(Resource):
     def get(self):
         global color_db_index
 
@@ -171,6 +172,6 @@ class YeelightColorCycle(Resource):
         color = color_db[color_db_index]
         set_color(color["color"]["red"], color["color"]["green"], color["color"]["blue"])
 
-        color_db_index = color_db_index + 1 if color_db_index < len(color_db) - 1 else 0 
+        color_db_index = (color_db_index + 1) % len(color_db)
         return { "message": f"Yeelight set to color {color}" }
 #### End of color database ####
