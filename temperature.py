@@ -10,6 +10,8 @@ LOG_CELSIUS = "\N{DEGREE SIGN}C"
 TEMPERATURE_THRESHOLD_DAY = 22.3
 TEMPERATURE_THRESHOLD_NIGHT = 20.5
 
+FAN_TEMPERATURE_THRESHOLD = 25.2
+
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
@@ -50,10 +52,11 @@ def read_temperature():
 
 
 def log_temperature_event(event_name:str, temperature:float, threshold:float):
-    dateTimeObj = datetime.now()
-    timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S):")
-    with open(LOGFILE, "a+") as f:
-        f.write(f"{timestampStr} {event_name} ({temperature}{LOG_CELSIUS}) threshold: {threshold}{LOG_CELSIUS}\n")
+    if event_name is not None:
+        dateTimeObj = datetime.now()
+        timestampStr = dateTimeObj.strftime("%d-%b-%Y (%H:%M:%S):")
+        with open(LOGFILE, "a+") as f:
+            f.write(f"{timestampStr} {event_name} ({temperature}{LOG_CELSIUS}) threshold: {threshold}{LOG_CELSIUS}\n")
 
 
 class Temperature(Resource):
@@ -64,7 +67,8 @@ class Temperature(Resource):
             "tempF" : f,
             "tempK" : k,
             "thresholdDay": TEMPERATURE_THRESHOLD_DAY,
-            "thresholdNight": TEMPERATURE_THRESHOLD_NIGHT
+            "thresholdNight": TEMPERATURE_THRESHOLD_NIGHT,
+            "fanThreshold": FAN_TEMPERATURE_THRESHOLD
         }
 
 
@@ -84,9 +88,12 @@ class TemperatureLog(Resource):
 
 class TemperatureThreshold(Resource):
     def get(self, period, threshold):
-        global TEMPERATURE_THRESHOLD_DAY, TEMPERATURE_THRESHOLD_NIGHT
+        global TEMPERATURE_THRESHOLD_DAY, TEMPERATURE_THRESHOLD_NIGHT, FAN_TEMPERATURE_THRESHOLD
 
         if period == "day":
             TEMPERATURE_THRESHOLD_DAY = threshold
         elif period == "night":
             TEMPERATURE_THRESHOLD_NIGHT = threshold
+        elif period == "fan":
+            FAN_TEMPERATURE_THRESHOLD = threshold
+

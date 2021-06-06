@@ -38,6 +38,9 @@ class LcdDisplayController:
             self.display.lcd_clear()
         self.backlight_state = 2
 
+    def clear(self):
+        self.display.lcd_clear()
+
 
 LCD_CELSIUS = chr(223) + "C  "
 display_controller = LcdDisplayController(1)
