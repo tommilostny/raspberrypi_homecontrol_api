@@ -6,7 +6,8 @@ from flask_restful import Api
 
 from heater_control import *
 from lcd_control import *
-from led_control import *
+#from led_control import *
+from led_strip import *
 from lights_control import *
 from temperature import *
 from tuya_devices import *
@@ -18,11 +19,11 @@ app = Flask(__name__)
 api = Api(app)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-api.add_resource(LED_Control, "/led/<int:led_num>/<string:status>")
-api.add_resource(LED_Status, "/led")
-api.add_resource(LED_Blink, "/led/<int:led_num>/blink/<float:interval>")
-api.add_resource(RGB_LED_Color_ByName, "/led/rgb/<string:name>")
-api.add_resource(RGB_LED_Color_ByRGB, "/led/rgb/<int:r>/<int:g>/<int:b>")
+#api.add_resource(LED_Control, "/led/<int:led_num>/<string:status>")
+#api.add_resource(LED_Status, "/led")
+#api.add_resource(LED_Blink, "/led/<int:led_num>/blink/<float:interval>")
+#api.add_resource(RGB_LED_Color_ByName, "/led/rgb/<string:name>")
+#api.add_resource(RGB_LED_Color_ByRGB, "/led/rgb/<int:r>/<int:g>/<int:b>")
 
 api.add_resource(LightsPower, "/lights/power/<string:status>")
 api.add_resource(LightsBrightness, "/lights/brightness/<int:brightness>")
@@ -48,6 +49,11 @@ api.add_resource(MultiPlugListDevices, "/multiplug/list")
 api.add_resource(MultiPlugStatus, "/multiplug/status")
 
 api.add_resource(LampStatus, "/lamp/status")
+
+api.add_resource(LedStripStatus, "/ledstrip")
+api.add_resource(LedStripPower, "/ledstrip/<string:status>")
+api.add_resource(LedStripColor, "/ledstrip/<int:red>/<int:green>/<int:blue>")
+api.add_resource(LedStripBrightness, "/ledstrip/<int:brightness>")
 
 if __name__ == "__main__":
     heater_thread.start()

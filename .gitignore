@@ -133,6 +133,6 @@ ssl_howto.txt
 cert.pem
 key.pem
 data/tuya_outlet.json
-
+data/ledstripmode.json
 
 .vscode/
