@@ -11,6 +11,7 @@ from led_strip import *
 from lights_control import *
 from temperature import *
 from tuya_devices import *
+from yeelight_control import *
 
 heater_thread_stop_event = threading.Event()
 heater_thread = HeaterControlThread(heater_thread_stop_event)
