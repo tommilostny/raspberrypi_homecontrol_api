@@ -95,15 +95,17 @@ class LedStrip:
 
 
     def set_brightness(self, brightness:int):
+        brightness = clamp_value(brightness, 0, 100)
+        float_value = brightness / 100
+
         if self.status["mode"] == "white":
-            brightness = clamp_value(brightness, 0, 100)
-            white_value = brightness / 100
-            self.white.value = white_value
-            self.status["value"] = int(white_value * 255)
+            self.white.value = float_value
+            self.status["value"] = int(float_value * 255)
             self.save_status()
-            return { "message": f"White LEDs brightness set to {brightness}%." }
         else:
-            return { "message": "Brigtness can be controlled for White LEDs only." }, 400
+            self.rgb.value = [(x * float_value) / 255 for x in self.status["value"]]
+        
+        return { "message": f"LEDs brightness set to {brightness}%." }
 
 
 strip = LedStrip()
