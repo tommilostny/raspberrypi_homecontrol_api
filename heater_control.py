@@ -38,7 +38,7 @@ def control_fan(temperature:float):
         multi_plug.turn_on(switch=FAN_PLUG)
         power = "on"
 
-    elif temperature < FAN_TEMPERATURE_THRESHOLD - 0.2 and power != "off":
+    elif temperature < FAN_TEMPERATURE_THRESHOLD - 0.1 and power != "off":
         event_name = "fan_low"
         multi_plug.turn_off(switch=FAN_PLUG)
         power = "off"
