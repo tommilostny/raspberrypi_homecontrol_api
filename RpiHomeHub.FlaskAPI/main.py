@@ -8,7 +8,7 @@ from subprocess import Popen
 
 from heater_control import *
 from lcd_control import *
-#from led_control import *
+from led_control import *
 from led_strip import *
 from lights_control import *
 from temperature import *
@@ -24,11 +24,11 @@ app = Flask(__name__)
 api = Api(app)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
-#api.add_resource(LED_Control, "/led/<int:led_num>/<string:status>")
-#api.add_resource(LED_Status, "/led")
-#api.add_resource(LED_Blink, "/led/<int:led_num>/blink/<float:interval>")
-#api.add_resource(RGB_LED_Color_ByName, "/led/rgb/<string:name>")
-#api.add_resource(RGB_LED_Color_ByRGB, "/led/rgb/<int:r>/<int:g>/<int:b>")
+api.add_resource(LED_Control, "/led/<int:led_num>/<string:status>")
+api.add_resource(LED_Status, "/led")
+api.add_resource(LED_Blink, "/led/<int:led_num>/blink/<float:interval>")
+api.add_resource(RGB_LED_Color_ByName, "/led/rgb/<string:name>")
+api.add_resource(RGB_LED_Color_ByRGB, "/led/rgb/<int:r>/<int:g>/<int:b>")
 
 api.add_resource(LightsPower, "/lights/power/<string:status>")
 api.add_resource(LightsBrightness, "/lights/brightness/<int:brightness>")
