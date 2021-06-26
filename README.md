@@ -1,14 +1,26 @@
 # Raspberry Pi Home control API
 
-Local smart home control hub API created using **Python Flask**.
+- **RpiHomeHub.FlaskAPI**: API created using **Python Flask**.
+- **RpiHomeHub.BlazorWeb**: Web app control hub created using **.NET 5 Blazor PWA**.
 
 ## Hardware
-- Raspberry Pi Zero WH
-- Breadboard, LEDs, resistors
+- Raspberry Pi 4 Model B (replaced Raspberry Pi Zero WH)
+- Breadboard
 - Yeelight color bulb
 - WOOX WiFi Smart Multi-plug (Tuya Power Strip)
 - 16x2 LCD display with I2C (drivers from [The Raspberry Pi Guy](https://github.com/the-raspberry-pi-guy/lcd))
 - Dallas DS18B20 temperature sensor
+- LED strip (circuit inspired by [naztronaut/RaspberryPi-RGBW-Control](https://github.com/naztronaut/RaspberryPi-RGBW-Control))
 
 ---
-[API client project created using **.NET Blazor**](https://github.com/tommilostny/raspberrypi_homecontrol_api_client)
+
+## Setup
+
+Installed .NET 5 and ASP.NET Core SDKs/runtime.
+
+Pip3 libraries required: *tinytuya*, *yeelight*, *flask*, *flask_restful*, *flask_cors*, *gpiozero*.
+
+### Runs both API and the web app:
+
+1. `cd RpiHomeHub.FlaskAPI`
+2. `python3 main.py`

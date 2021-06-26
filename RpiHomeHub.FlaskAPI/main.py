@@ -1,8 +1,10 @@
+import os
 import threading
 
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
+from subprocess import Popen
 
 from heater_control import *
 from lcd_control import *
@@ -12,6 +14,8 @@ from lights_control import *
 from temperature import *
 from tuya_devices import *
 from yeelight_control import *
+
+blazor_process = Popen(["dotnet", "run", "-p", "../RpiHomeHub.BlazorWeb/RpiHomeHub.BlazorWeb.csproj"])
 
 heater_thread_stop_event = threading.Event()
 heater_thread = HeaterControlThread(heater_thread_stop_event)
@@ -60,3 +64,4 @@ if __name__ == "__main__":
     heater_thread.start()
     app.run(debug=True, host="0.0.0.0", use_reloader=False)#, ssl_context=('cert.pem', 'key.pem'))
     heater_thread_stop_event.set()
+    blazor_process.terminate()
