@@ -70,7 +70,7 @@ class HeaterControlThread(Thread):
                 display_controller.print(f"{temp_c}{LCD_CELSIUS}", 1)
                 display_controller.print(f"H:{power_heater}, F:{power_fan}", 2)
 
-            event_is_set = self.stop_event.wait(2)
+            event_is_set = self.stop_event.wait(1)
             if event_is_set:
                 print(f"{Fore.YELLOW}Stopping heater control...{Style.RESET_ALL}")
                 display_controller.turn_off()
