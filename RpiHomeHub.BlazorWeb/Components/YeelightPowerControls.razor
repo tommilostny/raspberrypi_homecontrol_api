@@ -1,0 +1,39 @@
+﻿@using RpiHomeHub.BlazorWeb.Services
+@using RpiHomeHub.BlazorWeb.Models 
+@inject YeelightBulbService yeelightService
+
+<div class="card">
+    <div class="row inside">
+        <div class="col">
+            @if (Bulb is not null)
+            {
+                <p>Power: <b>@Bulb.Power</b></p>
+                <button class="btn btn-primary" @onclick="Toggle">Toggle</button>
+            }
+            else
+            {
+                <p>Loading...</p>
+            }
+        </div>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public YeelightBulbModel Bulb { get; set; }
+
+    private async Task Toggle()
+    {
+        Bulb = await yeelightService.Toggle();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Bulb is null)
+        {
+            Bulb = await yeelightService.GetStatus();
+        }
+        await base.OnInitializedAsync();
+    }
+}

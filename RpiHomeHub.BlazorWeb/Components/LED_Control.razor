@@ -1,0 +1,101 @@
+﻿@using RpiHomeHub.BlazorWeb.Models
+@inject HttpClient httpClient
+
+<style>
+    .ledContainer {
+        padding: 23px;
+        margin: 5px;
+        box-shadow: 0 0 15px lightgrey;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+</style>
+
+@if (Led is not null)
+{
+    <div class="ledContainer">
+        <div class="row">
+            <div class="col">
+                <h2><strong>LED @Led.Number</strong>: @Led.Name</h2>
+                <ul>
+                    <li>
+                        GPIO pin:
+                        <b>
+                            @foreach (var pin in Led.Pins)
+                            {
+                                @pin
+                                @(pin != Led.Pins.Last() ? ", " : string.Empty)
+                            }
+                        </b>
+                    </li>
+                    <li>Status: <b>@LedStatusAsString()</b></li>
+                    @if (!Led.Enabled)
+                    {
+                        <li class="text-danger">This LED is disabed.</li>
+                    }
+                </ul>
+
+                @if (Led.Enabled)
+                {
+                    <button class="btn btn-primary" @onclick="LED_Toggle">Toggle</button>
+
+                    <button class="btn btn-primary" @onclick="() => LED_Blink()" style="margin-left: 5px;">Blink</button>
+                    <br><br>
+                    <input type="number" @onchange="IntervalInput_ChangeEvent" placeholder="Blink interval (1.0)" class="form-control" />
+
+                    @if (MappedColor is not null)
+                    {
+                        <hr>
+                        <ColorPicker RefreshEvent="() => Led.IsActive = true" Color="MappedColor" Mode="ColorMode.LED" ShowLabels="false" />
+                    }
+                }
+            </div>
+            @if (!Led.IsRGB)
+            {
+                <div class="col-4">
+                    <img src=@LedStatusImage() class="img-fluid" />
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p>Loading LED...</p>
+}
+
+@code
+{
+    [Parameter]
+    public LED_Model Led { get; set; }
+
+    private ColorRGB MappedColor { get; set; } = null;
+
+    private async Task LED_Toggle() => await Led.ToggleAsync(httpClient);
+
+    private async Task LED_Blink() => await Led.BlinkAsync(httpClient);
+
+    private void IntervalInput_ChangeEvent(ChangeEventArgs e)
+    {
+        var inputValue = Convert.ToSingle(e.Value);
+        Led.BlinkInterval = inputValue > 0F ? inputValue : 1F;
+    }
+
+    private string LedStatusAsString() => Led.IsActive ? "on" : "off";
+
+    private string LedStatusImage() => $"led{Led.Number}{LedStatusAsString()}.jpg";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Led.IsRGB)
+        {
+            MappedColor = new ColorRGB
+            {
+                Red = (int)(Led.Color[0] * 255F),
+                Green = (int)(Led.Color[1] * 255F),
+                Blue = (int)(Led.Color[2] * 255F),
+            };
+        }
+        await base.OnInitializedAsync();
+    }
+}

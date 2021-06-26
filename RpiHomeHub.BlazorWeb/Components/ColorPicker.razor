@@ -1,0 +1,142 @@
+﻿@using RpiHomeHub.BlazorWeb.Models
+@using Newtonsoft.Json 
+@inject HttpClient httpClient 
+
+<style>
+    .colorButt {
+        height: @GetButtonDimension();
+        width: @GetButtonDimension();
+        border: none;
+        border-radius: 500px;
+        box-shadow: 0 0 12px lightgray;
+    }
+    input[type=number] {
+        width: 70%;
+    }
+    .colorPickerContainer {
+        margin: 10px;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="colorPickerContainer">
+    <p><b>Current color</b>: rgb(@Color.Red, @Color.Green, @Color.Blue)</p>
+
+    @if (Colors is not null)
+    {
+        <div class="row">
+            @foreach (var item in Colors)
+            {
+                <div class="col-1">
+                    @if (ShowLabels)
+                    {
+                        @if (item.Color.Red == Color.Red && item.Color.Green == Color.Green && item.Color.Blue == Color.Blue)
+                        {
+                            <p><b><u>@item.Name</u></b></p>
+                        }
+                        else
+                        {
+                            <p>@item.Name</p>
+                        }
+                    }
+                    <button class="colorButt" style=@SetButtonColor(item.Color) @onclick="() => SendColor(item.Color)"></button>
+                </div>
+            }
+        </div>
+    }
+
+    <br><p><b>Custom color</b>:</p>
+
+    @if (CustomColor is not null)
+    {
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">R</span>
+                    <input type="number" min="0" max="255" @bind-value="CustomColor.Red" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">G</span>
+                    <input type="number" min="0" max="255" @bind-value="CustomColor.Green" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">B</span>
+                    <input type="number" min="0" max="255" @bind-value="CustomColor.Blue" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col-1">
+                        <div class="colorButt" style="@SetButtonColor(CustomColor)"></div>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-secondary" @onclick="() => SendColor(CustomColor)" style="margin-top:5px;">
+                            Set color
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code
+{
+    [Parameter]
+    public EventCallback RefreshEvent { get; set; }
+
+    [Parameter]
+    public ColorRGB Color { get; set; }
+
+    [Parameter]
+    public ColorMode Mode { get; set; }
+
+    [Parameter]
+    public bool ShowLabels { get; set; } = true;
+
+    private List<ColorModel> Colors { get; set; }
+
+    private ColorRGB CustomColor { get; set; }
+
+
+    private string SetButtonColor(ColorRGB color) => $"background-color: rgb({color.Red},{color.Green},{color.Blue});";
+
+    private async Task SendColor(ColorRGB color)
+    {
+        switch (Mode)
+        {
+            case ColorMode.Yeelight:
+                await httpClient.GetAsync($"lights/color/{color.Red}/{color.Green}/{color.Blue}");
+                break;
+            case ColorMode.LED:
+                await httpClient.GetAsync($"led/rgb/{color.Red}/{color.Green}/{color.Blue}");
+                break;
+        }
+        await RefreshEvent.InvokeAsync();
+        Color = color;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await httpClient.GetAsync($"colors");
+        var content = await response.Content.ReadAsStringAsync();
+        Colors = JsonConvert.DeserializeObject<List<ColorModel>>(content);
+
+        CustomColor = new ColorRGB
+        {
+            Red = Color.Red,
+            Green = Color.Green,
+            Blue = Color.Blue
+        };
+
+        await base.OnInitializedAsync();
+    }
+
+    private string GetButtonDimension() => Mode == ColorMode.Yeelight ? "64px" : "32px";
+}

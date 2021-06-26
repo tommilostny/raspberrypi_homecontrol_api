@@ -1,0 +1,7 @@
+﻿@using System.Numerics
+
+<h3>e<sup>iπ</sup> = @BeautifulEquationResult()</h3>
+
+@code {
+    private double BeautifulEquationResult() => Complex.Pow(new Complex(Math.E, 0), new Complex(0, Math.PI)).Real;
+}

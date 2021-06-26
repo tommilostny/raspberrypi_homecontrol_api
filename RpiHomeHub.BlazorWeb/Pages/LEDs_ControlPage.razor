@@ -1,0 +1,59 @@
+﻿@page "/led"
+@using RpiHomeHub.BlazorWeb.Components
+@using RpiHomeHub.BlazorWeb.Models
+@using Newtonsoft.Json 
+@inject HttpClient httpClient
+
+<style>
+    .btn-margs {
+        margin: 15px;
+        margin-left: 20px;
+        margin-right: 0;
+    }
+</style>
+
+<!--<Title Value="@title" />-->
+<h1>
+    @title
+    <button class="btn btn-secondary btn-margs" @onclick="ToggleAllLeds" disabled=@(Leds is null)>Toggle All</button>
+    <button class="btn btn-secondary btn-margs" @onclick="BlinkAllLeds" disabled=@(Leds is null)>Blink All</button>
+</h1>
+
+@if (Leds is not null)
+{
+    <div class="row">
+        @foreach (var led in Leds)
+        {
+            <div class="col-md-6">
+                <LED_Control Led="@led" />
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    string title = "LED control";
+
+    private List<LED_Model> Leds { get; set; }
+
+    private async Task GetLedsStatus()
+    {
+        var response = await httpClient.GetAsync("led");
+        var content = await response.Content.ReadAsStringAsync();
+        Leds = JsonConvert.DeserializeObject<List<LED_Model>>(content);
+    }
+
+    private void ToggleAllLeds() => Leds.ForEach(async l => await l.ToggleAsync(httpClient));
+
+    private void BlinkAllLeds() => Leds.ForEach(async l => await l.BlinkAsync(httpClient));
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLedsStatus();
+        await base.OnInitializedAsync();
+    }
+}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RpiHomeHub.BlazorWeb.Services;
 
 namespace RpiHomeHub.BlazorWeb
 {
@@ -17,7 +18,9 @@ namespace RpiHomeHub.BlazorWeb
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://192.168.1.242:5000/") });
+            builder.Services.AddScoped<YeelightBulbService>();
+            builder.Services.AddTransient<LCD_Service>();
 
             await builder.Build().RunAsync();
         }

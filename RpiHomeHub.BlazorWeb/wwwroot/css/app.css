@@ -1,3 +1,14 @@
+﻿.inside {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.sidebar-icon {
+    padding: 20px;
+    position: absolute;
+    bottom: 0;
+}
+
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {

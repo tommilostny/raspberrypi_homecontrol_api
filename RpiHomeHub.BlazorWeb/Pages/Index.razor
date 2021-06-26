@@ -1,7 +1,25 @@
 ﻿@page "/"
+@using RpiHomeHub.BlazorWeb.Components.Temperature
+@using RpiHomeHub.BlazorWeb.Components
 
-<h1>Hello, world!</h1>
+<!--<Title Value="@title" />-->
+<h1>@title</h1>
 
-Welcome to your new app.
+<hr />
+<BeautifulEquation />
+<hr />
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<br />
+
+<div class="row inside">
+    <div class="col-md">
+        <TemperatureCard ShowThresholdSetting="false" />
+    </div>
+    <div class="col-md">
+        <BulbPowerControls />
+    </div>
+</div>
+
+@code {
+    string title = "Raspberry Pi Home Control Hub";
+}
