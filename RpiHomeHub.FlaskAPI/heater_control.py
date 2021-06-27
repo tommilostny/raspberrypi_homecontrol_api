@@ -8,7 +8,8 @@ from temperature import (TEMPERATURE_THRESHOLD_DAY,
                          TEMPERATURE_THRESHOLD_NIGHT,
                          FAN_TEMPERATURE_THRESHOLD,
                          log_temperature_event, read_temperature)
-from multiplug import HEATER_PLUG, FAN_PLUG, get_tuya_power_status, multi_plug
+from multiplug import HEATER_PLUG, FAN_PLUG, multi_plug
+from utils import get_tuya_power_status
 
 
 def control_heater(temperature:float, threshold:float):

@@ -1,4 +1,3 @@
-import json
 from time import sleep
 
 from flask_restful import Resource

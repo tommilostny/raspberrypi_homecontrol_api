@@ -3,6 +3,7 @@ from time import sleep
 
 from flask_restful import Resource
 from tinytuya import OutletDevice
+from utils import get_tuya_power_status
 
 
 def multiplug_init():
@@ -24,15 +25,6 @@ plug_devices = {
 }
 
 multi_plug = multiplug_init()
-
-
-def get_tuya_power_status(device, device_id:int=HEATER_PLUG):
-    try:
-        data = device.status()
-        return "on" if data["dps"][str(device_id)] else "off"
-    except:
-        sleep(0.5)
-    return get_tuya_power_status(device, device_id)
 
 
 class MultiPlugControl(Resource):

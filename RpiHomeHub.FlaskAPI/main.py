@@ -1,4 +1,5 @@
 import threading
+from types import LambdaType
 
 from flask import Flask
 from flask_cors import CORS
@@ -37,10 +38,6 @@ api.add_resource(LightsColorByName, "/lights/color/<string:color_name>")
 api.add_resource(LightsColorCycle, "/lights/cycle")
 api.add_resource(LightsBrightnessCycle, "/lights/cycle/<int:lower>/<int:upper>")
 
-api.add_resource(YeelightStatus, "/yeelight")
-api.add_resource(YeelightTemperature, "/yeelight/temperature/<int:temperature>")
-api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
-
 api.add_resource(ColorDatabase, "/colors")
 
 api.add_resource(Temperature, "/temperature")
@@ -53,12 +50,19 @@ api.add_resource(MultiPlugControl, "/multiplug/<string:device_name>/<string:powe
 api.add_resource(MultiPlugListDevices, "/multiplug/list")
 api.add_resource(MultiPlugStatus, "/multiplug/status")
 
-api.add_resource(LampStatus, "/lamp/status")
+api.add_resource(LampStatus, "/lamp")
+api.add_resource(LampPower, "/lamp/<string:status>")
+api.add_resource(LampColor, "/lamp/<int:red>/<int:green>/<int:blue>")
+api.add_resource(LampBrightness, "/lamp/<int:brightness>")
 
 api.add_resource(LedStripStatus, "/ledstrip")                                   #status
 api.add_resource(LedStripPower, "/ledstrip/<string:status>")                    #power
 api.add_resource(LedStripColor, "/ledstrip/<int:red>/<int:green>/<int:blue>")   #color
 api.add_resource(LedStripBrightness, "/ledstrip/<int:brightness>")              #brightness
+
+api.add_resource(YeelightStatus, "/yeelight")
+api.add_resource(YeelightTemperature, "/yeelight/temperature/<int:temperature>")
+api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
 
 if __name__ == "__main__":
     heater_thread.start()

@@ -5,8 +5,8 @@ from flask_restful import Resource
 from yeelight.main import BulbException
 
 from led_strip import strip
-from lamp import get_lamp_mode, lamp
-from multiplug import get_tuya_power_status
+from lamp import lamp
+from utils import get_tuya_power_status
 from yeelight_control import yeelight_bulb
 
 

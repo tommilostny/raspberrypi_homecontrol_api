@@ -4,6 +4,8 @@ from os.path import exists
 from flask_restful import Resource
 from gpiozero import PWMLED, RGBLED
 
+from utils import clamp_value, clamp_color
+
 
 class LedStrip:
     status_file = "data/ledstripmode.json"
@@ -73,9 +75,7 @@ class LedStrip:
 
 
     def set_color(self, red:int, green:int, blue:int):
-        red = clamp_value(red, 0, 255)
-        green = clamp_value(green, 0, 255)
-        blue = clamp_value(blue, 0, 255)
+        red, green, blue = clamp_color(red, green, blue)
 
         if red == 255 and green == 255 and blue == 255:
             if self.status["mode"] == "white":
@@ -133,9 +133,3 @@ class LedStripColor(Resource):
 class LedStripBrightness(Resource):
     def get(self, brightness:int):
         return strip.set_brightness(brightness)
-
-
-def clamp_value(value:int, low:int, high:int) -> int:
-    value = high if value > high else value
-    value =  low if value <  low else value
-    return value
