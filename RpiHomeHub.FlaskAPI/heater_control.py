@@ -8,11 +8,11 @@ from temperature import (TEMPERATURE_THRESHOLD_DAY,
                          TEMPERATURE_THRESHOLD_NIGHT,
                          FAN_TEMPERATURE_THRESHOLD,
                          log_temperature_event, read_temperature)
-from tuya_devices import HEATER_PLUG, FAN_PLUG, get_power_status, multi_plug
+from multiplug import HEATER_PLUG, FAN_PLUG, get_tuya_power_status, multi_plug
 
 
 def control_heater(temperature:float, threshold:float):
-    power = get_power_status(multi_plug)
+    power = get_tuya_power_status(multi_plug)
     event_name = None
 
     if temperature < threshold - 0.1 and power != "on":
@@ -30,7 +30,7 @@ def control_heater(temperature:float, threshold:float):
 
 
 def control_fan(temperature:float):
-    power = get_power_status(multi_plug, FAN_PLUG)
+    power = get_tuya_power_status(multi_plug, FAN_PLUG)
     event_name = None
 
     if temperature > FAN_TEMPERATURE_THRESHOLD and power != "on":

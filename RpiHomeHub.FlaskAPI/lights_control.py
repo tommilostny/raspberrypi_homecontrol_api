@@ -5,7 +5,8 @@ from flask_restful import Resource
 from yeelight.main import BulbException
 
 from led_strip import strip
-from tuya_devices import get_lamp_mode, get_power_status, lamp
+from lamp import get_lamp_mode, lamp
+from multiplug import get_tuya_power_status
 from yeelight_control import yeelight_bulb
 
 
@@ -18,7 +19,7 @@ def set_lights_power(status):
             yeelight_bulb.turn_off()
             lamp.turn_off()
         else:
-            power = get_power_status(lamp, 1)
+            power = get_tuya_power_status(lamp, 1)
             if power == "on":
                 lamp.turn_off()
             else:
@@ -78,7 +79,7 @@ def is_ok_color(color):
 
 def set_lights_color(r, g, b):
     try:
-        power = get_power_status(lamp, 1)
+        power = get_tuya_power_status(lamp, 1)
         if power == "off":
             lamp.turn_on()
 

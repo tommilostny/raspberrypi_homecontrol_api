@@ -1,4 +1,3 @@
-import os
 import threading
 
 from flask import Flask
@@ -7,12 +6,13 @@ from flask_restful import Api
 from subprocess import Popen
 
 from heater_control import *
+from lamp import *
 from lcd_control import *
 from led_control import *
 from led_strip import *
 from lights_control import *
 from temperature import *
-from tuya_devices import *
+from multiplug import *
 from yeelight_control import *
 
 blazor_process = Popen(["dotnet", "run", "-p", "../RpiHomeHub.BlazorWeb/RpiHomeHub.BlazorWeb.csproj"])
@@ -55,10 +55,10 @@ api.add_resource(MultiPlugStatus, "/multiplug/status")
 
 api.add_resource(LampStatus, "/lamp/status")
 
-api.add_resource(LedStripStatus, "/ledstrip")
-api.add_resource(LedStripPower, "/ledstrip/<string:status>")
-api.add_resource(LedStripColor, "/ledstrip/<int:red>/<int:green>/<int:blue>")
-api.add_resource(LedStripBrightness, "/ledstrip/<int:brightness>")
+api.add_resource(LedStripStatus, "/ledstrip")                                   #status
+api.add_resource(LedStripPower, "/ledstrip/<string:status>")                    #power
+api.add_resource(LedStripColor, "/ledstrip/<int:red>/<int:green>/<int:blue>")   #color
+api.add_resource(LedStripBrightness, "/ledstrip/<int:brightness>")              #brightness
 
 if __name__ == "__main__":
     heater_thread.start()

@@ -20,6 +20,16 @@ Installed .NET 5 and ASP.NET Core SDKs/runtime.
 
 Pip3 libraries required: *tinytuya*, *yeelight*, *flask*, *flask_restful*, *flask_cors*, *gpiozero*.
 
+### Lamp and Multiplug setup
+
+To setup the Tuya devices create **multiplug.json** and **lamp.json** files in the *RpiHomeHub.FlaskAPI/data* folder **each** containing following structure:
+
+`{
+    "device_id":"",
+    "ip":"",
+    "local_key":""
+}`
+
 ### Runs both API and the web app:
 
 1. `cd RpiHomeHub.FlaskAPI`

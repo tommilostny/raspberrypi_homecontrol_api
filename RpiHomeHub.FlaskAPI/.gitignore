@@ -128,11 +128,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-webhooks_key.txt
 ssl_howto.txt
 cert.pem
 key.pem
-data/tuya_outlet.json
 data/ledstripmode.json
+data/lamp.json
+data/multiplug.json
 
 .vscode/
