@@ -1,5 +1,4 @@
 import json
-from time import sleep
 
 from flask_restful import Resource
 from tinytuya import BulbDevice
@@ -35,8 +34,13 @@ def set_lamp_power(status:str):
 def set_lamp_color(red:int, green:int, blue:int):
     if get_tuya_power_status(lamp, 1) == "off":
         lamp.turn_on()
+
     red, green, blue = clamp_color(red, green, blue)
-    lamp.set_colour(red, green, blue)
+    if red == 255 and green == 255 and blue == 255:
+        lamp.set_colourtemp(128)
+    else:
+        lamp.set_colour(red, green, blue)
+    
     return { "message": f"Lamp color set to ({red}, {green}, {blue})." }
 
 

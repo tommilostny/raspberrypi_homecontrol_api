@@ -1,3 +1,4 @@
+from re import A
 import threading
 from types import LambdaType
 
@@ -61,6 +62,9 @@ api.add_resource(LedStripColor, "/ledstrip/<int:red>/<int:green>/<int:blue>")   
 api.add_resource(LedStripBrightness, "/ledstrip/<int:brightness>")              #brightness
 
 api.add_resource(YeelightStatus, "/yeelight")
+api.add_resource(YeelightPower, "/yeelight/<string:status>")
+api.add_resource(YeelightColor, "/yeelight/<int:red>/<int:green>/<int:blue>")
+api.add_resource(YeelightBrightness, "/yeelight/<int:brightness>")
 api.add_resource(YeelightTemperature, "/yeelight/temperature/<int:temperature>")
 api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
 
