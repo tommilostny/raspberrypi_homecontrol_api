@@ -1,7 +1,5 @@
 from time import sleep
 
-from multiplug import HEATER_PLUG
-
 
 def clamp_value(value:int, low:int, high:int) -> int:
     value = high if value > high else value
@@ -16,7 +14,7 @@ def clamp_color(red:int, green:int, blue:int):
     return red, green, blue
 
 
-def get_tuya_power_status(device, device_id:int=HEATER_PLUG):
+def get_tuya_power_status(device, device_id:int):
     try:
         data = device.status()
         return "on" if data["dps"][str(device_id)] else "off"

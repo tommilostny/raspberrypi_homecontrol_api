@@ -13,7 +13,7 @@ from utils import get_tuya_power_status
 
 
 def control_heater(temperature:float, threshold:float):
-    power = get_tuya_power_status(multi_plug)
+    power = get_tuya_power_status(multi_plug, HEATER_PLUG)
     event_name = None
 
     if temperature < threshold - 0.1 and power != "on":

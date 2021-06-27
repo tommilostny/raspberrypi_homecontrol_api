@@ -134,5 +134,6 @@ key.pem
 data/ledstripmode.json
 data/lamp.json
 data/multiplug.json
+data/color_cycle_index
 
 .vscode/

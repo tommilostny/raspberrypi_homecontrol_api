@@ -32,14 +32,14 @@ def set_lamp_power(status:str):
 
 
 def set_lamp_color(red:int, green:int, blue:int):
-    if get_tuya_power_status(lamp, 1) == "off":
-        lamp.turn_on()
-
     red, green, blue = clamp_color(red, green, blue)
     if red == 255 and green == 255 and blue == 255:
         lamp.set_colourtemp(128)
     else:
         lamp.set_colour(red, green, blue)
+
+    if get_tuya_power_status(lamp, 1) == "off":
+        lamp.turn_on()
     
     return { "message": f"Lamp color set to ({red}, {green}, {blue})." }
 
@@ -47,9 +47,14 @@ def set_lamp_color(red:int, green:int, blue:int):
 def set_lamp_brightness(brightness:int):
     if lamp.status()["dps"]["2"] == "white":
         lamp.set_brightness_percentage(clamp_value(brightness, 0, 100))
-        return { "message": f"Lamp brightness set to {brightness}%." }
+        message = f"Lamp brightness set to {brightness}%."
     else:
-        return { "message": "Setting lamp brightness is only possible in white mode." }, 400
+        message = "Setting lamp brightness is only possible in white mode."
+    
+    if get_tuya_power_status(lamp, 1) == "off":
+        lamp.turn_on()
+    return { "message": message }
+
 
 
 class LampStatus(Resource):
