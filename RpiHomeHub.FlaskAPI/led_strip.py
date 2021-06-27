@@ -10,9 +10,9 @@ from utils import clamp_value, clamp_color
 class LedStrip:
     status_file = "data/ledstripmode.json"
 
-    def __init__(self):
-        self.rgb = RGBLED(24, 25, 20)
-        self.white = PWMLED(18)
+    def __init__(self, red_pin:int, green_pin:int, blue_pin:int, white_pin:int):
+        self.rgb = RGBLED(red_pin, green_pin, blue_pin)
+        self.white = PWMLED(white_pin)
 
         if exists(self.status_file):
             with open(self.status_file, "r") as file:
@@ -108,7 +108,7 @@ class LedStrip:
         return { "message": f"LEDs brightness set to {brightness}%." }
 
 
-strip = LedStrip()
+strip = LedStrip(24, 25, 20, 18)
 
 
 class LedStripStatus(Resource):
