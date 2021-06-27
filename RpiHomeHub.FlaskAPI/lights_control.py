@@ -1,4 +1,6 @@
 from os.path import exists
+from threading import Thread
+from typing import List
 
 from flask_restful import Resource
 
@@ -11,16 +13,30 @@ from yeelight_control import (get_yeelight_status, set_yeelight_brightness,
 
 class LightsPower(Resource):
     def get(self, status):
-        set_lamp_power(status)
-        set_yeelight_power(status)
-        strip.control_power(status)
+        threads:List[Thread] = [
+            Thread(target=set_lamp_power, args=[status]),
+            Thread(target=set_yeelight_power, args=[status]),
+            Thread(target=strip.control_power, args=[status])
+        ]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+
         return { "message": f"Lights turned {status}." }
 
 
 def set_lights_color(r, g, b):
-    set_lamp_color(r, g, b)
-    set_yeelight_color(r, g, b)
-    strip.set_color(r, g, b)
+    threads:List[Thread] = [
+        Thread(target=set_lamp_color, args=[r, g, b]),
+        Thread(target=set_yeelight_color, args=[r, g, b]),
+        Thread(target=strip.set_color, args=[r, g, b])
+    ]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
     return { "message": f"Lights color set to ({r}, {g}, {b})." }
 
 
@@ -59,9 +75,16 @@ class LightsColorCycle(Resource):
 
 
 def set_lights_brightness(brightness:int):
-    set_lamp_brightness(brightness)
-    set_yeelight_brightness(brightness)
-    strip.set_brightness(brightness)
+    threads:List[Thread] = [
+        Thread(target=set_lamp_brightness, args=[brightness]),
+        Thread(target=set_yeelight_brightness, args=[brightness]),
+        Thread(target=strip.set_brightness, args=[brightness])
+    ]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
     return { "message": f"Lights brightness set to {brightness}%." }
 
 
