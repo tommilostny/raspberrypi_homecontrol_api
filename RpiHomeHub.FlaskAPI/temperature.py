@@ -1,4 +1,5 @@
 import glob
+import json
 import os
 from datetime import datetime
 from time import sleep
@@ -7,10 +8,6 @@ from flask_restful import Resource
 
 LOGFILE = "data/temp_events.log"
 LOG_CELSIUS = "\N{DEGREE SIGN}C"
-TEMPERATURE_THRESHOLD_DAY = 22.3
-TEMPERATURE_THRESHOLD_NIGHT = 20.5
-
-FAN_TEMPERATURE_THRESHOLD = 27.5
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -20,10 +17,33 @@ device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
 
+class TemperatureThresholds:
+    thresholds_file = "data/temp_thresholds.json"
+
+    def __init__(self):
+        if os.path.exists(self.thresholds_file):
+            with open(self.thresholds_file, "r") as file:
+                self.values = json.load(file)
+        else:
+            self.values = {
+                "day": 22.3,
+                "night": 20.5,
+                "fan": 28.5
+            }
+            with open(self.thresholds_file, "x") as file:
+                json.dump(self.values, file)
+
+    def save(self):
+        with open(self.thresholds_file, "w") as file:
+            json.dump(self.values, file)
+
+
+thresholds = TemperatureThresholds()
+
+
 def read_temp_raw():
-    f = open(device_file, 'r')
-    lines = f.readlines()
-    f.close()
+    with open(device_file, 'r') as f:
+        lines = f.readlines()
     return lines
 
 
@@ -66,9 +86,9 @@ class Temperature(Resource):
             "tempC" : c,
             "tempF" : f,
             "tempK" : k,
-            "thresholdDay": TEMPERATURE_THRESHOLD_DAY,
-            "thresholdNight": TEMPERATURE_THRESHOLD_NIGHT,
-            "fanThreshold": FAN_TEMPERATURE_THRESHOLD
+            "thresholdDay": thresholds.values["day"],
+            "thresholdNight": thresholds.values["night"],
+            "fanThreshold": thresholds.values["fan"]
         }
 
 
@@ -88,12 +108,12 @@ class TemperatureLog(Resource):
 
 class TemperatureThreshold(Resource):
     def get(self, period, threshold):
-        global TEMPERATURE_THRESHOLD_DAY, TEMPERATURE_THRESHOLD_NIGHT, FAN_TEMPERATURE_THRESHOLD
-
         if period == "day":
-            TEMPERATURE_THRESHOLD_DAY = threshold
+            thresholds.values["day"] = threshold
         elif period == "night":
-            TEMPERATURE_THRESHOLD_NIGHT = threshold
+            thresholds.values["night"] = threshold
         elif period == "fan":
-            FAN_TEMPERATURE_THRESHOLD = threshold
-
+            thresholds.values["fan"] = threshold
+        else:
+            return        
+        thresholds.save()
