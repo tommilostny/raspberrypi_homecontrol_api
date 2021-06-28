@@ -1,13 +1,10 @@
 using System;
 using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using RpiHomeHub.BlazorWeb.Services;
+using RpiHomeHub.BlazorWeb.LCD;
+using RpiHomeHub.BlazorWeb.Lights.Services;
 
 namespace RpiHomeHub.BlazorWeb
 {
@@ -19,7 +16,12 @@ namespace RpiHomeHub.BlazorWeb
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://192.168.1.242:5000/") });
-            builder.Services.AddScoped<YeelightBulbService>();
+
+            builder.Services.AddScoped<YeelightService>();
+            builder.Services.AddScoped<LampService>();
+            builder.Services.AddScoped<LED_StripService>();
+            builder.Services.AddScoped<AllLightsService>();
+
             builder.Services.AddTransient<LCD_Service>();
 
             await builder.Build().RunAsync();

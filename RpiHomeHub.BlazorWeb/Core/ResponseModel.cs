@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
 
-namespace RpiHomeHub.BlazorWeb.Models
+namespace RpiHomeHub.BlazorWeb.Core
 {
     public class ResponseModel
     {

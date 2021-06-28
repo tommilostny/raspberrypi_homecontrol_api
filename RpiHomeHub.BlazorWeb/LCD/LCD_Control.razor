@@ -1,0 +1,10 @@
+﻿<div class="row">
+    <div class="col-7">
+        <input @oninput="MessageInput" type="text" />
+        <p>Message length: @LcdService.Message.Length/@LcdService.LcdCapacity()</p>
+        <button class="btn btn-primary" @onclick="LcdService.SendMessageToLcd" type="submit">Send</button>
+    </div>
+    <div class="col">
+        <button class="btn btn-primary" @onclick="LcdService.LcdBacklightToggle">LCD toggle <i>backlight/(message-heating)</i></button>
+    </div>
+</div>

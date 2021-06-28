@@ -1,0 +1,18 @@
+﻿<div class="row">
+    <div class="col">
+        <label for="ta1" class="form-label">Temperature events log: (@GetLinesCount() events)</label>
+    </div>
+    <div class="col-3">
+        <button class="btn btn-secondary" @onclick="FetchLog">Refresh</button>
+        <button class="btn btn-danger" @onclick="ClearLog">Clear</button>
+    </div>
+</div>
+<textarea class="form-control" id="ta1" rows="16" disabled style="font-family: 'Courier New', Courier, monospace;">
+    @if (LogLines is not null)
+    {
+        @foreach (var line in LogLines)
+        {
+            @line
+        }
+    }
+</textarea>

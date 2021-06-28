@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace RpiHomeHub.BlazorWeb.Models
+namespace RpiHomeHub.BlazorWeb.Temperature
 {
     public class TemperatureModel
     {
@@ -16,5 +16,7 @@ namespace RpiHomeHub.BlazorWeb.Models
         public float ThresholdDay { get; set; }
 
         public float ThresholdNight { get; set; }
+
+        public float FanThreshold { get; set; }
     }
 }

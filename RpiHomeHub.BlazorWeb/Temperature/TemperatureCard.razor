@@ -1,20 +1,8 @@
-﻿@using Newtonsoft.Json
-@using RpiHomeHub.BlazorWeb.Models  
-@inject HttpClient httpClient
+﻿@using RpiHomeHub.BlazorWeb.Shared
 
-<style>
-    ﻿.card {
-        padding: 20px;
-        margin: 5px;
-        box-shadow: 0 0 15px lightgrey;
-        border-radius: 10px
-    }
-</style>
-
-<div class="card">
+<CardComponent Title="Room temperature">
     @if (Temperature is not null)
     {
-        <h3>Room temperature</h3>
         <div class="row inside">
             <div class="col">
                 <h4><b>@Temperature.Celsius°C</b></h4>
@@ -57,44 +45,23 @@
                     <button class="btn btn-warning" @onclick="() => SetTempThreshold(nightString)">Set</button>
                 </div>
             </div>
+
+            <label for="thresholdnight_text">Temperature threshold (summer fan):</label>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <input type="number" id="thresholdnighz_text" @bind-value="@Temperature.FanThreshold" />
+                        <span class="input-group-text">°C</span>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-warning" @onclick="() => SetTempThreshold(fanString)">Set</button>
+                </div>
+            </div>
         }
     }
     else
     {
         <p>Loading room temperature...</p>
     }
-</div>
-
-@code
-{
-    const string nightString = "night";
-    const string dayString = "day";
-
-    private TemperatureModel Temperature { get; set; }
-
-    [Parameter]
-    public bool ShowThresholdSetting { get; set; } = true;
-
-    private async Task GetTemperature()
-    {
-        var response = await httpClient.GetAsync("temperature");
-        var content = await response.Content.ReadAsStringAsync();
-        Temperature = JsonConvert.DeserializeObject<TemperatureModel>(content);
-    }
-
-    private async Task SetTempThreshold(string period)
-    {
-        float newThreshold = period switch
-        {
-            "day" => Temperature.ThresholdDay,
-            _ => Temperature.ThresholdNight
-        };
-        await httpClient.GetAsync($"temp_threshold/{period}/{string.Format("{0:N3}", newThreshold)}");
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await GetTemperature();
-        await base.OnInitializedAsync();
-    }
-}
+</CardComponent>

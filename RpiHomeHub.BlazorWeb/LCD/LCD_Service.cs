@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RpiHomeHub.BlazorWeb.Services
+namespace RpiHomeHub.BlazorWeb.LCD
 {
     public class LCD_Service
     {

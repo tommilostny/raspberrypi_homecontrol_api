@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RpiHomeHub.BlazorWeb.Models
+namespace RpiHomeHub.BlazorWeb.LED
 {
     public class LED_Model
     {

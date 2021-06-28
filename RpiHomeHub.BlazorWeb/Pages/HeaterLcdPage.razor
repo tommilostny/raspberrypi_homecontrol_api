@@ -1,6 +1,6 @@
 ﻿@page "/heater-lcd"
-@using RpiHomeHub.BlazorWeb.Components.Temperature
-@using RpiHomeHub.BlazorWeb.Components
+@using RpiHomeHub.BlazorWeb.Temperature
+@using RpiHomeHub.BlazorWeb.LCD
 
 <style>
     input[type="text"] {
@@ -16,7 +16,7 @@
 <!--<Title Value="@title" />-->
 <h1>@title</h1>
 
-<LCD_Control LineWidth="@_lineWidth" LinesCount="@_linesCount" />
+<LCD_Control LineWidth="@lineWidth" LinesCount="@linesCount" />
 
 <br>
 <br>
@@ -32,8 +32,8 @@
 
 @code
 {
-    private const int _lineWidth = 16;
-    private const int _linesCount = 2;
+    private const int lineWidth = 16;
+    private const int linesCount = 2;
 
-    string title = $"LCD display {_lineWidth}x{_linesCount}";
+    string title = $"LCD display {lineWidth}x{linesCount}";
 }
