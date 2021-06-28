@@ -22,6 +22,7 @@ namespace RpiHomeHub.BlazorWeb.Temperature
 
         private async Task GetTemperature()
         {
+            Temperature = null;
             var response = await HttpClient.GetAsync("temperature");
             var content = await response.Content.ReadAsStringAsync();
             Temperature = JsonConvert.DeserializeObject<TemperatureModel>(content);
