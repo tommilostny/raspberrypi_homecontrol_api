@@ -63,7 +63,7 @@ class LampStatus(Resource):
         r, g, b = lamp.colour_rgb() if state["mode"] == "colour" else (255, 255, 255)
         return {
             "power": "on" if state["is_on"] else "off",
-            "brightness": (state["brightness"] / 255) * 100,
+            "brightness": int((state["brightness"] / 255) * 100),
             "color": {
                 "red": r, "green": g, "blue": b
             }
