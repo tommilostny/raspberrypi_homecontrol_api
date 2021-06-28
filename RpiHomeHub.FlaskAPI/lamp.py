@@ -59,7 +59,15 @@ def set_lamp_brightness(brightness:int):
 
 class LampStatus(Resource):
     def get(self):
-        return lamp.status()
+        state = lamp.state()
+        r, g, b = lamp.colour_rgb() if state["mode"] == "colour" else (255, 255, 255)
+        return {
+            "power": "on" if state["is_on"] else "off",
+            "brightness": (state["brightness"] / 255) * 100,
+            "color": {
+                "red": r, "green": g, "blue": b
+            }
+        }
 
 
 class LampPower(Resource):
