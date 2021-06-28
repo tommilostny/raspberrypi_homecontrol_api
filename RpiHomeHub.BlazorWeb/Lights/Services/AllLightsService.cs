@@ -1,21 +1,21 @@
 ﻿using Newtonsoft.Json;
 using RpiHomeHub.BlazorWeb.Lights.Models;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace RpiHomeHub.BlazorWeb.Lights.Services
 {
-    public class AllLightsService : LightServiceBase, ILightService
+    public class AllLightsService
     {
-        public AllLightsService(HttpClient httpClient) : base(httpClient)
+        private readonly HttpClient _httpClient;
+
+        public AllLightsService(HttpClient httpClient)
         {
+            _httpClient = httpClient;
         }
 
-        public Task<ILightModel> GetStatus() => throw new NotImplementedException();
-
-        public async Task<IEnumerable<ILightModel>> GetAllStatus()
+        public async Task<List<ILightModel>> GetStatus()
         {
             var lampTask = _httpClient.GetAsync("lamp");
             var yeelightTask = _httpClient.GetAsync("yeelight");
@@ -30,31 +30,31 @@ namespace RpiHomeHub.BlazorWeb.Lights.Services
             return statuses;
         }
 
-        public async Task<ILightModel> Toggle()
+        public async Task<List<ILightModel>> Toggle()
         {
             await _httpClient.GetAsync("lights/toggle");
             return await GetStatus();
         }
 
-        public async Task<ILightModel> TurnOff()
+        public async Task<List<ILightModel>> TurnOff()
         {
             await _httpClient.GetAsync("lights/off");
             return await GetStatus();
         }
 
-        public async Task<ILightModel> TurnOn()
+        public async Task<List<ILightModel>> TurnOn()
         {
             await _httpClient.GetAsync("lights/on");
             return await GetStatus();
         }
 
-        public async Task<ILightModel> SetColor(int red, int green, int blue)
+        public async Task<List<ILightModel>> SetColor(int red, int green, int blue)
         {
             await _httpClient.GetAsync($"lights/{red}/{green}/{blue}");
             return await GetStatus();
         }
 
-        public async Task<ILightModel> SetBrightness(int brightness)
+        public async Task<List<ILightModel>> SetBrightness(int brightness)
         {
             await _httpClient.GetAsync($"lights/{brightness}");
             return await GetStatus();

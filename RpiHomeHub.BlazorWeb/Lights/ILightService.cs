@@ -2,13 +2,13 @@
 
 namespace RpiHomeHub.BlazorWeb.Lights
 {
-    public interface ILightService
+    public interface ILightService<TLightModel> where TLightModel : ILightModel
     {
-        Task<ILightModel> GetStatus();
-        Task<ILightModel> Toggle();
-        Task<ILightModel> TurnOn();
-        Task<ILightModel> TurnOff();
-        Task<ILightModel> SetColor(int red, int green, int blue);
-        Task<ILightModel> SetBrightness(int brightness);
+        Task<TLightModel> GetStatusAsync();
+        Task<TLightModel> ToggleAsync();
+        Task<TLightModel> TurnOnAsync();
+        Task<TLightModel> TurnOffAsync();
+        Task<TLightModel> SetColorAsync(int red, int green, int blue);
+        Task<TLightModel> SetBrightnessAsync(int brightness);
     }
 }

@@ -1,0 +1,7 @@
+@page "/lamp"
+@using RpiHomeHub.BlazorWeb.Lights.Components
+@using RpiHomeHub.BlazorWeb.Lights.Models
+
+<h1>Lamp control page</h1>
+
+<LightControlsComponent Light=@Lamp Service=@LampService TLightModel="LampModel"  />
