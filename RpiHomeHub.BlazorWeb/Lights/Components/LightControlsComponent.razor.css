@@ -1,0 +1,9 @@
+﻿.color-preview {
+    border-radius: 500px;
+    height: 64px;
+    width: 64px;
+    margin: 10px;
+    margin-bottom: 15px;
+    border: solid 2px lightgray;
+    box-shadow: 0 0 5px gray;
+}

@@ -8,10 +8,12 @@
                 <p>Power: <strong>@Light.Power</strong></p>
                 <p>Brightness: <strong>@(@Light.Brightness)%</strong></p>
                 <p>Color: (<strong>@Light.Color.Red, @Light.Color.Green, @Light.Color.Blue</strong>)</p>
-                
-                <button class="btn btn-primary" @onclick="@Service.ToggleAsync">Toggle</button>
-                <button class="btn btn-success" @onclick="@Service.TurnOnAsync">Turn on</button>
-                <button class="btn btn-danger" @onclick="@Service.TurnOffAsync">Turn off</button>
+
+                <div class="color-preview" style="background-color: rgb(@Light.Color.Red, @Light.Color.Green, @Light.Color.Blue);"></div>
+
+                <button class="btn btn-primary" @onclick="Toggle">Toggle</button>
+                <button class="btn btn-success" @onclick="TurnOn">Turn on</button>
+                <button class="btn btn-danger" @onclick="TurnOff">Turn off</button>
             </div>
             <div class="col-lg">
                 <!--ColorPicker-->
