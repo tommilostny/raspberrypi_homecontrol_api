@@ -1,4 +1,4 @@
-﻿namespace RpiHomeHub.BlazorWeb.Core
+﻿namespace RpiHomeHub.BlazorWeb.Core.Models
 {
     public enum ColorMode
     {

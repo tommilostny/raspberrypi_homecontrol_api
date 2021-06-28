@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using RpiHomeHub.BlazorWeb.Core.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RpiHomeHub.BlazorWeb.Core
+namespace RpiHomeHub.BlazorWeb.Core.Components
 {
     public partial class ColorPicker : ComponentBase
     {
