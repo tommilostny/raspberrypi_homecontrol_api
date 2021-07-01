@@ -18,6 +18,10 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
 
         private async Task TurnOff() => Light = await LightService.TurnOffAsync();
 
-        private async Task Refresh() => Light = await LightService.GetStatusAsync();
+        private async Task Refresh()
+        {
+            Light = null;
+            Light = await LightService.GetStatusAsync();
+        }
     }
 }
