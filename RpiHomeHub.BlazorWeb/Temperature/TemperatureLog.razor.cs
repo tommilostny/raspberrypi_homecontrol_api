@@ -16,6 +16,7 @@ namespace RpiHomeHub.BlazorWeb.Temperature
 
         private async Task FetchLog()
         {
+            LogLines = null;
             var response = await HttpClient.GetAsync("temp_log");
             var content = await response.Content.ReadAsStringAsync();
             LogLines = JsonConvert.DeserializeObject<List<string>>(content);

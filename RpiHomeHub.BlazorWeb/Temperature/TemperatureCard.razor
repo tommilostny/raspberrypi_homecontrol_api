@@ -1,6 +1,4 @@
-﻿@using RpiHomeHub.BlazorWeb.Shared
-
-<CardComponent Title="Room temperature">
+﻿<CardComponent Title="Room temperature">
     @if (Temperature is not null)
     {
         <div class="row inside">
@@ -8,14 +6,14 @@
                 <h4><b>@Temperature.Celsius°C</b></h4>
             </div>
             <div class="col">
-                <h4>@Temperature.Fahrenheit°F</h4>
+                <h5>@Temperature.Fahrenheit°F</h5>
             </div>
             <div class="col">
-                <h4>@Temperature.Kelvin°K</h4>
+                <h5>@Temperature.Kelvin°K</h5>
             </div>
         </div>
 
-        <button class="btn btn-secondary" @onclick="GetTemperature">Refresh</button>
+        <FluentButton Appearance="Appearance.Accent" @onclick="GetTemperature">Refresh</FluentButton>
 
         @if (ShowThresholdSetting)
         {
@@ -29,7 +27,9 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-warning" @onclick="() => SetTempThreshold(dayString)">Set</button>
+                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(dayString)">
+                        Set
+                    </FluentButton>
                 </div>
             </div>
 
@@ -42,7 +42,9 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-warning" @onclick="() => SetTempThreshold(nightString)">Set</button>
+                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(nightString)">
+                        Set
+                    </FluentButton>
                 </div>
             </div>
 
@@ -55,13 +57,51 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-warning" @onclick="() => SetTempThreshold(fanString)">Set</button>
+                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(fanString)">
+                        Set
+                    </FluentButton>
                 </div>
             </div>
         }
     }
     else
     {
-        <p>Loading room temperature...</p>
+        <FluentProgressRing style="width: 62px;height: 62px; margin:0 auto"></FluentProgressRing>
+
+        <FluentSkeleton Shape="Shape.Rect" style="width:70px;height:30px;margin-bottom:10px;margin-top:6px" Shimmer="true" />
+        
+        @if (ShowThresholdSetting)
+        {
+            <hr>
+            <FluentSkeleton Shape="Shape.Rect" style="width:205px;height:20px;margin-bottom:8px;margin-top:10px" Shimmer="true" />
+            <div class="row">
+                <div class="col">
+                    <FluentSkeleton Shape="Shape.Rect" style="width:240px;height:40px;margin-bottom:20px" Shimmer="true" />
+                </div>
+                <div class="col-3">
+                    <FluentSkeleton Shape="Shape.Rect" style="width:40px;height:30px;margin-bottom:20px" Shimmer="true" />
+                </div>
+            </div>
+
+            <FluentSkeleton Shape="Shape.Rect" style="width:205px;height:20px;margin-bottom:8px" Shimmer="true" />
+            <div class="row">
+                <div class="col">
+                    <FluentSkeleton Shape="Shape.Rect" style="width:240px;height:40px;margin-bottom:20px" Shimmer="true" />
+                </div>
+                <div class="col-3">
+                    <FluentSkeleton Shape="Shape.Rect" style="width:40px;height:30px;margin-bottom:20px" Shimmer="true" />
+                </div>
+            </div>
+
+            <FluentSkeleton Shape="Shape.Rect" style="width:205px;height:20px;margin-bottom:8px" Shimmer="true" />
+            <div class="row">
+                <div class="col">
+                    <FluentSkeleton Shape="Shape.Rect" style="width:240px;height:40px;margin-bottom:15px" Shimmer="true" />
+                </div>
+                <div class="col-3">
+                    <FluentSkeleton Shape="Shape.Rect" style="width:40px;height:30px;margin-bottom:15px" Shimmer="true" />
+                </div>
+            </div>
+        }
     }
 </CardComponent>

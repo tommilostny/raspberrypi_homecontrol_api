@@ -4,24 +4,24 @@
     @if (Light is not null)
     {
         <div class="row">
-            <div class="col-8">
+            <div class="col-8 col-sm-7">
                 <p>Power: <strong>@Light.Power</strong></p>
                 <p>Brightness: <strong>@(@Light.Brightness)%</strong></p>
                 <p>Color: (<strong>@Light.Color.Red, @Light.Color.Green, @Light.Color.Blue</strong>)</p>
 
                 <div class="color-preview" style="background-color: rgb(@Light.Color.Red, @Light.Color.Green, @Light.Color.Blue);"></div>
-
-                <button class="btn btn-primary" @onclick="Toggle">Toggle</button>
-                <button class="btn btn-success" @onclick="TurnOn">Turn on</button>
-                <button class="btn btn-danger" @onclick="TurnOff">Turn off</button>
             </div>
             <div class="col">
-                <button class="btn btn-secondary" @onclick="Refresh">Refresh</button>
+                <FluentButton @onclick="Refresh" Appearance="Appearance.Outline" style="float: right">Refresh</FluentButton>
             </div>
         </div>
+
+        <FluentButton @onclick="Toggle" Appearance="Appearance.Accent">Toggle</FluentButton>
+        <FluentButton @onclick="TurnOn">Turn on</FluentButton>
+        <FluentButton @onclick="TurnOff">Turn off</FluentButton>
     }
     else
     {
-        <p>Loading...</p>
+        <FluentProgressRing style="width: 62px;height: 62px; margin:0 auto"></FluentProgressRing>
     }
 </CardComponent>

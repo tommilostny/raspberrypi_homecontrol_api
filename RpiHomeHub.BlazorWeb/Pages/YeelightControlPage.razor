@@ -1,92 +1,14 @@
 ﻿@page "/yeelight"
 @using RpiHomeHub.BlazorWeb.Lights.Models
 @using RpiHomeHub.BlazorWeb.Lights.Components
-@using RpiHomeHub.BlazorWeb.Shared
-@using System.Net
 
-<style>
-    input[type=range] {
-        width: 100%;
-    }
-</style>
+<h1>Yeelight control</h1>
 
-<!--<Title Value="@title" />-->
-<h1>@title</h1>
-
-<LightControlsComponent Light=@Yeelight LightService=@YeelightService TLightModel="YeelightModel"  />
-
-@if (Bulb is not null)
-{
-    <!--
-    <YeelightPowerControls Bulb=@Bulb />
-    -->
-    <br>
-    <div class="row">
-        <!--
-        <div class="col">
-            <label for="brightness_slider">Brightness: @Bulb.Brightness%</label>
-            <div class="input-group mb-3">
-                <input type="range" min="1" max="100" value="@Bulb.Brightness" @onchange="YeelightBrightness" id="brightness_slider" />
-            </div>
-            <div class="input-group mb-3">
-                <input type="number" value="@Bulb.Brightness" @onchange="YeelightBrightness" />
-                <span class="input-group-text">%</span>
-            </div>
-        </div>
-        <div class="col">
-            <label for="temperature_slider">Temperature: @Bulb.Temperature K</label>
-            <div class="input-group mb-3">
-                <input type="range" min="1700" max="6500" value="@Bulb.Temperature" @onchange="YeelightTemperature" id="temperature_slider" />
-            </div>
-            <div class="input-group mb-3">
-                <input type="number" value="@Bulb.Temperature" @onchange="YeelightTemperature" />
-                <span class="input-group-text">K</span>
-            </div>
-        </div>
-        -->
-        <!--
-        <div class="col">
-            <label for="hue_slider">Hue: @Bulb.Hue°</label>
-            <div class="input-group mb-3">
-                <input type="range" min="0" max="359" value="@Bulb.Hue" @onchange="YeelightHue" id="hue_slider" />
-            </div>
-            <div class="input-group mb-3">
-                <input type="number" value="@Bulb.Hue" @onchange="YeelightHue" />
-                <span class="input-group-text">°</span>
-            </div>
-        </div>
-        <div class="col">
-            <label for="saturation_slider">Saturation: @Bulb.Saturation%</label>
-            <div class="input-group mb-3">
-                <input type="range" min="0" max="100" value="@Bulb.Saturation" @onchange="YeelightSaturation" id="saturation_slider" />
-            </div>
-            <div class="input-group mb-3">
-                <input type="number" value="@Bulb.Saturation" @onchange="YeelightSaturation" />
-                <span class="input-group-text">%</span>
-            </div>
-        </div>
-        -->
+<div class="row">
+    <div class="col-md-12 col-lg-6 col-xl-5">
+        <LightControlsComponent Light=@Yeelight LightService=@YeelightService TLightModel="YeelightModel"  />
     </div>
-
-    @if (Bulb.Color is not null)
-    {
-        <!--
-        <ColorPicker RefreshEvent="yeelightService.GetStatus" Color="Bulb.Color" Mode="ColorMode.Yeelight" />
-        -->
-    }
-}
-else
-{
-    <p>Loading...</p>
-}
-
-<!--<ErrorDialog @ref="BadResponseDialog" />-->
-
-@code {
-    string title = "Yeelight control";
-
-    private YeelightModel Bulb { get; set; }
-
-    //private ErrorDialog BadResponseDialog { get; set; }
-
-}
+    <div class="col">
+        <!-- Color picker -->
+    </div>
+</div>

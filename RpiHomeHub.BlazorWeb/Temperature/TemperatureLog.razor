@@ -1,18 +1,27 @@
 ﻿<div class="row">
     <div class="col">
-        <label for="ta1" class="form-label">Temperature events log: (@GetLinesCount() events)</label>
+        <h4>Temperature events log: (@GetLinesCount() events)</h4>
     </div>
-    <div class="col-3">
-        <button class="btn btn-secondary" @onclick="FetchLog">Refresh</button>
-        <button class="btn btn-danger" @onclick="ClearLog">Clear</button>
+    <div class="col-sm-3">
+        <FluentButton Appearance="Appearance.Accent" @onclick="FetchLog">Refresh</FluentButton>
+        <FluentButton Appearance="Appearance.Stealth" @onclick="ClearLog">Clear</FluentButton>
     </div>
 </div>
-<textarea class="form-control" id="ta1" rows="16" disabled style="font-family: 'Courier New', Courier, monospace;">
+
+<div class="row" style="margin-top: 15px">
     @if (LogLines is not null)
     {
-        @foreach (var line in LogLines)
-        {
-            @line
-        }
+        <FluentListbox style="width: 100%;">
+            @foreach (var line in LogLines)
+            {
+                <FluentOption style="font-family: 'Courier New', Courier, monospace;">
+                    @line
+                </FluentOption>
+            }
+        </FluentListbox>
     }
-</textarea>
+    else
+    {
+        <FluentProgressRing style="width: 62px;height: 62px; margin:auto" Paused="false"></FluentProgressRing>
+    }
+</div>

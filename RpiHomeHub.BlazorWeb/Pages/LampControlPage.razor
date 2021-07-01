@@ -2,6 +2,13 @@
 @using RpiHomeHub.BlazorWeb.Lights.Components
 @using RpiHomeHub.BlazorWeb.Lights.Models
 
-<h1>Lamp control page</h1>
+<h1>Lamp control</h1>
 
-<LightControlsComponent Light=@Lamp LightService=@LampService TLightModel="LampModel"  />
+<div class="row">
+    <div class="col-md-12 col-lg-6 col-xl-5">
+        <LightControlsComponent Light=@Lamp LightService=@LampService TLightModel="LampModel"  />
+    </div>
+    <div class="col">
+        <!-- Color picker -->
+    </div>
+</div>
