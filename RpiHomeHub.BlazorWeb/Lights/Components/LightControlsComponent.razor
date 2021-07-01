@@ -4,17 +4,17 @@
     @if (Light is not null)
     {
         <div class="row">
-            <div class="col-8 col-sm-7">
+            <div class="col-7">
                 <p>Power: <strong>@Light.Power</strong></p>
                 <p>Brightness: <strong>@(@Light.Brightness)%</strong></p>
-                <p>Color: (<strong>@Light.Color.Red, @Light.Color.Green, @Light.Color.Blue</strong>)</p>
-
-                <div class="color-preview" style="background-color: rgb(@Light.Color.Red, @Light.Color.Green, @Light.Color.Blue);"></div>
             </div>
             <div class="col">
                 <FluentButton @onclick="Refresh" Appearance="Appearance.Outline" style="float: right">Refresh</FluentButton>
             </div>
         </div>
+
+        <p>Color: (<strong>@Light.Color.Red, @Light.Color.Green, @Light.Color.Blue</strong>)</p>
+        <div class="color-preview" style="background-color: rgb(@Light.Color.Red, @Light.Color.Green, @Light.Color.Blue);"></div>
 
         <FluentButton @onclick="Toggle" Appearance="Appearance.Accent">Toggle</FluentButton>
         <FluentButton @onclick="TurnOn">Turn on</FluentButton>

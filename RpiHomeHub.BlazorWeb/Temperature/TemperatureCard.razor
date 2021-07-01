@@ -2,7 +2,7 @@
     @if (Temperature is not null)
     {
         <div class="row inside">
-            <div class="col">
+            <div class="col-12 col-sm">
                 <h4><b>@Temperature.Celsius°C</b></h4>
             </div>
             <div class="col">
@@ -26,8 +26,8 @@
                         <span class="input-group-text">°C</span>
                     </div>
                 </div>
-                <div class="col-3">
-                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(dayString)">
+                <div class="col-12 col-sm-3">
+                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(dayString)" style="margin-bottom:12px">
                         Set
                     </FluentButton>
                 </div>
@@ -41,8 +41,8 @@
                         <span class="input-group-text">°C</span>
                     </div>
                 </div>
-                <div class="col-3">
-                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(nightString)">
+                <div class="col-12 col-sm-3">
+                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(nightString)" style="margin-bottom:12px">
                         Set
                     </FluentButton>
                 </div>
@@ -56,8 +56,8 @@
                         <span class="input-group-text">°C</span>
                     </div>
                 </div>
-                <div class="col-3">
-                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(fanString)">
+                <div class="col-12 col-sm-3">
+                    <FluentButton Appearance="Appearance.Outline" @onclick="() => SetTempThreshold(fanString)" style="margin-bottom:12px">
                         Set
                     </FluentButton>
                 </div>

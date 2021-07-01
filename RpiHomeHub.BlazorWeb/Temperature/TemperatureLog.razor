@@ -1,10 +1,11 @@
 ﻿<div class="row">
     <div class="col">
-        <h4>Temperature events log: (@GetLinesCount() events)</h4>
+        <h4>Temperature events log:</h4>
+        <h5><strong>@GetLinesCount() events</strong></h5>
     </div>
     <div class="col-sm-3">
         <FluentButton Appearance="Appearance.Accent" @onclick="FetchLog">Refresh</FluentButton>
-        <FluentButton Appearance="Appearance.Stealth" @onclick="ClearLog">Clear</FluentButton>
+        <FluentButton @onclick="ClearLog">Clear</FluentButton>
     </div>
 </div>
 
@@ -14,7 +15,7 @@
         <FluentListbox style="width: 100%;">
             @foreach (var line in LogLines)
             {
-                <FluentOption style="font-family: 'Courier New', Courier, monospace;">
+                <FluentOption>
                     @line
                 </FluentOption>
             }
