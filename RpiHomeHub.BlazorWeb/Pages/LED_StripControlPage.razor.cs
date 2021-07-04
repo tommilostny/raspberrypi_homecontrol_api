@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RpiHomeHub.BlazorWeb.Lights.Services;
 using RpiHomeHub.BlazorWeb.Lights.Models;
+using RpiHomeHub.BlazorWeb.Lights.Services;
 using System.Threading.Tasks;
 
 namespace RpiHomeHub.BlazorWeb.Pages
 {
-    public partial class LampControlPage : ComponentBase
+    public partial class LED_StripControlPage : ComponentBase
     {
         [Inject]
-        public LampService LampService { get; set; }
+        public LED_StripService StripService { get; set; }
 
-        private LampModel Lamp { get; set; }
+        private LED_StripModel Strip { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,7 +20,7 @@ namespace RpiHomeHub.BlazorWeb.Pages
 
         private async Task Load()
         {
-            Lamp = await LampService.GetStatusAsync();
+            Strip = await StripService.GetStatusAsync();
         }
     }
 }

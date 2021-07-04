@@ -14,8 +14,13 @@ namespace RpiHomeHub.BlazorWeb.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Yeelight = await YeelightService.GetStatusAsync();
+            await Load();
             await base.OnInitializedAsync();
+        }
+
+        private async Task Load()
+        {
+            Yeelight = await YeelightService.GetStatusAsync();
         }
     }
 }

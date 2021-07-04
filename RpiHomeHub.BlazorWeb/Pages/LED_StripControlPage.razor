@@ -1,24 +1,24 @@
-@page "/lamp"
+﻿@page "/ledstrip"
 @using RpiHomeHub.BlazorWeb.Lights.Components
 @using RpiHomeHub.BlazorWeb.Lights.Models
 @using RpiHomeHub.BlazorWeb.Colors
 
-<h1>Lamp control</h1>
+<h1>LED Strip control</h1>
 
 <div class="row">
     <div class="col-md-12 col-lg-6 col-xl-5">
         <LightControlsComponent
-            Light=@Lamp
-            LightService=@LampService
-            TLightModel="LampModel" />
+            Light=@Strip
+            LightService=@StripService
+            TLightModel="LED_StripModel" />
     </div>
     <div class="col">
-        @if (Lamp is not null)
+        @if (Strip is not null)
         {
             <ColorPicker
-                LightService="@LampService"
-                TLightModel="LampModel"
-                Color="Lamp.Color"
+                LightService="@StripService"
+                TLightModel="LED_StripModel"
+                Color="@Strip.Color"
                 RefreshEvent="Load" />
         }
     </div>
