@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using RpiHomeHub.BlazorWeb.Core.Models;
+using RpiHomeHub.BlazorWeb.Colors;
+using RpiHomeHub.BlazorWeb.Lights;
+using RpiHomeHub.BlazorWeb.Lights.Services;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RpiHomeHub.BlazorWeb.Core.Components
+namespace RpiHomeHub.BlazorWeb.Colors
 {
-    public partial class ColorPicker : ComponentBase
+    public partial class ColorPicker<TLightModel> where TLightModel : class, ILightModel, new()
     {
-        [Inject]
-        private HttpClient HttpClient { get; set; }
+        [Parameter]
+        public LightServiceBase<TLightModel> LightService { get; set; }
 
         [Parameter]
         public EventCallback RefreshEvent { get; set; }
@@ -19,10 +21,10 @@ namespace RpiHomeHub.BlazorWeb.Core.Components
         public ColorRGB Color { get; set; }
 
         [Parameter]
-        public ColorMode Mode { get; set; }
-
-        [Parameter]
         public bool ShowLabels { get; set; } = true;
+
+        [Inject]
+        private ColorDbService ColorDbService { get; set; }
 
         private List<ColorModel> Colors { get; set; }
 
@@ -32,24 +34,13 @@ namespace RpiHomeHub.BlazorWeb.Core.Components
 
         private async Task SendColor(ColorRGB color)
         {
-            switch (Mode)
-            {
-                case ColorMode.Yeelight:
-                    await HttpClient.GetAsync($"lights/color/{color.Red}/{color.Green}/{color.Blue}");
-                    break;
-                case ColorMode.LED:
-                    await HttpClient.GetAsync($"led/rgb/{color.Red}/{color.Green}/{color.Blue}");
-                    break;
-            }
+            Color = await LightService.SetColorAsync(color);
             await RefreshEvent.InvokeAsync();
-            Color = color;
         }
 
         protected override async Task OnInitializedAsync()
         {
-            var response = await HttpClient.GetAsync($"colors");
-            var content = await response.Content.ReadAsStringAsync();
-            Colors = JsonConvert.DeserializeObject<List<ColorModel>>(content);
+            Colors = await ColorDbService.GetColorDb();
 
             CustomColor = new ColorRGB
             {
@@ -57,10 +48,7 @@ namespace RpiHomeHub.BlazorWeb.Core.Components
                 Green = Color.Green,
                 Blue = Color.Blue
             };
-
             await base.OnInitializedAsync();
         }
-
-        private string GetButtonDimension() => Mode == ColorMode.Yeelight ? "64px" : "32px";
     }
 }

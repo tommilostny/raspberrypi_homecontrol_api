@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using RpiHomeHub.BlazorWeb.Core.Models;
+using RpiHomeHub.BlazorWeb.Colors;
 
 namespace RpiHomeHub.BlazorWeb.Lights.Models
 {

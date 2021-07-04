@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using RpiHomeHub.BlazorWeb.Colors;
 using RpiHomeHub.BlazorWeb.LCD;
 using RpiHomeHub.BlazorWeb.Lights.Services;
 
@@ -21,6 +22,8 @@ namespace RpiHomeHub.BlazorWeb
             builder.Services.AddScoped<LampService>();
             builder.Services.AddScoped<LED_StripService>();
             builder.Services.AddScoped<AllLightsService>();
+
+            builder.Services.AddScoped<ColorDbService>();
 
             builder.Services.AddTransient<LCD_Service>();
 

@@ -1,4 +1,4 @@
-﻿namespace RpiHomeHub.BlazorWeb.Core.Models
+﻿namespace RpiHomeHub.BlazorWeb.Colors
 {
     public class ColorRGB
     {

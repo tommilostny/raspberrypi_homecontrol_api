@@ -1,0 +1,16 @@
+﻿.colorButt {
+    height: 48px;
+    width: 48px;
+    border: none;
+    border-radius: 500px;
+    box-shadow: 0 0 12px lightgray;
+}
+
+input[type=number] {
+    width: 70%;
+}
+
+.colorPickerContainer {
+    margin: 10px;
+    margin-top: 20px;
+}

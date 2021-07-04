@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RpiHomeHub.BlazorWeb.Core.Models;
+using RpiHomeHub.BlazorWeb.Colors;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;

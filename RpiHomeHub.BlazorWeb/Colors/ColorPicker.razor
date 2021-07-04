@@ -1,19 +1,4 @@
-﻿<style>
-    .colorButt {
-        height: @GetButtonDimension();
-        width: @GetButtonDimension();
-        border: none;
-        border-radius: 500px;
-        box-shadow: 0 0 12px lightgray;
-    }
-    input[type=number] {
-        width: 70%;
-    }
-    .colorPickerContainer {
-        margin: 10px;
-        margin-top: 20px;
-    }
-</style>
+﻿@typeparam TLightModel
 
 <div class="colorPickerContainer">
     <p><b>Current color</b>: rgb(@Color.Red, @Color.Green, @Color.Blue)</p>
@@ -72,9 +57,9 @@
                         <div class="colorButt" style="@SetButtonColor(CustomColor)"></div>
                     </div>
                     <div class="col">
-                        <button class="btn btn-secondary" @onclick="() => SendColor(CustomColor)" style="margin-top:5px;">
+                        <FluentButton @onclick="() => SendColor(CustomColor)" style="margin-top:5px;">
                             Set color
-                        </button>
+                        </FluentButton>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RpiHomeHub.BlazorWeb.Colors;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -25,16 +26,16 @@ namespace RpiHomeHub.BlazorWeb.Lights.Services
             return JsonConvert.DeserializeObject<TLightModel>(content);
         }
 
-        public async Task<TLightModel> SetBrightnessAsync(int brightness)
+        public async Task<int> SetBrightnessAsync(int brightness)
         {
             await _httpClient.GetAsync($"{_endpointBase}/{brightness}");
-            return await GetStatusAsync();
+            return brightness;
         }
 
-        public async Task<TLightModel> SetColorAsync(int red, int green, int blue)
+        public async Task<ColorRGB> SetColorAsync(ColorRGB color)
         {
-            await _httpClient.GetAsync($"{_endpointBase}/{red}/{green}/{blue}");
-            return await GetStatusAsync();
+            await _httpClient.GetAsync($"{_endpointBase}/{color.Red}/{color.Green}/{color.Blue}");
+            return color;
         }
 
         public async Task<TLightModel> ToggleAsync()

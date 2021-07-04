@@ -1,14 +1,25 @@
 @page "/lamp"
 @using RpiHomeHub.BlazorWeb.Lights.Components
 @using RpiHomeHub.BlazorWeb.Lights.Models
+@using RpiHomeHub.BlazorWeb.Colors
 
 <h1>Lamp control</h1>
 
 <div class="row">
     <div class="col-md-12 col-lg-6 col-xl-5">
-        <LightControlsComponent Light=@Lamp LightService=@LampService TLightModel="LampModel"  />
+        <LightControlsComponent
+            Light=@Lamp
+            LightService=@LampService
+            TLightModel="LampModel" />
     </div>
     <div class="col">
-        <!-- Color picker -->
+        @if (Lamp is not null)
+        {
+            <ColorPicker
+                LightService="@LampService"
+                TLightModel="LampModel"
+                Color="Lamp.Color"
+                RefreshEvent="async () => Lamp = await LampService.GetStatusAsync()" />
+        }
     </div>
 </div>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using RpiHomeHub.BlazorWeb.Colors;
+using System.Threading.Tasks;
 
 namespace RpiHomeHub.BlazorWeb.Lights
 {
@@ -8,7 +9,7 @@ namespace RpiHomeHub.BlazorWeb.Lights
         Task<TLightModel> ToggleAsync();
         Task<TLightModel> TurnOnAsync();
         Task<TLightModel> TurnOffAsync();
-        Task<TLightModel> SetColorAsync(int red, int green, int blue);
-        Task<TLightModel> SetBrightnessAsync(int brightness);
+        Task<ColorRGB> SetColorAsync(ColorRGB color);
+        Task<int> SetBrightnessAsync(int brightness);
     }
 }
