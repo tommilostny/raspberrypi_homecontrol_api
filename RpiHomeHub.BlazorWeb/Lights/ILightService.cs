@@ -1,4 +1,4 @@
-﻿using RpiHomeHub.BlazorWeb.Colors;
+﻿using RpiHomeHub.BlazorWeb.Colors.Models;
 using System.Threading.Tasks;
 
 namespace RpiHomeHub.BlazorWeb.Lights

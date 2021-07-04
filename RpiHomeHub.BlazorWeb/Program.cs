@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using RpiHomeHub.BlazorWeb.Colors;
 using RpiHomeHub.BlazorWeb.LCD;
+using RpiHomeHub.BlazorWeb.Colors.Services;
 using RpiHomeHub.BlazorWeb.Lights.Services;
 
 namespace RpiHomeHub.BlazorWeb

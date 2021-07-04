@@ -1,4 +1,4 @@
-﻿namespace RpiHomeHub.BlazorWeb.Colors
+﻿namespace RpiHomeHub.BlazorWeb.Colors.Models
 {
     public class ColorModel
     {

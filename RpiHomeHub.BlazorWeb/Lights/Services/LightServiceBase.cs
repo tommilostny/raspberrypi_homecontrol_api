@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using RpiHomeHub.BlazorWeb.Colors;
+using RpiHomeHub.BlazorWeb.Colors.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
 

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
-using RpiHomeHub.BlazorWeb.Colors;
+using RpiHomeHub.BlazorWeb.Colors.Models;
+using RpiHomeHub.BlazorWeb.Colors.Services;
 using RpiHomeHub.BlazorWeb.Lights;
 using RpiHomeHub.BlazorWeb.Lights.Services;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RpiHomeHub.BlazorWeb.Colors
+namespace RpiHomeHub.BlazorWeb.Colors.Components
 {
     public partial class ColorPicker<TLightModel> where TLightModel : class, ILightModel, new()
     {

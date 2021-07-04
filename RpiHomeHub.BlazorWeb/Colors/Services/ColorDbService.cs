@@ -1,11 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System;
+using RpiHomeHub.BlazorWeb.Colors.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RpiHomeHub.BlazorWeb.Colors
+namespace RpiHomeHub.BlazorWeb.Colors.Services
 {
     public class ColorDbService
     {
