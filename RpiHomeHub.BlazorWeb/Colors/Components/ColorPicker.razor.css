@@ -1,16 +1,36 @@
-﻿.colorButt {
-    height: 48px;
-    width: 48px;
+﻿.colorPickerContainer {
+    margin: 10px;
+    margin-top: 20px;
+}
+
+.color-butt {
+    height: 42px;
+    width: 42px;
     border: none;
+    margin: auto;
     border-radius: 500px;
     box-shadow: 0 0 12px lightgray;
+    transition: all .2s ease-in-out;
+    cursor: default;
 }
+
+    .color-butt-effect:hover {
+        box-shadow: 0 0 20px lightgray;
+        transform: scale(1.1);
+        cursor: pointer;
+    }
 
 input[type=number] {
     width: 70%;
 }
 
-.colorPickerContainer {
-    margin: 10px;
-    margin-top: 20px;
+.butt-container {
+    float: left;
+    width: 85px;
+    margin: 10px auto;
 }
+
+    .butt-container p {
+        text-align: center;
+        margin-bottom: 5px;
+    }

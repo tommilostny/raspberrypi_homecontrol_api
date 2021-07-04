@@ -8,19 +8,22 @@
         <div class="row">
             @foreach (var item in Colors)
             {
-                <div class="col-1">
+                <div class="butt-container">
                     @if (ShowLabels)
                     {
                         @if (item.Color.Red == Color.Red && item.Color.Green == Color.Green && item.Color.Blue == Color.Blue)
                         {
-                            <p><b><u>@item.Name</u></b></p>
+                            <p><b>@item.Name</b></p>
                         }
                         else
                         {
                             <p>@item.Name</p>
                         }
                     }
-                    <button class="colorButt" style=@SetButtonColor(item.Color) @onclick="() => SendColor(item.Color)"></button>
+                    <div
+                        class="color-butt color-butt-effect"
+                        style=@SetButtonColor(item.Color)
+                        @onclick="() => SendColor(item.Color)" />        
                 </div>
             }
         </div>
@@ -54,7 +57,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col-1">
-                        <div class="colorButt" style="@SetButtonColor(CustomColor)"></div>
+                        <div class="color-butt" style="@SetButtonColor(CustomColor)"></div>
                     </div>
                     <div class="col">
                         <FluentButton @onclick="() => SendColor(CustomColor)" style="margin-top:5px;">
