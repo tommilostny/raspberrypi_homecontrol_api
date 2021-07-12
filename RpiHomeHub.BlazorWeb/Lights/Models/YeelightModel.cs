@@ -13,18 +13,7 @@ namespace RpiHomeHub.BlazorWeb.Lights.Models
         [JsonProperty("ct")]
         public int Temperature { get; set; }
 
-        public int RGB { get; set; }
-
-        [JsonIgnore]
-        public ColorRGB Color
-        {
-            get => new()
-            {
-                Blue = RGB & 0x0000FF,
-                Green = (RGB & 0x00FF00) >> 8,
-                Red = (RGB & 0xFF0000) >> 16
-            };
-        }
+        public ColorRGB Color { get; set; }
 
         public int Hue { get; set; }
 

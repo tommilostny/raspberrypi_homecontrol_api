@@ -11,11 +11,21 @@ yeelight_bulb = Bulb("192.168.1.189", auto_on=True)
 
 def get_yeelight_status():
     try:
-        return yeelight_bulb.get_properties()
-
+        properties = yeelight_bulb.get_properties()
     except BulbException:
         sleep(0.1)
         return get_yeelight_status()
+    
+    if properties["color_mode"] == "2": #white
+        properties["color"] = { "red": 255, "green": 255, "blue": 255 }
+    else:
+        rgb = int(properties["rgb"])
+        properties["color"] = {
+            "red": (rgb & 0xFF0000) >> 16,
+            "green": (rgb & 0x00FF00) >> 8,
+            "blue": rgb & 0x0000FF
+        }
+    return properties
 
 
 def set_yeelight_power(status:str):
