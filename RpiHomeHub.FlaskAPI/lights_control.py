@@ -16,7 +16,7 @@ class LightsPower(Resource):
         threads:List[Thread] = [
             Thread(target=set_lamp_power, args=[status]),
             Thread(target=set_yeelight_power, args=[status]),
-            Thread(target=strip.control_power, args=[status])
+            #Thread(target=strip.control_power, args=[status])
         ]
         for thread in threads:
             thread.start()
@@ -30,7 +30,7 @@ def set_lights_color(r, g, b):
     threads:List[Thread] = [
         Thread(target=set_lamp_color, args=[r, g, b]),
         Thread(target=set_yeelight_color, args=[r, g, b]),
-        Thread(target=strip.set_color, args=[r, g, b])
+        #Thread(target=strip.set_color, args=[r, g, b])
     ]
     for thread in threads:
         thread.start()
@@ -78,7 +78,7 @@ def set_lights_brightness(brightness:int):
     threads:List[Thread] = [
         Thread(target=set_lamp_brightness, args=[brightness]),
         Thread(target=set_yeelight_brightness, args=[brightness]),
-        Thread(target=strip.set_brightness, args=[brightness])
+        #Thread(target=strip.set_brightness, args=[brightness])
     ]
     for thread in threads:
         thread.start()
