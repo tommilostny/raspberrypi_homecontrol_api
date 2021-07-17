@@ -1,0 +1,22 @@
+﻿<style>
+    .yl-ext-container {
+        margin-top: 45px;
+    }
+</style>
+
+<div class="row yl-ext-container">
+    <div class="col">
+        <label for="yeelight-temp-slider" style="margin-left: 8px;">Brightness: <strong>@(@Yeelight.Temperature) K</strong></label>
+        <FluentSlider Max="6500" Min="1700" @bind-Value="@Yeelight.Temperature" id="yeelight-temp-slider">
+            <FluentSliderLabel Position="1700">
+                1700
+            </FluentSliderLabel>
+            <FluentSliderLabel Position="6500">
+                6500
+            </FluentSliderLabel>
+        </FluentSlider>
+    </div>
+    <div class="col-3">
+        <FluentButton @onclick="SetTemperature">Set</FluentButton>
+    </div>
+</div>

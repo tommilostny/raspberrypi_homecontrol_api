@@ -12,6 +12,9 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
         [Parameter]
         public TLightModel Light { get; set; }
 
+        [Parameter]
+        public RenderFragment ChildContent { get; set; }
+
         private async Task Toggle() => await LightService.ToggleAsync(Light);
 
         private async Task TurnOn() => await LightService.TurnOnAsync(Light);

@@ -10,7 +10,10 @@
         <LightControlsComponent
             Light=@Yeelight
             LightService=@YeelightService 
-            TLightModel="YeelightModel" />
+            TLightModel="YeelightModel">
+
+            <YeelightExtendedControls Yeelight="@Yeelight" />
+        </LightControlsComponent>
     </div>
     <div class="col">
         @if (Yeelight is not null)
