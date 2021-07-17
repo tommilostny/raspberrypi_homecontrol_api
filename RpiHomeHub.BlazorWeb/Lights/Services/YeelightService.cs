@@ -15,5 +15,12 @@ namespace RpiHomeHub.BlazorWeb.Lights.Services
             await _httpClient.GetAsync($"{_endpointBase}/temperature/{temperature}");
             yeelight.Temperature = temperature;
         }
+
+        public async Task SetHueSaturationAsync(int hue, int saturation, YeelightModel yeelight)
+        {
+            await _httpClient.GetAsync($"{_endpointBase}/hs/{hue}/{saturation}");
+            yeelight.Hue = hue;
+            yeelight.Saturation = saturation;
+        }
     }
 }

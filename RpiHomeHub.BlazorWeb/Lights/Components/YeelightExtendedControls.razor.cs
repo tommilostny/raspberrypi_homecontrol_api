@@ -17,5 +17,10 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
         {
             await YeelightService.SetTemperatureAsync(Yeelight.Temperature, Yeelight);
         }
+
+        private async Task SetHS()
+        {
+            await YeelightService.SetHueSaturationAsync(Yeelight.Hue, Yeelight.Saturation, Yeelight);
+        }
     }
 }

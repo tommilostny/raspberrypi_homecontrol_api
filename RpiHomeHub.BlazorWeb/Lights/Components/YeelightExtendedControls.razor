@@ -6,7 +6,7 @@
 
 <div class="row yl-ext-container">
     <div class="col">
-        <label for="yeelight-temp-slider" style="margin-left: 8px;">Brightness: <strong>@(@Yeelight.Temperature) K</strong></label>
+        <label for="yeelight-temp-slider" style="margin-left: 8px;">Temperature: <strong>@(@Yeelight.Temperature) K</strong></label>
         <FluentSlider Max="6500" Min="1700" @bind-Value="@Yeelight.Temperature" id="yeelight-temp-slider">
             <FluentSliderLabel Position="1700">
                 1700
@@ -16,7 +16,41 @@
             </FluentSliderLabel>
         </FluentSlider>
     </div>
-    <div class="col-3">
+    <div class="col-3 slider-button">
         <FluentButton @onclick="SetTemperature">Set</FluentButton>
+    </div>
+</div>
+
+<div class="row yl-ext-container">
+    <div class="col">
+        <label for="yeelight-h-slider" style="margin-left: 8px;">Hue: <strong>@(@Yeelight.Hue) °</strong></label>
+        <FluentSlider Max="359" Min="0" @bind-Value="@Yeelight.Hue" id="yeelight-h-slider">
+            <FluentSliderLabel Position="0">
+                0
+            </FluentSliderLabel>
+            <FluentSliderLabel Position="359">
+                359
+            </FluentSliderLabel>
+        </FluentSlider>
+    </div>
+    <div class="col-3 slider-button">
+        <FluentButton @onclick="SetHS">Set</FluentButton>
+    </div>
+</div>
+
+<div class="row yl-ext-container">
+    <div class="col">
+        <label for="yeelight-s-slider" style="margin-left: 8px;">Saturation: <strong>@(@Yeelight.Saturation) %</strong></label>
+        <FluentSlider Max="100" Min="0" @bind-Value="@Yeelight.Saturation" id="yeelight-s-slider">
+            <FluentSliderLabel Position="0">
+                0
+            </FluentSliderLabel>
+            <FluentSliderLabel Position="100">
+                100
+            </FluentSliderLabel>
+        </FluentSlider>
+    </div>
+    <div class="col-3 slider-button">
+        <FluentButton @onclick="SetHS">Set</FluentButton>
     </div>
 </div>

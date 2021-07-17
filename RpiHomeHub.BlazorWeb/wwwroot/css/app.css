@@ -9,6 +9,10 @@
     bottom: 0;
 }
 
+.slider-button {
+    margin-top: 30px;
+}
+
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
