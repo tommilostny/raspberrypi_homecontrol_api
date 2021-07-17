@@ -16,9 +16,9 @@
         @if (Lamp is not null)
         {
             <ColorPicker
+                Light="@Lamp"
                 LightService="@LampService"
                 TLightModel="LampModel"
-                Color="Lamp.Color"
                 RefreshEvent="Load" />
         }
     </div>

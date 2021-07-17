@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RpiHomeHub.BlazorWeb.LCD;
 using RpiHomeHub.BlazorWeb.Colors.Services;
 using RpiHomeHub.BlazorWeb.Lights.Services;
+using RpiHomeHub.BlazorWeb.Lights.Models;
 
 namespace RpiHomeHub.BlazorWeb
 {
@@ -22,9 +23,7 @@ namespace RpiHomeHub.BlazorWeb
             builder.Services.AddScoped<LampService>();
             builder.Services.AddScoped<LED_StripService>();
             builder.Services.AddScoped<AllLightsService>();
-
             builder.Services.AddScoped<ColorDbService>();
-
             builder.Services.AddTransient<LCD_Service>();
 
             await builder.Build().RunAsync();

@@ -6,7 +6,6 @@
         <div class="row">
             <div class="col-7">
                 <p>Power: <strong>@Light.Power</strong></p>
-                <p>Brightness: <strong>@(@Light.Brightness)%</strong></p>
             </div>
             <div class="col">
                 <FluentButton @onclick="Refresh" Appearance="Appearance.Outline" style="float:right">Refresh</FluentButton>
@@ -19,6 +18,26 @@
         <FluentButton @onclick="Toggle" Appearance="Appearance.Accent">Toggle</FluentButton>
         <FluentButton @onclick="TurnOn">Turn on</FluentButton>
         <FluentButton @onclick="TurnOff">Turn off</FluentButton>
+
+        <hr />
+
+        <div class="row">
+            <div class="col">
+                <label for="brightness-slider" style="margin-left: 8px;">Brightness: <strong>@(@Light.Brightness)%</strong></label>
+                <FluentSlider Min="0" Max="100" @bind-Value="@Light.Brightness">
+                    <FluentSliderLabel Position="0">
+                        0
+                    </FluentSliderLabel>
+                    <FluentSliderLabel Position="100">
+                        100
+                    </FluentSliderLabel>
+                </FluentSlider>
+            </div>
+            <div class="col-3">
+                <FluentButton @onclick="SetBrightness">Set</FluentButton>
+            </div>
+        </div>
+        
     }
     else
     {

@@ -16,9 +16,9 @@
         @if (Strip is not null)
         {
             <ColorPicker
+                Light="@Strip"
                 LightService="@StripService"
                 TLightModel="LED_StripModel"
-                Color="@Strip.Color"
                 RefreshEvent="Load" />
         }
     </div>

@@ -22,38 +22,40 @@ namespace RpiHomeHub.BlazorWeb.Lights.Services
         {
             var response = await _httpClient.GetAsync(_endpointBase);
             var content = await response.Content.ReadAsStringAsync();
-
+            
             return JsonConvert.DeserializeObject<TLightModel>(content);
         }
 
-        public async Task<int> SetBrightnessAsync(int brightness)
+        public async Task SetBrightnessAsync(int brightness, TLightModel light)
         {
             await _httpClient.GetAsync($"{_endpointBase}/{brightness}");
-            return brightness;
+            light.Brightness = brightness;
         }
 
-        public async Task<ColorRGB> SetColorAsync(ColorRGB color)
+        public async Task SetColorAsync(ColorRGB color, TLightModel light)
         {
             await _httpClient.GetAsync($"{_endpointBase}/{color.Red}/{color.Green}/{color.Blue}");
-            return color;
+            light.Color.Red = color.Red;
+            light.Color.Green = color.Green;
+            light.Color.Blue = color.Blue;
         }
 
-        public async Task<TLightModel> ToggleAsync()
+        public async Task ToggleAsync(TLightModel light)
         {
             await _httpClient.GetAsync($"{_endpointBase}/toggle");
-            return await GetStatusAsync();
+            light.Power = light.Power == "on" ? "off" : "on";
         }
 
-        public async Task<TLightModel> TurnOffAsync()
+        public async Task TurnOffAsync(TLightModel light)
         {
             await _httpClient.GetAsync($"{_endpointBase}/off");
-            return await GetStatusAsync();
+            light.Power = "off";
         }
 
-        public async Task<TLightModel> TurnOnAsync()
+        public async Task TurnOnAsync(TLightModel light)
         {
             await _httpClient.GetAsync($"{_endpointBase}/on");
-            return await GetStatusAsync();
+            light.Power = "on";
         }
     }
 }

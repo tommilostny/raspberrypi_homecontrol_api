@@ -12,16 +12,22 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
         [Parameter]
         public TLightModel Light { get; set; }
 
-        private async Task Toggle() => Light = await LightService.ToggleAsync();
+        private async Task Toggle() => await LightService.ToggleAsync(Light);
 
-        private async Task TurnOn() => Light = await LightService.TurnOnAsync();
+        private async Task TurnOn() => await LightService.TurnOnAsync(Light);
 
-        private async Task TurnOff() => Light = await LightService.TurnOffAsync();
+        private async Task TurnOff() => await LightService.TurnOffAsync(Light);
 
         private async Task Refresh()
         {
-            Light = null;
-            Light = await LightService.GetStatusAsync();
+            var result = await LightService.GetStatusAsync();
+            Light.Power = result.Power;
+            Light.Brightness = result.Brightness;
+            Light.Color.Red = result.Color.Red;
+            Light.Color.Green = result.Color.Green;
+            Light.Color.Blue = result.Color.Blue;
         }
+
+        private async Task SetBrightness() => await LightService.SetBrightnessAsync(Light.Brightness, Light);
     }
 }

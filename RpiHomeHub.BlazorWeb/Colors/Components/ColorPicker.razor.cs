@@ -17,7 +17,7 @@ namespace RpiHomeHub.BlazorWeb.Colors.Components
         public EventCallback RefreshEvent { get; set; }
 
         [Parameter]
-        public ColorRGB Color { get; set; }
+        public TLightModel Light { get; set; }
 
         [Parameter]
         public bool ShowLabels { get; set; } = true;
@@ -33,7 +33,7 @@ namespace RpiHomeHub.BlazorWeb.Colors.Components
 
         private async Task SendColor(ColorRGB color)
         {
-            Color = await LightService.SetColorAsync(color);
+            await LightService.SetColorAsync(color, Light);
             await RefreshEvent.InvokeAsync();
         }
 
@@ -43,9 +43,9 @@ namespace RpiHomeHub.BlazorWeb.Colors.Components
 
             CustomColor = new ColorRGB
             {
-                Red = Color.Red,
-                Green = Color.Green,
-                Blue = Color.Blue
+                Red = Light.Color.Red,
+                Green = Light.Color.Green,
+                Blue = Light.Color.Blue
             };
             await base.OnInitializedAsync();
         }

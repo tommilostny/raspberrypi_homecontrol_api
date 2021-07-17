@@ -16,9 +16,9 @@
         @if (Yeelight is not null)
         {
             <ColorPicker
+                Light="@Yeelight"
                 LightService="@YeelightService"
                 TLightModel="YeelightModel"
-                Color="@Yeelight.Color"
                 RefreshEvent="Load" />
         }
     </div>

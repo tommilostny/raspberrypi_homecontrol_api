@@ -1,8 +1,6 @@
 ﻿@typeparam TLightModel
 
 <div class="colorPickerContainer">
-    <p><b>Current color</b>: rgb(@Color.Red, @Color.Green, @Color.Blue)</p>
-
     @if (Colors is not null)
     {
         <div class="row">
@@ -11,9 +9,9 @@
                 <div class="butt-container">
                     @if (ShowLabels)
                     {
-                        @if (item.Color.Red == Color.Red && item.Color.Green == Color.Green && item.Color.Blue == Color.Blue)
+                        @if (item.Color.Red == Light.Color.Red && item.Color.Green == Light.Color.Green && item.Color.Blue == Light.Color.Blue)
                         {
-                            <p><b>@item.Name</b></p>
+                            <p><strong>@item.Name</strong></p>
                         }
                         else
                         {
