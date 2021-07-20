@@ -1,6 +1,6 @@
 # Raspberry Pi Home control API
 
-- **RpiHomeHub.FlaskAPI**: API created using **Python Flask**.
+- **api**: API created using **Python Flask**.
 - **RpiHomeHub.BlazorWeb**: Web app control hub created using **.NET 5 Blazor PWA**.
 
 ## Hardware
@@ -22,7 +22,7 @@ Pip3 libraries required: *tinytuya*, *yeelight*, *flask*, *flask_restful*, *flas
 
 ### Lamp and Multiplug setup
 
-To setup the Tuya devices create **multiplug.json** and **lamp.json** files in the *RpiHomeHub.FlaskAPI/data* folder **each** containing following structure:
+To setup the Tuya devices create **multiplug.json** and **lamp.json** files in the *api/data* folder **each** containing following structure:
 
 `{
     "device_id":"",
@@ -32,5 +32,5 @@ To setup the Tuya devices create **multiplug.json** and **lamp.json** files in t
 
 ### Runs both API and the web app:
 
-1. `cd RpiHomeHub.FlaskAPI`
+1. `cd api`
 2. `python3 main.py`
