@@ -48,10 +48,12 @@ class LedStrip:
 
     def set_rgb_leds(self):
         self.rgb.value = [(x / 255) * self._brightness_to_float() for x in self.status["color"].values()]
+        self._save_status()
 
     
     def set_white_led(self):
         self.white.value = self._brightness_to_float()
+        self._save_status()
 
     
     def set_leds_by_mode(self):
@@ -63,6 +65,7 @@ class LedStrip:
 
     def set_power(self, status:str):
         if status == "on":
+            self.status["power"] = "on"
             if self.status["mode"] == "white":
                 self.set_white_led()
                 return { "message": "White LEDs turned on." }
@@ -74,9 +77,11 @@ class LedStrip:
             self.status["power"] = "off"
             if self.status["mode"] == "white":
                 self.white.off()
+                self._save_status()
                 return { "message": "White LEDs turned off." }
             else:
                 self.rgb.off()
+                self._save_status()
                 return { "message": "RGB LEDs turned off." }
 
         else:
@@ -84,6 +89,7 @@ class LedStrip:
                 self.status["power"] = "off" if self.white.is_active else "on"
                 if self.white.is_active:
                     self.white.off()
+                    self._save_status()
                 else:
                     self.set_white_led()
                 return { "message": "White LEDs toggled." }
@@ -91,6 +97,7 @@ class LedStrip:
                 self.status["power"] = "off" if self.rgb.is_active else "on"
                 if self.rgb.is_active:
                     self.rgb.off()
+                    self._save_status()
                 else:
                     self.set_rgb_leds()
                 return { "message": "RGB LEDs toggled." }
@@ -105,24 +112,21 @@ class LedStrip:
                 self.set_white_led()
             else:
                 self.rgb.off()
-                self.set_white_led()
                 self.status["mode"] = "white"
                 self.status["color"] = { "red":255, "green":255, "blue":255 }
+                self.set_white_led()
         else:
             self.status["color"] = { "red":red, "green":green, "blue":blue }
             self.white.off()
-            self.set_rgb_leds()
             self.status["mode"] = "rgb"
-
-        self._save_status()
+            self.set_rgb_leds()
 
 
     def set_brightness(self, brightness:int):
         brightness = clamp_value(brightness, 0, 100)
         self.status["brightness"] = brightness
-        self.set_leds_by_mode()
         self.status["power"] = "on"
-        self._save_status()
+        self.set_leds_by_mode()
         return { "message": f"LEDs brightness set to {brightness}%." }
 
 
