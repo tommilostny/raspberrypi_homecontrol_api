@@ -17,15 +17,18 @@
 
         <hr />
 
-        <FluentButton @onclick="Toggle" Appearance="Appearance.Accent">Toggle</FluentButton>
-        <FluentButton @onclick="TurnOn">Turn on</FluentButton>
-        <FluentButton @onclick="TurnOff">Turn off</FluentButton>
-        <FluentButton @onclick="Load" Appearance="Appearance.Outline">Refresh</FluentButton>
-
-        <br />
-
-        <FluentButton @onclick="NextColor">Next color</FluentButton>
-        <FluentButton @onclick="PreviousColor">Previous color</FluentButton>
+        <div class="row">
+            <div class="col-md" style="margin-top:10px">
+                <FluentButton @onclick="Toggle" Appearance="Appearance.Accent">Toggle</FluentButton>
+                <FluentButton @onclick="TurnOn">Turn on</FluentButton>
+                <FluentButton @onclick="TurnOff">Turn off</FluentButton>
+                <FluentButton @onclick="Load" Appearance="Appearance.Outline">Refresh</FluentButton>
+            </div>
+            <div class="col-md-4" style="margin-top:10px">
+                <FluentButton @onclick="PreviousColor">Previous color</FluentButton>
+                <FluentButton @onclick="NextColor">Next color</FluentButton>
+            </div>
+        </div>
 
         <hr />
 <!--

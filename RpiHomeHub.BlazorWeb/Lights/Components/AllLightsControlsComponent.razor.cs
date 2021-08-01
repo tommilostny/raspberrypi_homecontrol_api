@@ -8,7 +8,7 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
 {
     public partial class AllLightsControlsComponent : ComponentBase
     {
-        public List<ILightModel> Lights { get; set; } = new();
+        public List<ILightModel> Lights { get; } = new();
 
         [Inject]
         public AllLightsService LightsService { get; set; }
