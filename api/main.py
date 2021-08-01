@@ -23,7 +23,7 @@ heater_thread = HeaterControlThread(heater_thread_stop_event)
 
 app = Flask(__name__)
 api = Api(app)
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cors = CORS(app, resources = { r"/*": {"origins": "*" } })
 
 api.add_resource(LED_Control, "/led/<int:led_num>/<string:status>")
 api.add_resource(LED_Status, "/led")
@@ -69,6 +69,6 @@ api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>
 
 if __name__ == "__main__":
     heater_thread.start()
-    app.run(debug=True, host="0.0.0.0", use_reloader=False)#, ssl_context=('cert.pem', 'key.pem'))
+    app.run(debug = True, host = "0.0.0.0", use_reloader = False)#, ssl_context = ('cert.pem', 'key.pem'))
     heater_thread_stop_event.set()
     blazor_process.terminate()

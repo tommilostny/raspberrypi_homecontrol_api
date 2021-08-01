@@ -46,9 +46,9 @@ class Multiplug:
                 power_status = "on" if self.get_power() == "off" else "off"
 
             if power_status == "on":
-                self.device.turn_on(switch=self.plug_devices[device_name])
+                self.device.turn_on(switch = self.plug_devices[device_name])
             elif power_status == "off":
-                self.device.turn_off(switch=self.plug_devices[device_name])
+                self.device.turn_off(switch = self.plug_devices[device_name])
 
             return { "message" : f"{device_name} turned {power_status}" }, 200
         else:

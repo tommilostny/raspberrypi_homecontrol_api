@@ -131,7 +131,7 @@ dmypy.json
 ssl_howto.txt
 cert.pem
 key.pem
-data/ledstripmode.json
+data/ledstrip.json
 data/lamp.json
 data/multiplug.json
 data/color_cycle_index

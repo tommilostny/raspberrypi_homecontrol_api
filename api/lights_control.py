@@ -6,16 +6,16 @@ from flask_restful import Resource
 
 from color_db import fetch_color_database
 from lamp import Lamp
-from led_strip import LedStrip
+from led_strip import strip
 from yeelight_control import Yeelight
 
 
 class LightsPower(Resource):
     def get(self, status):
         threads:List[Thread] = [
-            Thread(target=Lamp().set_power, args=[status]),
-            Thread(target=Yeelight().set_power, args=[status]),
-            Thread(target=LedStrip().set_power, args=[status])
+            Thread(target = Lamp().set_power, args = [status]),
+            Thread(target = Yeelight().set_power, args = [status]),
+            Thread(target = strip.set_power, args = [status])
         ]
         for thread in threads:
             thread.start()
@@ -27,9 +27,9 @@ class LightsPower(Resource):
 
 def set_lights_color(r, g, b):
     threads:List[Thread] = [
-        Thread(target=Lamp().set_color, args=[r, g, b]),
-        Thread(target=Yeelight().set_color, args=[r, g, b]),
-        Thread(target=LedStrip().set_color, args=[r, g, b])
+        Thread(target = Lamp().set_color, args = [r, g, b]),
+        Thread(target = Yeelight().set_color, args = [r, g, b]),
+        Thread(target = strip.set_color, args = [r, g, b])
     ]
     for thread in threads:
         thread.start()
@@ -75,9 +75,9 @@ class LightsColorCycle(Resource):
 
 def set_lights_brightness(brightness:int):
     threads:List[Thread] = [
-        Thread(target=Lamp().set_brightness, args=[brightness]),
-        Thread(target=Yeelight().set_brightness, args=[brightness]),
-        Thread(target=LedStrip().set_brightness, args=[brightness])
+        Thread(target = Lamp().set_brightness, args = [brightness]),
+        Thread(target = Yeelight().set_brightness, args = [brightness]),
+        Thread(target = strip.set_brightness, args = [brightness])
     ]
     for thread in threads:
         thread.start()

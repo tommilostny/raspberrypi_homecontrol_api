@@ -8,7 +8,7 @@ from utils import clamp_color, clamp_value
 
 
 class Yeelight:
-    bulb = Bulb("192.168.1.189", auto_on=True)
+    bulb = Bulb("192.168.1.189", auto_on = True)
 
     def get_status(self):
         try:
