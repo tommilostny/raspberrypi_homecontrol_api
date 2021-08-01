@@ -10,7 +10,7 @@ from utils import clamp_value, clamp_color
 class LedStrip:
     status_file = "data/ledstripmode.json"
 
-    def __init__(self, red_pin:int, green_pin:int, blue_pin:int, white_pin:int):
+    def __init__(self, red_pin:int=24, green_pin:int=25, blue_pin:int=20, white_pin:int=18):
         self.rgb = RGBLED(red_pin, green_pin, blue_pin)
         self.white = PWMLED(white_pin)
 
@@ -40,7 +40,15 @@ class LedStrip:
             return [x / 255 for x in self.status["value"]]
 
 
-    def control_power(self, status:str):
+    def get_status(self):
+        return {
+            "mode": self.status["mode"],
+            "rgbValue": [int(x * 255) for x in self.rgb.value],
+            "whiteValue": int(self.white.value * 255)
+        }
+
+
+    def set_power(self, status:str):
         mode = self.status["mode"]
 
         if status == "on":
@@ -108,28 +116,21 @@ class LedStrip:
         return { "message": f"LEDs brightness set to {brightness}%." }
 
 
-strip = LedStrip(24, 25, 20, 18)
-
-
 class LedStripStatus(Resource):
     def get(self):
-        return {
-            "mode": strip.status["mode"],
-            "rgbValue": [int(x * 255) for x in strip.rgb.value],
-            "whiteValue": int(strip.white.value * 255)
-        }
+        return LedStrip().get_status()
 
 
 class LedStripPower(Resource):
     def get(self, status:str):
-        return strip.control_power(status)
+        return LedStrip().set_power(status)
 
 
 class LedStripColor(Resource):
     def get(self, red:int, green:int, blue:int):
-        strip.set_color(red, green, blue)
+        LedStrip().set_color(red, green, blue)
 
 
 class LedStripBrightness(Resource):
     def get(self, brightness:int):
-        return strip.set_brightness(brightness)
+        return LedStrip().set_brightness(brightness)

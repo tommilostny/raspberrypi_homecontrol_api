@@ -4,44 +4,45 @@ from threading import Thread
 from colorama import Fore, Style
 
 from lcd_control import LCD_CELSIUS, display_controller
-from multiplug import FAN_PLUG, HEATER_PLUG, multi_plug
-from temperature import log_temperature_event, read_temperature, thresholds
-from utils import get_tuya_power_status
+from multiplug import Multiplug
+from temperature import thresholds, log_temperature_event, read_temperature
 
 
 def control_heater(temperature:float, threshold:float):
-    power = get_tuya_power_status(multi_plug, HEATER_PLUG)
+    multi_plug = Multiplug()
+    power = multi_plug.get_power("heater")
     event_name = None
 
     if temperature < threshold - 0.1 and power != "on":
         event_name = "heater_low"
-        multi_plug.turn_on(switch=HEATER_PLUG)
+        multi_plug.set_power("heater", "on")
         power = "on"
         
     elif temperature > threshold + 0.1 and power != "off":
         event_name = "heater_high"
-        multi_plug.turn_off(switch=HEATER_PLUG)
+        multi_plug.set_power("heater", "off")
         power = "off"
 
     log_temperature_event(event_name, temperature, threshold)
     return power
 
 
-def control_fan(temperature:float):
-    power = get_tuya_power_status(multi_plug, FAN_PLUG)
+def control_fan(temperature:float, threshold:float):
+    multi_plug = Multiplug()
+    power = multi_plug.get_power("fan")
     event_name = None
 
-    if temperature > thresholds.values["fan"] and power != "on":
+    if temperature > threshold and power != "on":
         event_name = "fan_high"
-        multi_plug.turn_on(switch=FAN_PLUG)
+        multi_plug.set_power("fan", "on")
         power = "on"
 
-    elif temperature < thresholds.values["fan"] - 0.1 and power != "off":
+    elif temperature < threshold - 0.1 and power != "off":
         event_name = "fan_low"
-        multi_plug.turn_off(switch=FAN_PLUG)
+        multi_plug.set_power("fan", "off")
         power = "off"
 
-    log_temperature_event(event_name, temperature, thresholds.values["fan"])
+    log_temperature_event(event_name, temperature, threshold)
     return power
 
 
@@ -52,6 +53,7 @@ class HeaterControlThread(Thread):
 
     def run(self):
         print(f"{Fore.YELLOW}Starting heater control...{Style.RESET_ALL}")
+
         while True:
             temp_c,_,_ = read_temperature()
             now = datetime.now()
@@ -61,7 +63,7 @@ class HeaterControlThread(Thread):
             else: #night
                 power_heater = control_heater(temp_c, thresholds.values["night"])
 
-            power_fan = control_fan(temp_c)
+            power_fan = control_fan(temp_c, thresholds.values["fan"])
 
             if display_controller.is_on():
                 display_controller.clear()
@@ -73,4 +75,3 @@ class HeaterControlThread(Thread):
                 print(f"{Fore.YELLOW}Stopping heater control...{Style.RESET_ALL}")
                 display_controller.turn_off()
                 break
-

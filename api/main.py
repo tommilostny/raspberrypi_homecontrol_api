@@ -55,10 +55,10 @@ api.add_resource(LampPower, "/lamp/<string:status>")
 api.add_resource(LampColor, "/lamp/<int:red>/<int:green>/<int:blue>")
 api.add_resource(LampBrightness, "/lamp/<int:brightness>")
 
-#api.add_resource(LedStripStatus, "/ledstrip")                                   #status
-#api.add_resource(LedStripPower, "/ledstrip/<string:status>")                    #power
-#api.add_resource(LedStripColor, "/ledstrip/<int:red>/<int:green>/<int:blue>")   #color
-#api.add_resource(LedStripBrightness, "/ledstrip/<int:brightness>")              #brightness
+api.add_resource(LedStripStatus, "/ledstrip")                                   #status
+api.add_resource(LedStripPower, "/ledstrip/<string:status>")                    #power
+api.add_resource(LedStripColor, "/ledstrip/<int:red>/<int:green>/<int:blue>")   #color
+api.add_resource(LedStripBrightness, "/ledstrip/<int:brightness>")              #brightness
 
 api.add_resource(YeelightStatus, "/yeelight")
 api.add_resource(YeelightPower, "/yeelight/<string:status>")
@@ -68,8 +68,6 @@ api.add_resource(YeelightTemperature, "/yeelight/temperature/<int:temperature>")
 api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
 
 if __name__ == "__main__":
-    strip.control_power("off")
-
     heater_thread.start()
     app.run(debug=True, host="0.0.0.0", use_reloader=False)#, ssl_context=('cert.pem', 'key.pem'))
     heater_thread_stop_event.set()

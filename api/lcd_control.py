@@ -1,49 +1,73 @@
+from os.path import exists
+
 from flask_restful import Resource
 
 from drivers import Lcd
 
+LCD_CELSIUS = chr(223) + "C  "
 
 class LcdDisplayController:
-    def __init__(self, backlight_state:int):
-        self.backlight_state = backlight_state
-        self.display = Lcd()
+    backlight_file = "data/lcd_backlight_state"
 
-    def _set_backlight(self, state:int):
+    def __init__(self):
+        if exists(self.backlight_file):
+            with open(self.backlight_file, "r") as file:
+                self.backlight_state = int(file.readline())
+        else:
+            with open(self.backlight_file, "x") as file:
+                file.write("1")
+            self.backlight_state = 1
+
+        self.display = Lcd()
+        self.display.lcd_backlight(self.backlight_state)
+
+
+    def set_backlight(self, state:int):
         if state == 1 or state == 0:
             self.display.lcd_backlight(state)
-        self.backlight_state = state
+
+            with open(self.backlight_file, "w") as file:
+                file.write(str(state))
+            self.backlight_state = state
+
 
     def print(self, message:str, line:int):
         self.display.lcd_display_string(message, line)
 
+
     def turn_off(self):
         self.display.lcd_clear()
-        self._set_backlight(0)
+        self.set_backlight(0)
     
+
     def turn_on(self):
         self.display.lcd_clear()
-        self._set_backlight(1)
+        self.set_backlight(1)
+
 
     def toggle(self):
         self.turn_off() if self.is_on() else self.turn_on()
 
+
     def is_off(self):
         return self.backlight_state == 0 or self.backlight_state == 2
 
+
     def is_on(self):
         return self.backlight_state == 1
+
 
     def set_to_message_mode(self):
         if self.backlight_state != 2:
             self.display.lcd_clear()
         self.backlight_state = 2
 
+
     def clear(self):
         self.display.lcd_clear()
 
 
-LCD_CELSIUS = chr(223) + "C  "
-display_controller = LcdDisplayController(1)
+display_controller = LcdDisplayController()
 
 
 class LcdControl(Resource):
