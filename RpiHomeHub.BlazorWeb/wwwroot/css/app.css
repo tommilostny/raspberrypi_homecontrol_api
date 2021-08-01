@@ -13,6 +13,15 @@
     margin-top: 30px;
 }
 
+.color-preview {
+    border-radius: 500px;
+    height: 64px;
+    width: 64px;
+    margin: 20px 10px;
+    border: solid 2px lightgray;
+    box-shadow: 0 0 5px gray;
+}
+
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {

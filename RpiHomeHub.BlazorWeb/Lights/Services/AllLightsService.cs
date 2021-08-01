@@ -3,6 +3,7 @@ using RpiHomeHub.BlazorWeb.Lights.Models;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using RpiHomeHub.BlazorWeb.Colors.Models;
 
 namespace RpiHomeHub.BlazorWeb.Lights.Services
 {
@@ -15,7 +16,7 @@ namespace RpiHomeHub.BlazorWeb.Lights.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<ILightModel>> GetStatus()
+        public async Task<List<ILightModel>> GetStatusAsync()
         {
             var lampTask = _httpClient.GetAsync("lamp");
             var yeelightTask = _httpClient.GetAsync("yeelight");
@@ -30,34 +31,47 @@ namespace RpiHomeHub.BlazorWeb.Lights.Services
             return statuses;
         }
 
-        public async Task<List<ILightModel>> Toggle()
+        public async Task ToggleAsync(List<ILightModel> lights)
         {
             await _httpClient.GetAsync("lights/toggle");
-            return await GetStatus();
+            lights.ForEach(l => l.Power = l.Power == "on" ? "off" : "on");
         }
 
-        public async Task<List<ILightModel>> TurnOff()
+        public async Task TurnOffAsync(List<ILightModel> lights)
         {
             await _httpClient.GetAsync("lights/off");
-            return await GetStatus();
+            lights.ForEach(l => l.Power = "off");
         }
 
-        public async Task<List<ILightModel>> TurnOn()
+        public async Task TurnOnAsync(List<ILightModel> lights)
         {
             await _httpClient.GetAsync("lights/on");
-            return await GetStatus();
+            lights.ForEach(l => l.Power = "on");
         }
 
-        public async Task<List<ILightModel>> SetColor(int red, int green, int blue)
+        public async Task SetColorAsync(int red, int green, int blue, List<ILightModel> lights)
         {
             await _httpClient.GetAsync($"lights/{red}/{green}/{blue}");
-            return await GetStatus();
+            lights.ForEach(l => l.Color.Red = red);
+            lights.ForEach(l =>  l.Color.Green = green);
+            lights.ForEach(l => l.Color.Blue = blue);
         }
 
-        public async Task<List<ILightModel>> SetBrightness(int brightness)
+        public async Task SetBrightnessAsync(int brightness, List<ILightModel> lights)
         {
             await _httpClient.GetAsync($"lights/{brightness}");
-            return await GetStatus();
+            lights.ForEach(l => l.Brightness = brightness);
+        }
+
+        public async Task ColorCycle(string direction, List<ILightModel> lights)
+        {
+            var response = await _httpClient.GetAsync($"lights/color_cycle/{direction}");
+            var content = await response.Content.ReadAsStringAsync();
+            var newColor = JsonConvert.DeserializeObject<ColorRGB>(content);
+
+            lights.ForEach(l => l.Color.Red = newColor.Red);
+            lights.ForEach(l => l.Color.Green = newColor.Green);
+            lights.ForEach(l => l.Color.Blue = newColor.Blue);
         }
     }
 }

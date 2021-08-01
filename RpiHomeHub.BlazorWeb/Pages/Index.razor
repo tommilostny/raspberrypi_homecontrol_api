@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using RpiHomeHub.BlazorWeb.Temperature
 @using RpiHomeHub.BlazorWeb.Core.Components
+@using RpiHomeHub.BlazorWeb.Lights.Components
 
 <!--<Title Value="@title" />-->
 <h1>@title</h1>
@@ -16,7 +17,7 @@
         <TemperatureCard ShowThresholdSetting="false" />
     </div>
     <div class="col-md">
-        <!--<YeelightPowerControls />-->
+        <AllLightsControlsComponent />
     </div>
 </div>
 

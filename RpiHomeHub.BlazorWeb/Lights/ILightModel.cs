@@ -7,5 +7,6 @@ namespace RpiHomeHub.BlazorWeb.Lights
         string Power { get; set; }
         ColorRGB Color { get; }
         int Brightness { get; set; }
+        string Name { get; }
     }
 }

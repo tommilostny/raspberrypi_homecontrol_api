@@ -12,5 +12,8 @@ namespace RpiHomeHub.BlazorWeb.Lights.Models
         public int Brightness { get; set; }
 
         public string Mode { get; set; }
+
+        [JsonIgnore]
+        public string Name { get => "LED strip"; }
     }
 }

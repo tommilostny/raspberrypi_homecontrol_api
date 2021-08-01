@@ -19,5 +19,8 @@ namespace RpiHomeHub.BlazorWeb.Lights.Models
 
         [JsonProperty("sat")]
         public int Saturation { get; set; }
+
+        [JsonIgnore]
+        public string Name { get => "Yeelight"; }
     }
 }

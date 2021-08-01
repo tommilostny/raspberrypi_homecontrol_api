@@ -1,0 +1,55 @@
+﻿<CardComponent>
+    @if (Lights.Count > 0)
+    {
+        <div class="row">
+            @foreach (var light in Lights)
+            {
+                <div class="col">
+                    <h4>@light.Name</h4>
+                    <p>Power: <strong>@light.Power</strong></p>
+                    <p>Brightness: <strong>@light.Brightness</strong></p>
+
+                    <p>Color: (<strong>@light.Color.Red, @light.Color.Green, @light.Color.Blue</strong>)</p>
+                    <div class="color-preview" style="background-color: rgb(@light.Color.Red, @light.Color.Green, @light.Color.Blue);"></div>
+                </div>
+            }
+        </div>
+
+        <hr />
+
+        <FluentButton @onclick="Toggle" Appearance="Appearance.Accent">Toggle</FluentButton>
+        <FluentButton @onclick="TurnOn">Turn on</FluentButton>
+        <FluentButton @onclick="TurnOff">Turn off</FluentButton>
+        <FluentButton @onclick="Load" Appearance="Appearance.Outline">Refresh</FluentButton>
+
+        <br />
+
+        <FluentButton @onclick="NextColor">Next color</FluentButton>
+        <FluentButton @onclick="PreviousColor">Previous color</FluentButton>
+
+        <hr />
+<!--
+        <div class="row">
+            <div class="col">
+                <label for="brightness-slider" style="margin-left: 8px;">Brightness: <strong>@(@Light.Brightness)%</strong></label>
+                <FluentSlider Min="0" Max="100" @bind-Value="@Light.Brightness">
+                    <FluentSliderLabel Position="0">
+                        0
+                    </FluentSliderLabel>
+                    <FluentSliderLabel Position="100">
+                        100
+                    </FluentSliderLabel>
+                </FluentSlider>
+            </div>
+            <div class="col-3 slider-button">
+                <FluentButton @onclick="SetBrightness">Set</FluentButton>
+            </div>
+        </div>
+        <br />
+-->
+    }
+    else
+    {
+        <FluentProgressRing style="width: 62px;height: 62px; margin:0 auto"></FluentProgressRing>
+    }
+</CardComponent>
