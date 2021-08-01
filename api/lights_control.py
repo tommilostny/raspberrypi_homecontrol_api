@@ -54,23 +54,28 @@ class LightsColorByName(Resource):
 
 
 class LightsColorCycle(Resource):
-    def get(self):
+    def get(self, direction:str):
+        color_db = fetch_color_database()
+        
         if exists("data/color_cycle_index"):
             with open("data/color_cycle_index", "r") as file:
                 color_db_index = int(file.readline())
+
+            if direction == "next":
+                color_db_index = (color_db_index + 1) % len(color_db)
+            elif direction == "previous":
+                color_db_index = (color_db_index - 1) % len(color_db)
+
+            with open("data/color_cycle_index", "w") as file:
+                file.write(str(color_db_index))
         else:
             color_db_index = 0
             with open("data/color_cycle_index", "x") as file:
                 file.write("0")
 
-        color_db = fetch_color_database()
         color = color_db[color_db_index]
         set_lights_color(color["color"]["red"], color["color"]["green"], color["color"]["blue"])
-
-        with open("data/color_cycle_index", "w") as file:
-            file.write(str((color_db_index + 1) % len(color_db)))
-
-        return { "message": f"Yeelight set to color {color}" }
+        return color["color"]
 
 
 def set_lights_brightness(brightness:int):

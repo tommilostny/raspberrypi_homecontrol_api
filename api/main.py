@@ -35,7 +35,7 @@ api.add_resource(LightsPower, "/lights/<string:status>")
 api.add_resource(LightsBrightness, "/lights/<int:brightness>")
 api.add_resource(LightsColorByRGB, "/lights/<int:r>/<int:g>/<int:b>")
 api.add_resource(LightsColorByName, "/lights/color/<string:color_name>")
-api.add_resource(LightsColorCycle, "/lights/color_cycle")
+api.add_resource(LightsColorCycle, "/lights/color_cycle/<string:direction>")
 api.add_resource(LightsBrightnessCycle, "/lights/brightness_cycle/<int:lower>/<int:upper>")
 
 api.add_resource(ColorDatabase, "/colors")
