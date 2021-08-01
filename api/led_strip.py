@@ -116,26 +116,28 @@ class LedStrip:
 
     
     def _turn_off_animation(self):
+        if self.status["power"] == "off":
+            return
+
         brightness = self.status["brightness"]
         original_brightness = brightness
-
         while brightness > 0:
             brightness -= 1
             self.set_brightness(brightness)
-            sleep(0.007)
-        
+            sleep(0.007)   
         self.status["power"] = "off"
         self.status["brightness"] = original_brightness
         self._save_status()
 
     
     def _turn_on_animation(self):
-        brightness = self.status["brightness"]
+        if self.status["power"] == "on":
+            return
 
+        brightness = self.status["brightness"]
         for b in range(0, brightness + 1):
             self.set_brightness(b)
             sleep(0.007)
-        
         self._save_status()
 
 
