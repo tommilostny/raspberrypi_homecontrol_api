@@ -7,11 +7,10 @@ namespace RpiHomeHub.BlazorWeb.Lights.Models
     {
         public string Power { get; set; }
 
-        [JsonProperty("rgbValue")]
         public ColorRGB Color { get; set; }
 
-        public int White { get; set; }
-
         public int Brightness { get; set; }
+
+        public string Mode { get; set; }
     }
 }
