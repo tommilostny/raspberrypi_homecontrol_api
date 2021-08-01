@@ -1,4 +1,5 @@
 import json
+from time import sleep
 from os.path import exists
 
 from flask_restful import Resource
@@ -13,8 +14,6 @@ class LedStrip:
     def __init__(self, red_pin:int = 24, green_pin:int = 25, blue_pin:int = 20, white_pin:int = 18):
         self.rgb = RGBLED(red_pin, green_pin, blue_pin)
         self.white = PWMLED(white_pin)
-        self.rgb.off()
-        self.white.off()
 
         if exists(self.status_file):
             with open(self.status_file, "r") as file:
@@ -48,11 +47,13 @@ class LedStrip:
 
     def set_rgb_leds(self):
         self.rgb.value = [(x / 255) * self._brightness_to_float() for x in self.status["color"].values()]
+        self.status["power"] = "on"
         self._save_status()
 
     
     def set_white_led(self):
         self.white.value = self._brightness_to_float()
+        self.status["power"] = "on"
         self._save_status()
 
     
@@ -65,42 +66,27 @@ class LedStrip:
 
     def set_power(self, status:str):
         if status == "on":
-            self.status["power"] = "on"
+            self._turn_on_animation()
             if self.status["mode"] == "white":
-                self.set_white_led()
                 return { "message": "White LEDs turned on." }
-            else:
-                self.set_rgb_leds()
-                return { "message": "RGB LEDs turned on." }
+            return { "message": "RGB LEDs turned on." }
 
-        elif status == "off":
-            self.status["power"] = "off"
+        if status == "off":
+            self._turn_off_animation()
             if self.status["mode"] == "white":
-                self.white.off()
-                self._save_status()
                 return { "message": "White LEDs turned off." }
-            else:
-                self.rgb.off()
-                self._save_status()
-                return { "message": "RGB LEDs turned off." }
+            return { "message": "RGB LEDs turned off." }
 
+        #toggle
+        if self.status["power"] == "on":
+            self._turn_off_animation()
         else:
-            if self.status["mode"] == "white":
-                self.status["power"] = "off" if self.white.is_active else "on"
-                if self.white.is_active:
-                    self.white.off()
-                    self._save_status()
-                else:
-                    self.set_white_led()
-                return { "message": "White LEDs toggled." }
-            else:
-                self.status["power"] = "off" if self.rgb.is_active else "on"
-                if self.rgb.is_active:
-                    self.rgb.off()
-                    self._save_status()
-                else:
-                    self.set_rgb_leds()
-                return { "message": "RGB LEDs toggled." }
+            self._turn_on_animation()
+
+        if self.status["mode"] == "white":
+            return { "message": "White LEDs toggled." }
+        else:
+            return { "message": "RGB LEDs toggled." }
 
 
     def set_color(self, red:int, green:int, blue:int):
@@ -125,9 +111,32 @@ class LedStrip:
     def set_brightness(self, brightness:int):
         brightness = clamp_value(brightness, 0, 100)
         self.status["brightness"] = brightness
-        self.status["power"] = "on"
         self.set_leds_by_mode()
         return { "message": f"LEDs brightness set to {brightness}%." }
+
+    
+    def _turn_off_animation(self):
+        brightness = self.status["brightness"]
+        original_brightness = brightness
+
+        while brightness > 0:
+            brightness -= 1
+            self.set_brightness(brightness)
+            sleep(0.007)
+        
+        self.status["power"] = "off"
+        self.status["brightness"] = original_brightness
+        self._save_status()
+
+    
+    def _turn_on_animation(self):
+        brightness = self.status["brightness"]
+
+        for b in range(0, brightness + 1):
+            self.set_brightness(b)
+            sleep(0.007)
+        
+        self._save_status()
 
 
 strip = LedStrip()
