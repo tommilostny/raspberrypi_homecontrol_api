@@ -5,7 +5,7 @@
             @foreach (var light in Lights)
             {
                 <div class="col">
-                    <a href="/@LightNameToLink(light)">
+                    <a href="@light.NameToLink()">
                         <h4>@light.Name</h4>
                     </a>
                     <p>Power: <strong>@light.Power</strong></p>

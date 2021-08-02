@@ -8,5 +8,7 @@ namespace RpiHomeHub.BlazorWeb.Lights
         ColorRGB Color { get; }
         int Brightness { get; set; }
         string Name { get; }
+
+        string NameToLink() => "/" + Name.Replace(" ", string.Empty).ToLower();
     }
 }

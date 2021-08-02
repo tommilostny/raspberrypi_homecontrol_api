@@ -1,21 +1,30 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RpiHomeHub.BlazorWeb.Lights.Services;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RpiHomeHub.BlazorWeb.Lights.Components
 {
     public partial class AllLightsControlsComponent : ComponentBase
     {
-        public List<ILightModel> Lights { get; } = new();
-
         [Inject]
         public AllLightsService LightsService { get; set; }
 
-        private int LowerLimit { get; set; } = 40;
+        private List<ILightModel> Lights { get; } = new();
 
-        private int UpperLimit { get; set; } = 100;
+        private int LowerLimit
+        {
+            get => _lowerLimit;
+            set => _lowerLimit = value < _upperLimit ? value : _upperLimit - 1;
+        }
+        private int _lowerLimit = 40;
+        
+        private int UpperLimit
+        {
+            get => _upperLimit;
+            set => _upperLimit = value > _lowerLimit ? value : _lowerLimit + 1;
+        }
+        private int _upperLimit = 100;
 
         protected override async Task OnInitializedAsync()
         {
@@ -26,8 +35,7 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
         private async Task Load()
         {
             Lights.Clear();
-            var result = await LightsService.GetStatusAsync();
-            Lights.AddRange(result);
+            Lights.AddRange(await LightsService.GetStatusAsync());
         }
 
         private async Task Toggle() => await LightsService.ToggleAsync(Lights);
@@ -41,7 +49,5 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
         private async Task PreviousColor() => await LightsService.ColorCycle("previous", Lights);
 
         private async Task BrightnessCycle() => await LightsService.BrightnessCycle(Lights, LowerLimit, UpperLimit);
-
-        private static string LightNameToLink(ILightModel light) => light.Name.Replace(" ", string.Empty).ToLower();
     }
 }
