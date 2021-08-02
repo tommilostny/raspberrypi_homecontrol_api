@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using RpiHomeHub.BlazorWeb.Colors.Models;
+using System;
 
 namespace RpiHomeHub.BlazorWeb.Lights.Services
 {
@@ -72,6 +73,15 @@ namespace RpiHomeHub.BlazorWeb.Lights.Services
             lights.ForEach(l => l.Color.Red = newColor.Red);
             lights.ForEach(l => l.Color.Green = newColor.Green);
             lights.ForEach(l => l.Color.Blue = newColor.Blue);
+        }
+
+        public async Task BrightnessCycle(List<ILightModel> lights, int lower, int upper)
+        {
+            var response = await _httpClient.GetAsync($"lights/brightness_cycle/{lower}/{upper}");
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
+
+            lights.ForEach(l => l.Brightness = Convert.ToInt32(result["value"]));
         }
     }
 }

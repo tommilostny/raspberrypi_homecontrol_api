@@ -13,6 +13,10 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
         [Inject]
         public AllLightsService LightsService { get; set; }
 
+        private int LowerLimit { get; set; } = 40;
+
+        private int UpperLimit { get; set; } = 100;
+
         protected override async Task OnInitializedAsync()
         {
             await Load();
@@ -36,6 +40,8 @@ namespace RpiHomeHub.BlazorWeb.Lights.Components
 
         private async Task PreviousColor() => await LightsService.ColorCycle("previous", Lights);
 
-        //private async Task SetBrightness() => await LightsService.SetBrightnessAsync(Light.Brightness, Light);
+        private async Task BrightnessCycle() => await LightsService.BrightnessCycle(Lights, LowerLimit, UpperLimit);
+
+        private static string LightNameToLink(ILightModel light) => light.Name.Replace(" ", string.Empty).ToLower();
     }
 }

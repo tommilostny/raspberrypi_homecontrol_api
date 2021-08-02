@@ -1,13 +1,15 @@
-﻿<CardComponent>
+﻿<CardComponent Title="Lights control">
     @if (Lights.Count > 0)
     {
         <div class="row">
             @foreach (var light in Lights)
             {
                 <div class="col">
-                    <h4>@light.Name</h4>
+                    <a href="/@LightNameToLink(light)">
+                        <h4>@light.Name</h4>
+                    </a>
                     <p>Power: <strong>@light.Power</strong></p>
-                    <p>Brightness: <strong>@light.Brightness</strong></p>
+                    <p>Brightness: <strong>@light.Brightness</strong>%</p>
 
                     <p>Color: (<strong>@light.Color.Red, @light.Color.Green, @light.Color.Blue</strong>)</p>
                     <div class="color-preview" style="background-color: rgb(@light.Color.Red, @light.Color.Green, @light.Color.Blue);"></div>
@@ -24,13 +26,41 @@
                 <FluentButton @onclick="TurnOff">Turn off</FluentButton>
                 <FluentButton @onclick="Load" Appearance="Appearance.Outline">Refresh</FluentButton>
             </div>
-            <div class="col-md-4" style="margin-top:10px">
+            <div class="col-md-12 col-lg-4" style="margin-top:10px">
                 <FluentButton @onclick="PreviousColor">Previous color</FluentButton>
                 <FluentButton @onclick="NextColor">Next color</FluentButton>
             </div>
         </div>
 
         <hr />
+
+        <div class="row">
+            <div class="col-lg-12 col-xl-4" style="margin-top: 10px; margin-bottom: 20px">
+                <FluentButton @onclick="BrightnessCycle">Brightness cycle (@LowerLimit% - @UpperLimit%)</FluentButton>
+            </div>
+            <div class="col-md-12 col-lg-6 col-xl-4" style="margin-top: 10px; margin-bottom: 20px">
+                <label for="brightness-slider" style="margin-left: 8px;">Lower limit: <strong>@LowerLimit</strong>%</label>
+                <FluentSlider Min="0" Max="100" @bind-Value="@LowerLimit">
+                    <FluentSliderLabel Position="0">
+                        0
+                    </FluentSliderLabel>
+                    <FluentSliderLabel Position="100">
+                        100
+                    </FluentSliderLabel>
+                </FluentSlider>
+            </div>
+            <div class="col-md-12 col-lg-6 col-xl-4" style="margin-top: 10px; margin-bottom: 20px">
+                <label for="brightness-slider" style="margin-left: 8px;">Upper limit: <strong>@UpperLimit</strong>%</label>
+                <FluentSlider Min="0" Max="100" @bind-Value="@UpperLimit">
+                    <FluentSliderLabel Position="0">
+                        0
+                    </FluentSliderLabel>
+                    <FluentSliderLabel Position="100">
+                        100
+                    </FluentSliderLabel>
+                </FluentSlider>
+            </div>
+        </div>
 <!--
         <div class="row">
             <div class="col">
