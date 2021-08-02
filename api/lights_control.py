@@ -89,7 +89,7 @@ def set_lights_brightness(brightness:int):
     for thread in threads:
         thread.join()
 
-    return { "message": f"Lights brightness set to {brightness}%." }
+    return { "message": f"Lights brightness set to {brightness}%.", "value": str(brightness) }
 
 
 class LightsBrightness(Resource):
