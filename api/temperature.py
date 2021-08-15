@@ -53,10 +53,8 @@ def read_temperature():
     while not ok:
         try:
             ok = True
-            lines = read_temp_raw()
-            while lines[0].strip()[-3:] != 'YES':
+            while (lines := read_temp_raw())[0].strip()[-3:] != 'YES':
                 sleep(0.2)
-                lines = read_temp_raw()
             equals_pos = lines[1].find('t=')
             if equals_pos != -1:
                 temp_string = lines[1][equals_pos+2:]
