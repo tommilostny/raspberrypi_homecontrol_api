@@ -137,5 +137,6 @@ data/multiplug.json
 data/color_cycle_index
 data/temp_thresholds.json
 data/lcd_backlight_state
+data/weather_api.json
 
 .vscode/

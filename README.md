@@ -30,7 +30,19 @@ To setup the Tuya devices create **multiplug.json** and **lamp.json** files in t
     "local_key":""
 }`
 
+### OpenWeather API
+
+1. Register on https://openweathermap.org/.
+2. Get the API key.
+3. Get your city ID from http://bulk.openweathermap.org/sample/ in *city.list.json.gz* file.
+4. Create file **data/weather_api.json** and store the data here in this format:
+    - ``{
+    "api_key":"",
+    "city_id":""
+}``.
+5. 
+
 ### Runs both API and the web app:
 
 1. `cd api`
-2. `python3 main.py`
+2. `python3.9 main.py`

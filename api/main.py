@@ -14,6 +14,7 @@ from led_strip import *
 from lights_control import *
 from multiplug import *
 from temperature import *
+from weather import *
 from yeelight_control import *
 
 blazor_process = Popen(["dotnet", "run", "-p", "../RpiHomeHub.BlazorWeb/RpiHomeHub.BlazorWeb.csproj"])
@@ -66,6 +67,8 @@ api.add_resource(YeelightColor, "/yeelight/<int:red>/<int:green>/<int:blue>")
 api.add_resource(YeelightBrightness, "/yeelight/<int:brightness>")
 api.add_resource(YeelightTemperature, "/yeelight/temperature/<int:temperature>")
 api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>")
+
+api.add_resource(Weather, "/weather")
 
 if __name__ == "__main__":
     heater_thread.start()
