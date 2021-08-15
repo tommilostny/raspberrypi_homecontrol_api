@@ -69,6 +69,6 @@ api.add_resource(YeelightHueSaturation, "/yeelight/hs/<int:hue>/<int:saturation>
 
 if __name__ == "__main__":
     heater_thread.start()
-    app.run(debug = True, host = "0.0.0.0", use_reloader = False)#, ssl_context = ('cert.pem', 'key.pem'))
+    app.run(debug = True, host = "0.0.0.0", use_reloader = False)#, ssl_context = ("cert.pem", "key.pem"))
     heater_thread_stop_event.set()
     blazor_process.terminate()
