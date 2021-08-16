@@ -2,6 +2,7 @@
 @using RpiHomeHub.BlazorWeb.Temperature
 @using RpiHomeHub.BlazorWeb.Core.Components
 @using RpiHomeHub.BlazorWeb.Lights.Components
+@using RpiHomeHub.BlazorWeb.Weather
 
 <!--<Title Value="@title" />-->
 <h1>@title</h1>
@@ -15,6 +16,8 @@
 <div class="row inside">
     <div class="col-sm-12 col-md-6 col-lg-4">
         <TemperatureCard ShowThresholdSetting="false" />
+        <hr />
+        <WeatherComponent />
     </div>
     <div class="col">
         <AllLightsControlsComponent />

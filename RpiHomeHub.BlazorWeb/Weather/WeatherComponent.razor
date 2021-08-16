@@ -1,0 +1,30 @@
+﻿<CardComponent Title="Weather">
+    @if (Weather is not null)
+    {
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <h2><strong>@Weather.MainWeather.Temperature</strong> <small>°C</small></h2>
+                <br>
+                <img class="img-fluid" src="@Weather.WeatherInfos.First().IconLink">
+                <h4>@Weather.WeatherInfos.First().Title</h4>
+                <p>@Weather.WeatherInfos.First().Description</p>
+            </div>
+            <div class="col">
+                <h5><strong>@Weather.Name</strong></h5>
+                <p>Feels like: @Weather.MainWeather.FeelsLike °C</p>
+                <p>Minimal temperature: @Weather.MainWeather.MinimalTemperature °C</p>
+                <p>Maximal temperature: @Weather.MainWeather.MaximalTemperature °C</p>
+                <p>Pressure: @Weather.MainWeather.Pressure hPa</p>
+                <p>Humidity: @Weather.MainWeather.Humidity %</p>
+                <p>Visibility: @(Weather.Visibility / 1000) km</p>
+                <p>Wind speed: @Weather.Wind.Speed</p>
+                <p>Wind direction: @Weather.Wind.Direction</p>
+                <p>Clouds: @Weather.Clouds.Percentage %</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <FluentProgressRing style="width: 62px;height: 62px; margin:0 auto" />
+    }
+</CardComponent>
