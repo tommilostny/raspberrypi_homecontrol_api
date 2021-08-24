@@ -46,3 +46,9 @@ To setup the Tuya devices create **multiplug.json** and **lamp.json** files in t
 
 1. `cd api`
 2. `python3.9 main.py`
+
+---
+
+# Raspberry Pi Zero remote control
+
+In folder *zero-remote* there is a project I'm running on Raspberry Pi Zero WH with **Adafruit NeoTrellis** keyboard used as a remote control. It sends commands to the above API running on the *Raspberry Pi 4*.
