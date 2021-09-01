@@ -1,10 +1,17 @@
-# Raspberry Pi Home control API
+# Raspberry Pi 4 Home control
 
 - **api**: API created using **Python Flask**.
 - **RpiHomeHub.BlazorWeb**: Web app control hub created using **.NET 5 Blazor PWA**.
 
+## Run both API and the web app:
+
+1. `cd api`
+2. `python3.9 main.py`
+
+---
+
 ## Hardware
-- Raspberry Pi 4 Model B (replaced Raspberry Pi Zero WH)
+- Raspberry Pi 4 Model B
 - Breadboard
 - Yeelight color bulb
 - WOOX WiFi Smart Multi-plug (Tuya Power Strip)
@@ -40,15 +47,9 @@ To setup the Tuya devices create **multiplug.json** and **lamp.json** files in t
     "api_key":"",
     "city_id":""
 }``.
-5. 
-
-### Runs both API and the web app:
-
-1. `cd api`
-2. `python3.9 main.py`
 
 ---
 
 # Raspberry Pi Zero remote control
 
-In folder *zero-remote* there is a project I'm running on Raspberry Pi Zero WH with **Adafruit NeoTrellis** keyboard used as a remote control. It sends commands to the above API running on the *Raspberry Pi 4*.
+In folder *zero-remote* there is a project I'm running on **Raspberry Pi Zero WH** with **Adafruit NeoTrellis** keyboard used as a remote control. It sends commands to the above API running on the *Raspberry Pi 4*.
